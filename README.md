@@ -1,94 +1,86 @@
-# 10x Astro Starter
+# SavorAI
 
-A modern, opinionated starter template for building fast, accessible, and AI-friendly web applications.
+SavorAI is a web application that combines AI-powered recipe generation with a convenient personal catalog, allowing users to discover, create, and organize recipes that perfectly match their dietary needs and preferences.
+
+## Project Description
+
+Many users struggle to find recipes that align with their specific diet, allergies, or taste. SavorAI solves this by providing an intelligent platform where users can define their food profile and generate tailored recipes using AI. These recipes can be saved to a private collection, creating a personalized cookbook that is easy to search and browse.
 
 ## Tech Stack
 
-- [Astro](https://astro.build/) v5.5.5 - Modern web framework for building fast, content-focused websites
-- [React](https://react.dev/) v19.0.0 - UI library for building interactive components
-- [TypeScript](https://www.typescriptlang.org/) v5 - Type-safe JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) v4.0.17 - Utility-first CSS framework
+| Category      | Technology                                       |
+|---------------|--------------------------------------------------|
+| **Frontend**  | Astro, React (for interactive islands), TypeScript |
+| **Styling**   | Tailwind CSS, shadcn/ui                          |
+| **Backend**   | Supabase (PostgreSQL, Authentication, RLS)       |
+| **AI**        | Google Gemini                                    |
+| **DevOps**    | GitHub Actions, Docker, DigitalOcean             |
 
-## Prerequisites
+## Getting Started Locally
 
-- Node.js v22.14.0 (as specified in `.nvmrc`)
-- npm (comes with Node.js)
+Follow these steps to set up and run the project on your local machine.
 
-## Getting Started
+### Prerequisites
 
-1. Clone the repository:
+- **Node.js**: Version `22.14.0` is required. We recommend using a version manager like [nvm](https://github.com/nvm-sh/nvm) to ensure compatibility.
+  ```bash
+  nvm use
+  ```
 
-```bash
-git clone https://github.com/przeprogramowani/10x-astro-starter.git
-cd 10x-astro-starter
-```
+### Installation & Setup
 
-2. Install dependencies:
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/savor-ai.git
+    cd savor-ai
+    ```
 
-```bash
-npm install
-```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-3. Run the development server:
+3.  **Set up environment variables:**
+    Create a `.env` file by copying the example file.
+    ```bash
+    cp .env.example .env
+    ```
+    Open the `.env` file and add your credentials for Supabase and the Google Gemini API.
 
-```bash
-npm run dev
-```
-
-4. Build for production:
-
-```bash
-npm run build
-```
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:4321`.
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
+This project includes several scripts to help with development:
 
-## Project Structure
+- `npm run dev`: Starts the development server with hot-reloading.
+- `npm run build`: Builds the application for production.
+- `npm run preview`: Serves the production build locally for testing.
+- `npm run astro`: access the Astro CLI directly.
+- `npm run lint`: Lints the codebase using ESLint to check for errors and style issues.
+- `npm run lint:fix`: fix lint issues where possible.
+- `npm run format`: Formats all project files using Prettier.
 
-```md
-.
-├── src/
-│   ├── layouts/    # Astro layouts
-│   ├── pages/      # Astro pages
-│   │   └── api/    # API endpoints
-│   ├── components/ # UI components (Astro & React)
-│   └── assets/     # Static assets
-├── public/         # Public assets
-```
+## Project Scope (MVP)
 
-## AI Development Support
+The current scope is focused on delivering a Minimum Viable Product (MVP) with the following core features:
 
-This project is configured with AI development tools to enhance the development experience, providing guidelines for:
+- **AI Recipe Generation**: Generate a single recipe at a time based on a user's profile (diet, dislikes, preferred cuisines).
+- **Personal Recipe Collection**: Save generated recipes to a private, user-specific collection.
+- **Search and Filter**: Perform full-text search on titles and ingredients, and filter recipes by tags.
+- **User Profile**: Manage dietary preferences and application settings like dark mode.
+- **Authentication**: Secure user registration and login.
 
-- Project structure
-- Coding practices
-- Frontend development
-- Styling with Tailwind
-- Accessibility best practices
-- Astro and React guidelines
+**Out of Scope for MVP**: Features like interactive recipe-building chat, automatic preference learning, recipe import/editing, and social sharing are planned for future releases.
 
-### Cursor IDE
+## Project Status
 
-The project includes AI rules in `.cursor/rules/` directory that help Cursor IDE understand the project structure and provide better code suggestions.
-
-### GitHub Copilot
-
-AI instructions for GitHub Copilot are available in `.github/copilot-instructions.md`
-
-### Windsurf
-
-The `.windsurfrules` file contains AI configuration for Windsurf.
-
-## Contributing
-
-Please follow the AI guidelines and coding practices defined in the AI configuration files when contributing to this project.
+This project is currently in the **MVP development phase**.
 
 ## License
 
-MIT
+The license for this project is yet to be determined.

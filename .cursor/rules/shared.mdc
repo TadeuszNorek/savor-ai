@@ -3,9 +3,9 @@ description:
 globs: 
 alwaysApply: true
 ---
-# AI Rules for {app-name}
+# AI Rules for SavorAI
 
-{project-description}
+SavorAI is a simple web application that combines AI-powered personalized recipe generation with convenient cataloging and searching of saved recipes. The MVP provides: a dietary preferences profile, one-time generation of a single recipe in JSON format, saving and browsing your own collection, minimal search functionality, and basic usage metrics.
 
 ## Tech Stack
 
