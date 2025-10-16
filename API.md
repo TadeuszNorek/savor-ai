@@ -1,0 +1,460 @@
+# SavorAI API Documentation
+
+## Overview
+
+SavorAI provides a RESTful API for managing recipes, user profiles, and application events. All endpoints require authentication via Supabase JWT tokens (except auth endpoints).
+
+**Base URL:** `http://localhost:4321/api` (development)
+
+**Authentication:** Bearer token in `Authorization` header
+```
+Authorization: Bearer {supabase_jwt_token}
+```
+
+## Table of Contents
+
+- [Events](#events)
+  - [POST /api/events](#post-apievents) - Log application event
+- [Recipes](#recipes)
+  - [POST /api/recipes/generate](#post-apirecipesgenerate) - Generate recipe with AI
+  - [GET /api/recipes](#get-apirecipes) - List saved recipes
+  - [GET /api/recipes/:id](#get-apirecipesid) - Get recipe details
+  - [DELETE /api/recipes/:id](#delete-apirecipesid) - Delete recipe
+- [Profile](#profile) *(Coming soon)*
+  - POST /api/profile - Create/update user profile
+  - GET /api/profile - Get user profile
+
+---
+
+## Events
+
+### POST /api/events
+
+Log an application event for analytics purposes.
+
+**Primary use case:** Client-side logging of `session_start` events. Other event types (`ai_prompt_sent`, `ai_recipe_generated`, `recipe_saved`, `profile_edited`) are typically logged automatically by server-side endpoints.
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "type": "session_start",
+  "payload": {
+    "user_agent": "Mozilla/5.0...",
+    "platform": "web"
+  }
+}
+```
+
+**Fields:**
+- `type` (required): Event type enum
+  - `session_start` - User starts new session
+  - `profile_edited` - User updates profile
+  - `ai_prompt_sent` - AI recipe generation requested
+  - `ai_recipe_generated` - AI recipe successfully generated
+  - `recipe_saved` - Recipe saved to collection
+- `payload` (optional): Additional event data (max 8 KB when serialized)
+
+#### Response
+
+**Success (201 Created):**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "type": "session_start",
+  "payload": {
+    "user_agent": "Mozilla/5.0...",
+    "platform": "web"
+  },
+  "occurred_at": "2025-01-16T10:00:00.000Z"
+}
+```
+
+**Error (400 Bad Request):**
+```json
+{
+  "error": "Bad Request",
+  "message": "Validation failed",
+  "details": {
+    "type": "Invalid enum value. Expected 'session_start' | 'profile_edited' | ...",
+    "payload": "Payload size must not exceed 8192 bytes when serialized"
+  },
+  "request_id": "req_abc123"
+}
+```
+
+**Error (401 Unauthorized):**
+```json
+{
+  "error": "Unauthorized",
+  "message": "Missing or invalid authorization header",
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+curl -X POST http://localhost:4321/api/events \
+  -H "Authorization: Bearer eyJhbGc..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "session_start",
+    "payload": {
+      "platform": "web",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    }
+  }'
+```
+
+---
+
+## Recipes
+
+### POST /api/recipes/generate
+
+Generate a recipe using AI based on user prompt and profile preferences.
+
+**Rate Limit:** 10 generations per hour per user
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "prompt": "Make me a quick pasta dish for dinner"
+}
+```
+
+**Fields:**
+- `prompt` (required): User's recipe request (string, max 2000 characters)
+
+#### Response
+
+**Success (200 OK):**
+```json
+{
+  "recipe": {
+    "title": "Quick Garlic Pasta",
+    "summary": "A simple 15-minute pasta dish with garlic and olive oil",
+    "prep_time_minutes": 5,
+    "cook_time_minutes": 10,
+    "servings": 2,
+    "difficulty": "easy",
+    "cuisine": "Italian",
+    "ingredients": [
+      "200g spaghetti",
+      "4 cloves garlic, minced",
+      "3 tbsp olive oil",
+      "Salt and pepper to taste"
+    ],
+    "instructions": [
+      "Boil pasta according to package directions",
+      "Heat olive oil and sauté garlic until fragrant",
+      "Toss cooked pasta with garlic oil",
+      "Season with salt and pepper"
+    ],
+    "tags": ["quick", "easy", "italian", "vegetarian"],
+    "dietary_info": {
+      "vegetarian": true,
+      "vegan": true,
+      "gluten_free": false
+    }
+  },
+  "generation_id": "gen_abc123",
+  "generated_at": "2025-01-16T10:00:00.000Z"
+}
+```
+
+**Error (429 Too Many Requests):**
+```json
+{
+  "error": "Too Many Requests",
+  "message": "Generation limit exceeded. Please try again later.",
+  "details": {
+    "retry_after": 3600
+  },
+  "request_id": "req_abc123"
+}
+```
+
+**Error (413 Payload Too Large):**
+```json
+{
+  "error": "Payload Too Large",
+  "message": "Generated recipe is too large. Please try a simpler prompt.",
+  "request_id": "req_abc123"
+}
+```
+
+**Error (503 Service Unavailable):**
+```json
+{
+  "error": "Service Unavailable",
+  "message": "AI service timed out. Please try again.",
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+curl -X POST http://localhost:4321/api/recipes/generate \
+  -H "Authorization: Bearer eyJhbGc..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Make me a vegan dessert with chocolate"
+  }'
+```
+
+---
+
+### GET /api/recipes
+
+List user's saved recipes with search, filtering, and pagination.
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+**Query Parameters:**
+- `search` (optional): Full-text search query (searches title, summary, ingredients)
+- `tags` (optional): Comma-separated tags for OR filtering (e.g., `quick,italian`)
+- `sort` (optional): Sort order - `recent` (default) or `oldest`
+- `limit` (optional): Results per page (1-100, default: 20)
+- `cursor` (optional): Pagination cursor (base64 encoded)
+- `offset` (optional): Offset pagination (alternative to cursor)
+
+#### Response
+
+**Success (200 OK):**
+```json
+{
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "title": "Quick Garlic Pasta",
+      "summary": "A simple 15-minute pasta dish",
+      "tags": ["quick", "easy", "italian"],
+      "created_at": "2025-01-16T10:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "limit": 20,
+    "next_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNS0wMS0xNlQxMDowMDowMC4wMDBaIiwiaWQiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMDAifQ==",
+    "has_more": true,
+    "total_count": 42
+  }
+}
+```
+
+**Empty Result (200 OK):**
+```json
+{
+  "data": [],
+  "pagination": {
+    "limit": 20,
+    "next_cursor": null,
+    "has_more": false,
+    "total_count": 0
+  },
+  "message": "No recipes found. Start by generating your first recipe!"
+}
+```
+
+#### Example
+
+```bash
+# Search for pasta recipes
+curl -X GET "http://localhost:4321/api/recipes?search=pasta&limit=10" \
+  -H "Authorization: Bearer eyJhbGc..."
+
+# Filter by tags
+curl -X GET "http://localhost:4321/api/recipes?tags=quick,easy&sort=recent" \
+  -H "Authorization: Bearer eyJhbGc..."
+```
+
+---
+
+### GET /api/recipes/:id
+
+Get full recipe details by ID.
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+**Parameters:**
+- `id` (path): Recipe UUID
+
+#### Response
+
+**Success (200 OK):**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "title": "Quick Garlic Pasta",
+  "summary": "A simple 15-minute pasta dish",
+  "tags": ["quick", "easy", "italian"],
+  "recipe": {
+    "title": "Quick Garlic Pasta",
+    "prep_time_minutes": 5,
+    "cook_time_minutes": 10,
+    "servings": 2,
+    "difficulty": "easy",
+    "ingredients": ["..."],
+    "instructions": ["..."]
+  },
+  "created_at": "2025-01-16T10:00:00.000Z",
+  "updated_at": "2025-01-16T10:00:00.000Z"
+}
+```
+
+**Error (404 Not Found):**
+```json
+{
+  "error": "Not Found",
+  "message": "Recipe not found",
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+curl -X GET http://localhost:4321/api/recipes/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Authorization: Bearer eyJhbGc..."
+```
+
+---
+
+### DELETE /api/recipes/:id
+
+Delete a recipe from user's collection (hard delete).
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+**Parameters:**
+- `id` (path): Recipe UUID
+
+#### Response
+
+**Success (204 No Content):**
+```
+(empty body)
+```
+
+**Error (404 Not Found):**
+```json
+{
+  "error": "Not Found",
+  "message": "Recipe not found",
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+curl -X DELETE http://localhost:4321/api/recipes/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Authorization: Bearer eyJhbGc..."
+```
+
+---
+
+## Error Response Format
+
+All error responses follow this standard format:
+
+```json
+{
+  "error": "Error Type",
+  "message": "Human-readable error message",
+  "details": {
+    "field": "Validation error details"
+  },
+  "request_id": "req_abc123"
+}
+```
+
+**Common HTTP Status Codes:**
+- `200` - Success
+- `201` - Created
+- `204` - No Content (successful deletion)
+- `400` - Bad Request (validation errors)
+- `401` - Unauthorized (missing/invalid token)
+- `404` - Not Found
+- `413` - Payload Too Large
+- `429` - Too Many Requests (rate limit exceeded)
+- `500` - Internal Server Error
+- `503` - Service Unavailable (AI service issues)
+
+---
+
+## Rate Limits
+
+- **Recipe Generation:** 10 requests per hour per user
+- **Other Endpoints:** No rate limits in MVP (may be added in future)
+
+---
+
+## Authentication
+
+All API endpoints (except public health checks) require authentication via Supabase JWT tokens.
+
+**Getting a Token:**
+1. Register/Login via Supabase Auth endpoints
+2. Use the returned `access_token` in all API requests
+
+**Token Format:**
+```
+Authorization: Bearer {access_token}
+```
+
+**Token Expiry:**
+Tokens expire after the configured period (default: 1 hour). Refresh tokens using Supabase client.
+
+---
+
+## Testing
+
+For detailed testing examples and scenarios, see:
+- [Events Testing Guide](.ai/endpoints/log-event-testing-guide.md)
+- [Recipes Testing Guide](.ai/endpoints/list-recipes-testing-guide.md)
+
+---
+
+## Changelog
+
+### 2025-01-16
+- ✅ Added `POST /api/events` - Event logging endpoint
+- ✅ Added `POST /api/recipes/generate` - AI recipe generation
+- ✅ Added `GET /api/recipes` - List recipes with search/filter
+- ✅ Added `GET /api/recipes/:id` - Get recipe details
+- ✅ Added `DELETE /api/recipes/:id` - Delete recipe
