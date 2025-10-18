@@ -124,14 +124,14 @@ CRITICAL RULES:
 
     if (profile) {
       prompt += `\n\nUSER DIETARY PREFERENCES:`;
-      if (profile.preferred_diet) {
-        prompt += `\n- Diet type: ${profile.preferred_diet}`;
+      if (profile.diet_type) {
+        prompt += `\n- Diet type: ${profile.diet_type}`;
       }
       if (profile.disliked_ingredients && profile.disliked_ingredients.length > 0) {
         prompt += `\n- AVOID these ingredients: ${profile.disliked_ingredients.join(", ")}`;
       }
-      if (profile.allergens && profile.allergens.length > 0) {
-        prompt += `\n- ALLERGENS (must exclude): ${profile.allergens.join(", ")}`;
+      if (profile.preferred_cuisines && profile.preferred_cuisines.length > 0) {
+        prompt += `\n- Preferred cuisines: ${profile.preferred_cuisines.join(", ")}`;
       }
     }
 

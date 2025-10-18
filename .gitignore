@@ -23,5 +23,9 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# scripts for testing
+get-token.js
+test-generate.js
+
 #planning documents
 .ai/

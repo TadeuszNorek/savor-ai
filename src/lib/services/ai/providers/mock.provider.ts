@@ -443,31 +443,37 @@ export class MockProvider implements AiProvider {
    */
   private adjustForDietaryPreferences(recipe: RecipeSchema, profile: ProfileDTO): void {
     // Set dietary flags based on profile
-    if (profile.preferred_diet === "vegan") {
+    if (profile.diet_type === "vegan") {
       recipe.dietary_info = recipe.dietary_info || {};
       recipe.dietary_info.vegan = true;
       recipe.dietary_info.vegetarian = true;
       recipe.dietary_info.dairy_free = true;
-    } else if (profile.preferred_diet === "vegetarian") {
+    } else if (profile.diet_type === "vegetarian") {
       recipe.dietary_info = recipe.dietary_info || {};
       recipe.dietary_info.vegetarian = true;
-    } else if (profile.preferred_diet === "gluten_free") {
+    } else if (profile.diet_type === "gluten_free") {
       recipe.dietary_info = recipe.dietary_info || {};
       recipe.dietary_info.gluten_free = true;
-    } else if (profile.preferred_diet === "dairy_free") {
+    } else if (profile.diet_type === "dairy_free") {
       recipe.dietary_info = recipe.dietary_info || {};
       recipe.dietary_info.dairy_free = true;
     }
 
-    // Add note about allergens if present
-    if (profile.allergens && profile.allergens.length > 0) {
-      const allergenNote = `\n\nNote: This recipe is free from: ${profile.allergens.join(", ")}`;
-      recipe.description = (recipe.description || "") + allergenNote;
+    // Add note about disliked ingredients if present
+    if (profile.disliked_ingredients && profile.disliked_ingredients.length > 0) {
+      const ingredientsNote = `\n\nNote: This recipe avoids: ${profile.disliked_ingredients.join(", ")}`;
+      recipe.description = (recipe.description || "") + ingredientsNote;
+    }
+
+    // Add preferred cuisines note if present
+    if (profile.preferred_cuisines && profile.preferred_cuisines.length > 0) {
+      const cuisinesNote = `\n\nPreferred cuisines: ${profile.preferred_cuisines.join(", ")}`;
+      recipe.description = (recipe.description || "") + cuisinesNote;
     }
 
     // Add diet tag
-    if (profile.preferred_diet && !recipe.tags?.includes(profile.preferred_diet)) {
-      recipe.tags = [...(recipe.tags || []), profile.preferred_diet];
+    if (profile.diet_type && !recipe.tags?.includes(profile.diet_type)) {
+      recipe.tags = [...(recipe.tags || []), profile.diet_type];
     }
   }
 

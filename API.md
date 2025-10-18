@@ -21,9 +21,10 @@ Authorization: Bearer {supabase_jwt_token}
   - [GET /api/recipes](#get-apirecipes) - List saved recipes
   - [GET /api/recipes/:id](#get-apirecipesid) - Get recipe details
   - [DELETE /api/recipes/:id](#delete-apirecipesid) - Delete recipe
-- [Profile](#profile) *(Coming soon)*
-  - POST /api/profile - Create/update user profile
-  - GET /api/profile - Get user profile
+- [Profile](#profile)
+  - [POST /api/profile](#post-apiprofile) - Create user profile
+  - [GET /api/profile](#get-apiprofile) - Get user profile
+  - [PUT /api/profile](#put-apiprofile) - Update user profile
 
 ---
 
@@ -588,6 +589,240 @@ curl -X DELETE http://localhost:4321/api/recipes/550e8400-e29b-41d4-a716-4466554
 
 ---
 
+## Profile
+
+### POST /api/profile
+
+Create initial dietary preferences profile for authenticated user.
+
+**Note:** Each user can only have one profile (1:1 relationship). Use PUT to update existing profile.
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "diet_type": "vegetarian",
+  "disliked_ingredients": ["mushrooms", "olives"],
+  "preferred_cuisines": ["italian", "mediterranean"]
+}
+```
+
+**Fields (all optional):**
+- `diet_type` (optional): One of: `vegan`, `vegetarian`, `pescatarian`, `keto`, `paleo`, `gluten_free`, `dairy_free`, `low_carb`, `mediterranean`, `omnivore`
+- `disliked_ingredients` (optional): Array of ingredients to avoid (max 100 items, each 1-50 chars)
+  - Automatically normalized: lowercase, trimmed, deduplicated
+- `preferred_cuisines` (optional): Array of preferred cuisines (max 100 items, each 1-50 chars)
+  - Automatically normalized: lowercase, trimmed, deduplicated
+
+#### Response
+
+**Success (201 Created):**
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "diet_type": "vegetarian",
+  "disliked_ingredients": ["mushrooms", "olives"],
+  "preferred_cuisines": ["italian", "mediterranean"],
+  "created_at": "2025-01-16T10:00:00.000Z",
+  "updated_at": "2025-01-16T10:00:00.000Z"
+}
+```
+
+**Error (409 Conflict):**
+```json
+{
+  "error": "Conflict",
+  "message": "Profile already exists; use PUT /api/profile to update",
+  "request_id": "req_abc123"
+}
+```
+
+**Error (400 Bad Request):**
+```json
+{
+  "error": "Bad Request",
+  "message": "Validation failed",
+  "details": {
+    "diet_type": "Invalid enum value",
+    "disliked_ingredients.0": "Item cannot exceed 50 characters"
+  },
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+curl -X POST http://localhost:4321/api/profile \
+  -H "Authorization: Bearer eyJhbGc..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "diet_type": "vegetarian",
+    "disliked_ingredients": ["mushrooms", "olives"],
+    "preferred_cuisines": ["italian", "mediterranean"]
+  }'
+```
+
+**Notes:**
+- Profile is used to personalize AI recipe generation
+- Disliked ingredients are validated when saving recipes (via `insert_recipe_safe` RPC)
+- Arrays are automatically normalized (e.g., ["Italian", "MEXICAN"] → ["italian", "mexican"])
+- Logs `profile_edited` event with `action: "created"`
+
+---
+
+### GET /api/profile
+
+Retrieve dietary preferences profile for authenticated user.
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+#### Response
+
+**Success (200 OK):**
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "diet_type": "vegetarian",
+  "disliked_ingredients": ["mushrooms", "olives"],
+  "preferred_cuisines": ["italian", "mediterranean"],
+  "created_at": "2025-01-16T10:00:00.000Z",
+  "updated_at": "2025-01-16T10:00:00.000Z"
+}
+```
+
+**Headers:**
+- `Cache-Control: no-store` - Personalized content, no caching
+
+**Error (404 Not Found):**
+```json
+{
+  "error": "Not Found",
+  "message": "Profile not found; use POST /api/profile to create",
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+curl -X GET http://localhost:4321/api/profile \
+  -H "Authorization: Bearer eyJhbGc..."
+```
+
+**Notes:**
+- Returns 404 if profile doesn't exist (user must create it first with POST)
+- No event logging for GET operations
+
+---
+
+### PUT /api/profile
+
+Update dietary preferences profile for authenticated user.
+
+#### Request
+
+**Headers:**
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "diet_type": "vegan",
+  "disliked_ingredients": ["mushrooms", "olives", "eggs", "dairy"]
+}
+```
+
+**Fields (at least one required):**
+- `diet_type` (optional): Diet type enum, or `null` to clear the field
+- `disliked_ingredients` (optional): Replaces entire array (not merged)
+- `preferred_cuisines` (optional): Replaces entire array (not merged)
+
+**Validation:**
+- At least one field must be provided
+- Arrays replace existing values entirely (not merged)
+- Set `diet_type: null` to explicitly clear the value
+
+#### Response
+
+**Success (200 OK):**
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "diet_type": "vegan",
+  "disliked_ingredients": ["mushrooms", "olives", "eggs", "dairy"],
+  "preferred_cuisines": ["italian", "mediterranean"],
+  "created_at": "2025-01-16T10:00:00.000Z",
+  "updated_at": "2025-01-16T10:30:00.000Z"
+}
+```
+
+**Headers:**
+- `Cache-Control: no-store` - Personalized content, no caching
+
+**Error (400 Bad Request - No Fields):**
+```json
+{
+  "error": "Bad Request",
+  "message": "Validation failed",
+  "details": {
+    "_root": "At least one field must be provided for update"
+  },
+  "request_id": "req_abc123"
+}
+```
+
+**Error (404 Not Found):**
+```json
+{
+  "error": "Not Found",
+  "message": "Profile not found; use POST /api/profile to create",
+  "request_id": "req_abc123"
+}
+```
+
+#### Example
+
+```bash
+# Update diet type and disliked ingredients
+curl -X PUT http://localhost:4321/api/profile \
+  -H "Authorization: Bearer eyJhbGc..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "diet_type": "vegan",
+    "disliked_ingredients": ["mushrooms", "olives", "eggs", "dairy"]
+  }'
+
+# Clear diet type
+curl -X PUT http://localhost:4321/api/profile \
+  -H "Authorization: Bearer eyJhbGc..." \
+  -H "Content-Type: application/json" \
+  -d '{"diet_type": null}'
+```
+
+**Notes:**
+- Partial updates supported (only send fields you want to change)
+- Arrays are **replaced entirely**, not merged (e.g., updating `disliked_ingredients` replaces the whole array)
+- `updated_at` timestamp is automatically updated
+- Logs `profile_edited` event with `action: "updated"` and list of `changed_fields`
+
+---
+
 ## Error Response Format
 
 All error responses follow this standard format:
@@ -655,6 +890,11 @@ For detailed testing examples and scenarios, see:
 ---
 
 ## Changelog
+
+### 2025-01-17
+- ✅ Added `POST /api/profile` - Create user dietary profile
+- ✅ Added `GET /api/profile` - Get user profile
+- ✅ Added `PUT /api/profile` - Update user profile
 
 ### 2025-01-16
 - ✅ Added `POST /api/events` - Event logging endpoint
