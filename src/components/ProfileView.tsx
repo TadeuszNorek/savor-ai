@@ -59,11 +59,15 @@ export default function ProfileView() {
     try {
       if (mode === "create") {
         const command = formValuesToCreateCommand(values);
+        console.log("[ProfileView] Creating profile with command:", command);
         await createMutation.mutateAsync(command);
         toast.success("Profile created successfully!");
         // Query cache will be invalidated automatically, causing re-render with updated data
       } else {
         const command = formValuesToUpdateCommand(values, initialValues);
+        console.log("[ProfileView] Updating profile with command:", command);
+        console.log("[ProfileView] Current values:", values);
+        console.log("[ProfileView] Initial values:", initialValues);
 
         // Check if there are any changes
         if (Object.keys(command).length === 0) {

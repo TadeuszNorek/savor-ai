@@ -7,13 +7,22 @@ declare global {
   namespace App {
     interface Locals {
       supabase: SupabaseClient<Database>;
+      user?: {
+        id: string;
+        email?: string;
+      };
     }
   }
 }
 
 interface ImportMetaEnv {
+  // Server-side only
   readonly SUPABASE_URL: string;
   readonly SUPABASE_KEY: string;
+
+  // Client-side (browser) - exposed with PUBLIC_ prefix
+  readonly PUBLIC_SUPABASE_URL: string;
+  readonly PUBLIC_SUPABASE_KEY: string;
 
   // AI Provider Configuration
   // Use "mock" for development without API costs

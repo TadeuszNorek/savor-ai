@@ -1,4 +1,5 @@
-import { useState, KeyboardEvent, forwardRef } from "react";
+import { useState, forwardRef } from "react";
+import type { KeyboardEvent } from "react";
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
 import { X } from "lucide-react";

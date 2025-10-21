@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { AppPage } from "../components/app/AppPage";
+
+// This page is client-side only (React island)
+// Authentication check happens in API calls
+// 401 from API will trigger redirect to /login
+
+// No selectedRecipeId - showing Generator tab by default
+---
+
+<Layout title="SavorAI - Recipe Generator & Catalog">
+  <main class="container mx-auto px-4 py-4 h-[calc(100vh-4rem)]">
+    <AppPage client:only="react" />
+  </main>
+</Layout>
