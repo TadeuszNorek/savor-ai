@@ -24,7 +24,7 @@ type ActiveTab = "generator" | "preview";
  * Supports deep-linking to saved recipe details
  */
 export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRecipeGenerated }: RightPanelProps) {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("generator");
+  const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
   const [draftRecipe, setDraftRecipe] = useState<RecipeSchema | undefined>();
 
   // Fetch selected recipe details (if deep-linked)
@@ -40,6 +40,24 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
       setActiveTab("preview");
     }
   }, [selectedRecipeId, selectedRecipe]);
+
+  // Handle hash navigation (#generator)
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === "#generator") {
+        setActiveTab("generator");
+        // Clear hash without adding to history
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    };
+
+    // Check on mount
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   // Handle successful generation - switch to preview and show draft
   const handleGenerated = (response: GenerateRecipeResponse) => {

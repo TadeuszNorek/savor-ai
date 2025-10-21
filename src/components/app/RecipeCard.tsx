@@ -10,15 +10,9 @@ interface RecipeCardProps {
 
 /**
  * RecipeCard component - displays a single recipe in the list
- * Shows title, summary, tags, and creation date
+ * Shows title, summary, and tags
  */
 export function RecipeCard({ item, selected = false, onClick }: RecipeCardProps) {
-  const formattedDate = new Date(item.created_at).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   return (
     <Card
       className={`p-4 cursor-pointer transition-colors hover:bg-accent ${
@@ -51,10 +45,6 @@ export function RecipeCard({ item, selected = false, onClick }: RecipeCardProps)
             ))}
           </div>
         )}
-
-        <div className="text-xs text-muted-foreground pt-1">
-          {formattedDate}
-        </div>
       </div>
     </Card>
   );
