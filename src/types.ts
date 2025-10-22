@@ -310,3 +310,56 @@ export function isDietType(value: string): value is DietType {
 export function isRecipeDifficulty(value: string): value is RecipeDifficulty {
   return ["easy", "medium", "hard"].includes(value);
 }
+
+// ============================================================================
+// Frontend ViewModel Types
+// ============================================================================
+
+/**
+ * List Filters View Model
+ * Represents the current state of filters in the recipe list
+ * Synchronized with URL search params
+ */
+export interface ListFiltersVM {
+  search?: string;
+  tags: string[];
+  sort: RecipeSortOrder;
+  limit: number;
+  offset?: number;
+  cursor?: string | null;
+}
+
+/**
+ * Generator Draft View Model
+ * Represents the state of the recipe generator panel
+ * Persisted in sessionStorage
+ */
+export interface GeneratorDraftVM {
+  prompt: string;
+  recipe?: RecipeSchema;
+  generationId?: string;
+  generatedAt?: string;
+}
+
+/**
+ * Recipe Card View Model
+ * Alias for RecipeListItemDTO - used in list display
+ */
+export type RecipeCardVM = RecipeListItemDTO;
+
+/**
+ * Preview Panel Mode
+ * Determines whether showing a draft (from generator) or saved recipe
+ */
+export type PreviewMode = "draft" | "saved";
+
+/**
+ * UI Error
+ * Frontend-friendly error type mapped from ApiError
+ * Includes standardized error codes and user-friendly messages
+ */
+export interface UiError {
+  code: 400 | 401 | 404 | 413 | 429 | 500 | 503;
+  message: string;
+  details?: Record<string, unknown>;
+}

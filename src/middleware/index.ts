@@ -4,12 +4,18 @@ import { createSupabaseServerInstance, supabaseClient } from "../db/supabase.cli
 
 /**
  * Public paths that don't require authentication
- * Includes login page, password reset pages, and auth API endpoints
+ * Includes homepage, login page, password reset pages, and auth API endpoints
+ *
+ * NOTE: UI pages (/profile, /app) use client-side auth guards instead of middleware.
+ * Per auth-spec.md: "Nie wprowadzamy SSR‑gatingu opartego o sesję. Ochrona odbywa się
+ * na poziomie API (RLS + Bearer) i na poziomie UI (guardy klientowe)."
  */
 const PUBLIC_PATHS = [
+  "/",              // Homepage (temporary redirect to /login, future: landing page)
   "/login",
   "/auth/forgot",
   "/auth/reset",
+  "/profile",       // Client-side auth guard (401 from API → redirect)
   "/api/auth/login",
   "/api/auth/register",
   "/api/auth/logout",
@@ -29,6 +35,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Skip auth check for public paths
   if (PUBLIC_PATHS.includes(url.pathname)) {
+    return next();
+  }
+
+  // Skip auth check for /app/* paths (client-side auth guard)
+  if (url.pathname.startsWith("/app")) {
+    return next();
+  }
+
+  // Skip middleware auth for API endpoints (they handle auth via Bearer token)
+  // Exception: public auth endpoints remain in PUBLIC_PATHS
+  if (url.pathname.startsWith("/api/")) {
     return next();
   }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, UserCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -82,6 +82,12 @@ export function UserMenu({ email }: UserMenuProps) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <a href="/profile" className="flex items-center">
+            <UserCircle className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </a>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleLogout}
           disabled={isLoggingOut}

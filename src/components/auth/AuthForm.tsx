@@ -9,6 +9,7 @@ import { PasswordInput } from "./PasswordInput";
 import { validateAuthForm, hasErrors, normalizeEmail } from "../../lib/auth/validation";
 import { sendSessionStartEvent } from "../../lib/auth/telemetry";
 import type { AuthFormMode, AuthFormValues, AuthFormErrors } from "../../lib/auth/types";
+import { supabaseClient } from "../../db/supabase.client";
 
 interface AuthFormProps {
   /** Initial mode - login or register */
@@ -84,6 +85,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
   // Handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    console.log("[AuthForm] Submit started, mode:", mode);
 
     // Mark all fields as touched
     setTouched({ email: true, password: true });
@@ -91,8 +93,10 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
     // Validate form
     const validationErrors = validateAuthForm(values);
     setErrors(validationErrors);
+    console.log("[AuthForm] Validation errors:", validationErrors);
 
     if (hasErrors(validationErrors)) {
+      console.log("[AuthForm] Validation failed, stopping");
       // Focus first error field
       if (validationErrors.email) {
         emailRef.current?.focus();
@@ -103,50 +107,80 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
     }
 
     setIsSubmitting(true);
+    console.log("[AuthForm] Starting auth request...");
 
     // Normalize email
     const normalizedEmail = normalizeEmail(values.email);
+    console.log("[AuthForm] Normalized email:", normalizedEmail);
 
     try {
-      // Call auth API
+      // Use Supabase Auth SDK directly (client-side auth per auth-spec.md)
       if (mode === "login") {
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: normalizedEmail,
-            password: values.password,
-          }),
+        console.log("[AuthForm] Calling signInWithPassword...");
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: normalizedEmail,
+          password: values.password,
         });
 
-        const data = await response.json();
+        console.log("[AuthForm] signInWithPassword response:", { data: !!data, error: error?.message });
 
-        if (!response.ok) {
-          setErrors({ form: data.error || "Login failed" });
+        if (error) {
+          // Map Supabase errors to user-friendly messages
+          let message = "Login failed";
+
+          if (error.message.includes("Invalid login credentials")) {
+            message = "Invalid email or password";
+          } else if (error.message.includes("Email not confirmed")) {
+            message = "Please verify your email address";
+          } else if (error.message.includes("rate")) {
+            message = "Too many attempts. Please try again later";
+          }
+
+          console.log("[AuthForm] Login error:", message);
+          setErrors({ form: message });
+          return;
+        }
+
+        console.log("[AuthForm] Login successful, waiting for session...");
+        // Wait for session to be saved to localStorage (prevent race condition)
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Verify session is available
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        console.log("[AuthForm] Session check:", { hasSession: !!sessionData.session });
+        if (!sessionData.session) {
+          console.log("[AuthForm] Session not available!");
+          setErrors({ form: "Session error. Please try again." });
           return;
         }
 
         // Send session_start telemetry event (best-effort, non-blocking)
+        console.log("[AuthForm] Sending telemetry...");
         sendSessionStartEvent().catch(() => {
           // Ignore telemetry errors - don't block UX
         });
 
-        // Redirect to /profile on successful login
-        window.location.href = "/profile";
+        // Redirect to /app on successful login
+        console.log("[AuthForm] Redirecting to /app");
+        window.location.href = "/app";
       } else {
-        const response = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: normalizedEmail,
-            password: values.password,
-          }),
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: normalizedEmail,
+          password: values.password,
         });
 
-        const data = await response.json();
+        if (error) {
+          setErrors({ form: error.message || "Registration failed" });
+          return;
+        }
 
-        if (!response.ok) {
-          setErrors({ form: data.error || "Registration failed" });
+        // Wait for session to be saved to localStorage (prevent race condition)
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Verify session is available
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        if (!sessionData.session) {
+          setErrors({ form: "Session error. Please try again." });
           return;
         }
 
@@ -155,14 +189,16 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
           // Ignore telemetry errors - don't block UX
         });
 
-        // Redirect to /profile on successful registration
-        window.location.href = "/profile";
+        // Redirect to /app on successful registration
+        window.location.href = "/app";
       }
     } catch (error) {
+      console.error("[AuthForm] Caught error:", error);
       setErrors({
         form: "Network error. Please check your connection and try again.",
       });
     } finally {
+      console.log("[AuthForm] Submit finished");
       setIsSubmitting(false);
     }
   };
