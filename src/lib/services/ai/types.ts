@@ -56,7 +56,7 @@ export class AiTimeoutError extends AiError {
 
 export class AiValidationError extends AiError {
   constructor(message: string = "AI response validation failed") {
-    super(message, false);
+    super(message, true); // Retryable - LLMs sometimes generate invalid JSON
     this.name = "AiValidationError";
   }
 }

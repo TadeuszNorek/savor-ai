@@ -1,4 +1,7 @@
 import { useMemo, useCallback } from "react";
+import { ChevronLeft, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { SearchBar } from "./SearchBar";
 import { TagFilterChips } from "./TagFilterChips";
 import { SortSelect } from "./SortSelect";
@@ -15,13 +18,15 @@ interface LeftPanelProps {
   selectedId?: string;
   onSelect: (id: string) => void;
   onGenerateClick?: () => void;
+  onToggleCollapse?: () => void;
 }
 
 /**
  * LeftPanel component - recipe list with search, filters, and sorting
  * Integrates all sub-components and manages filter state
+ * Supports collapsing for full-screen generator/preview mode
  */
-export function LeftPanel({ selectedId, onSelect, onGenerateClick }: LeftPanelProps) {
+export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleCollapse }: LeftPanelProps) {
   // Filter state synced with URL
   const { filters, setFilters } = useUrlFilters();
 
@@ -95,8 +100,40 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick }: LeftPanelPr
 
   return (
     <div className="flex flex-col h-full">
+      {/* Header with title and collapse button */}
+      <div className="flex items-center justify-between px-4 py-3 border-b">
+        <h2 className="text-lg font-semibold">Your Recipes</h2>
+        {onToggleCollapse && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={onToggleCollapse}
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 -mr-2"
+                  aria-label="Hide recipe list"
+                >
+                  {/* Desktop icon */}
+                  <ChevronLeft className="h-4 w-4 hidden lg:block" />
+                  {/* Mobile icon */}
+                  <ChevronUp className="h-4 w-4 lg:hidden" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="hidden lg:block">
+                <p>Hide recipe list</p>
+                <p className="text-xs text-muted-foreground">Ctrl+B</p>
+              </TooltipContent>
+              <TooltipContent side="bottom" className="lg:hidden">
+                <p>Hide recipe list</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </div>
+
       {/* Filters Section */}
-      <div className="space-y-4 pb-4 border-b">
+      <div className="space-y-3 p-4 lg:pb-4 max-lg:pb-3 border-b">
         <SearchBar
           value={filters.search || ""}
           onChange={handleSearchChange}
@@ -113,7 +150,7 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick }: LeftPanelPr
       </div>
 
       {/* Results Section */}
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pt-4">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 max-lg:p-3 min-h-0">
         {isLoading ? (
           <RecipeListSkeleton count={3} />
         ) : isError ? (

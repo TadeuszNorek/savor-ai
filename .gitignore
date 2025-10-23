@@ -29,3 +29,6 @@ test-generate.js
 
 #planning documents
 .ai/
+
+# cursor-related files
+.cursor/
