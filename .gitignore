@@ -31,4 +31,17 @@ test-generate.js
 .ai/
 
 # cursor-related files
-.cursor/
+# .cursor/
+
+# test coverage
+coverage/
+.nyc_output/
+
+# playwright
+test-results/
+playwright-report/
+playwright/.cache/
+*.trace.zip
+
+# vitest
+.vitest/
