@@ -11,9 +11,9 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       2/52 (4%)
+Completed:       3/52 (6%)
 In Progress:     0/52
-Remaining:       50/52
+Remaining:       49/52
 ```
 
 **Current Milestone:** MILESTONE 1 - Fundamenty
@@ -24,7 +24,7 @@ Remaining:       50/52
 
 **Target:** 6 plików testowych | ~120 testów | 2-3 dni
 
-### ✅ Completed (2/6)
+### ✅ Completed (3/6)
 
 - [x] `tests/unit/utils.test.ts`
   - **Tests:** 6
@@ -36,24 +36,17 @@ Remaining:       50/52
   - **Coverage:** Button component
   - **Commit:** ✅ Already committed
 
+- [x] **TASK 1:** `tests/unit/utils/cursor.test.ts`
+  - **Tests:** 24
+  - **Coverage:** 100% (encodeCursor, decodeCursor, isValidCursor)
+  - **Commit:** ✅ Ready to commit
+  - **Note:** Fixed bug in cursor.ts (split → lastIndexOf)
+
 ### 🚧 In Progress (0/6)
 
 *No tasks in progress*
 
-### ⏭️ To Do (4/6)
-
-- [ ] **TASK 1:** `tests/unit/utils/cursor.test.ts`
-  - **Source:** `src/lib/utils/cursor.ts`
-  - **Estimated tests:** 15-20
-  - **Priority:** KRYTYCZNY
-  - **Coverage target:** 100%
-  - **Functions to test:**
-    - `encodeCursor()` - valid inputs
-    - `decodeCursor()` - valid/invalid cursors
-    - `isValidCursor()` - validation
-    - Round-trip tests
-    - Edge cases (invalid base64, format, UUID, date)
-  - **Commit message:** `test: add cursor pagination tests (15 tests)`
+### ⏭️ To Do (3/6)
 
 - [ ] **TASK 2:** `tests/unit/auth/validation.test.ts`
   - **Source:** `src/lib/auth/validation.ts`
