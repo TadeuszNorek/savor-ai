@@ -28,7 +28,7 @@ get-token.js
 test-generate.js
 
 #planning documents
-.ai/
+# .ai/
 
 # cursor-related files
 # .cursor/
