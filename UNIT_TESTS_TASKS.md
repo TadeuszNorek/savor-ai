@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       12/52 (23%)
+Completed:       13/52 (25%)
 In Progress:     0/52
-Remaining:       40/52
+Remaining:       39/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (4/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (5/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       40/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (4/11)
+### ✅ Completed (5/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -101,13 +101,12 @@ Remaining:       40/52
   - **Coverage:** 100% (Badge component with variants: default, secondary, destructive, outline; asChild prop)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (5/11 remaining)
+- [x] **TASK 11:** `tests/unit/components/ui/select.test.tsx`
+  - **Tests:** 9
+  - **Coverage:** 90% (Select, SelectTrigger, SelectValue with sizes and disabled state)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 11:** `tests/unit/components/ui/select.test.tsx`
-  - **Source:** `src/components/ui/select.tsx`
-  - **Estimated tests:** 6-8
-  - **Coverage target:** 85%
-  - **Commit message:** `test: add Select component tests (7 tests)`
+### ⏭️ UI Components (4/11 remaining)
 
 - [ ] **TASK 12:** `tests/unit/components/ui/textarea.test.tsx`
   - **Source:** `src/components/ui/textarea.tsx`
