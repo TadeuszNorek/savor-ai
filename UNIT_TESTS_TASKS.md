@@ -11,30 +11,27 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       6/52 (12%)
+Completed:       7/52 (13%)
 In Progress:     0/52
-Remaining:       46/52
+Remaining:       45/52
 ```
 
 **Current Milestone:** MILESTONE 1 - Fundamenty
 
 ---
 
+## ✅ Previous Tests (Completed Before Milestone 1)
+
+- [x] `tests/unit/utils.test.ts` - 6 testów (cn() function)
+- [x] `tests/unit/button.test.tsx` - 7 testów (Button component)
+
+---
+
 ## 🎯 MILESTONE 1: Fundamenty (KRYTYCZNY)
 
-**Target:** 6 plików testowych | ~120 testów | 2-3 dni
+**Target:** 6 plików testowych (TASK 1-6) | ~120 testów | 2-3 dni
 
-### ✅ Completed (6/6) - MILESTONE COMPLETE! 🎉
-
-- [x] `tests/unit/utils.test.ts`
-  - **Tests:** 6
-  - **Coverage:** cn() function
-  - **Commit:** ✅ Already committed
-
-- [x] `tests/unit/button.test.tsx`
-  - **Tests:** 7
-  - **Coverage:** Button component
-  - **Commit:** ✅ Already committed
+### ✅ Completed (5/6)
 
 - [x] **TASK 1:** `tests/unit/utils/cursor.test.ts`
   - **Tests:** 24
@@ -57,13 +54,31 @@ Remaining:       46/52
   - **Coverage:** 100% (RecipeSchemaZ, GenerateRecipeCommandSchema, GenerateRecipeResponseSchema, SaveRecipeCommandSchema, normalizeTags)
   - **Commit:** ✅ Ready to commit
 
+- [x] **TASK 5:** `tests/unit/schemas/profile.test.ts`
+  - **Tests:** 21
+  - **Coverage:** 100% (CreateProfileCommandSchema, UpdateProfileCommandSchema, diet types, string arrays)
+  - **Commit:** ✅ Ready to commit
+
 ### 🚧 In Progress (0/6)
 
 *No tasks in progress*
 
-### ⏭️ To Do (0/6) - ALL DONE! 🎊
+### ⏭️ To Do (1/6)
 
-*Milestone 1 complete! Move to Milestone 2.*
+- [ ] **TASK 6:** `tests/unit/mappers/profile.test.ts`
+  - **Source:** `src/lib/mappers/profile.ts`
+  - **Estimated tests:** 25-30
+  - **Priority:** WYSOKI
+  - **Coverage target:** 100%
+  - **Functions to test:**
+    - `profileDtoToFormValues()` - DTO → ViewModel
+    - `emptyProfileFormValues()` - empty state
+    - `formValuesToCreateCommand()` - create command
+    - `formValuesToUpdateCommand()` - update command (changed fields only)
+    - `normalizeStringArray()` - normalization
+    - `hasAtLeastOneField()` - validation
+    - `isFormDirty()` - dirty checking
+  - **Commit message:** `test: add profile mapper tests (28 tests)`
 
 ---
 
