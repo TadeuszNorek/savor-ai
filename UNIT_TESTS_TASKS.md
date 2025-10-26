@@ -11,9 +11,9 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       5/52 (10%)
+Completed:       6/52 (12%)
 In Progress:     0/52
-Remaining:       47/52
+Remaining:       46/52
 ```
 
 **Current Milestone:** MILESTONE 1 - Fundamenty
@@ -24,7 +24,7 @@ Remaining:       47/52
 
 **Target:** 6 plików testowych | ~120 testów | 2-3 dni
 
-### ✅ Completed (5/6)
+### ✅ Completed (6/6) - MILESTONE COMPLETE! 🎉
 
 - [x] `tests/unit/utils.test.ts`
   - **Tests:** 6
@@ -52,50 +52,18 @@ Remaining:       47/52
   - **Coverage:** 100% (UuidSchema, validateUuid)
   - **Commit:** ✅ Ready to commit
 
+- [x] **TASK 4:** `tests/unit/schemas/recipe.test.ts`
+  - **Tests:** 38
+  - **Coverage:** 100% (RecipeSchemaZ, GenerateRecipeCommandSchema, GenerateRecipeResponseSchema, SaveRecipeCommandSchema, normalizeTags)
+  - **Commit:** ✅ Ready to commit
+
 ### 🚧 In Progress (0/6)
 
 *No tasks in progress*
 
-### ⏭️ To Do (1/6)
+### ⏭️ To Do (0/6) - ALL DONE! 🎊
 
-- [ ] **TASK 4:** `tests/unit/schemas/recipe.test.ts`
-  - **Source:** `src/lib/schemas/recipe.schema.ts`
-  - **Estimated tests:** 12-15
-  - **Priority:** WYSOKI
-  - **Coverage target:** 85%
-  - **Functions to test:**
-    - Recipe schema validation
-    - Required/optional fields
-    - Array validations
-    - Error messages
-  - **Commit message:** `test: add recipe schema validation tests (12 tests)`
-
-- [ ] **TASK 5:** `tests/unit/schemas/profile.test.ts`
-  - **Source:** `src/lib/schemas/profile.schema.ts`
-  - **Estimated tests:** 10-12
-  - **Priority:** WYSOKI
-  - **Coverage target:** 85%
-  - **Functions to test:**
-    - Profile schema validation
-    - Diet type enum
-    - Array fields (allergies, preferences)
-    - Optional fields
-  - **Commit message:** `test: add profile schema validation tests (10 tests)`
-
-- [ ] **TASK 6:** `tests/unit/mappers/profile.test.ts`
-  - **Source:** `src/lib/mappers/profile.ts`
-  - **Estimated tests:** 25-30
-  - **Priority:** WYSOKI
-  - **Coverage target:** 100%
-  - **Functions to test:**
-    - `profileDtoToFormValues()` - DTO → ViewModel
-    - `emptyProfileFormValues()` - empty state
-    - `formValuesToCreateCommand()` - create command
-    - `formValuesToUpdateCommand()` - update command (changed fields only)
-    - `normalizeStringArray()` - normalization
-    - `hasAtLeastOneField()` - validation
-    - `isFormDirty()` - dirty checking
-  - **Commit message:** `test: add profile mapper tests (28 tests)`
+*Milestone 1 complete! Move to Milestone 2.*
 
 ---
 
