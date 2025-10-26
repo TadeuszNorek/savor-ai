@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       11/52 (21%)
+Completed:       12/52 (23%)
 In Progress:     0/52
-Remaining:       41/52
+Remaining:       40/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (3/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (4/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       41/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (3/11)
+### ✅ Completed (4/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -96,13 +96,12 @@ Remaining:       41/52
   - **Coverage:** 100% (All Card components: Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (6/11 remaining)
+- [x] **TASK 10:** `tests/unit/components/ui/badge.test.tsx`
+  - **Tests:** 12
+  - **Coverage:** 100% (Badge component with variants: default, secondary, destructive, outline; asChild prop)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 10:** `tests/unit/components/ui/badge.test.tsx`
-  - **Source:** `src/components/ui/badge.tsx`
-  - **Estimated tests:** 4-5
-  - **Coverage target:** 90%
-  - **Commit message:** `test: add Badge component tests (4 tests)`
+### ⏭️ UI Components (5/11 remaining)
 
 - [ ] **TASK 11:** `tests/unit/components/ui/select.test.tsx`
   - **Source:** `src/components/ui/select.tsx`
