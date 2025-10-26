@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       19/52 (37%)
+Completed:       20/52 (38%)
 In Progress:     0/52
-Remaining:       33/52
+Remaining:       32/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks ✅ COMPLETE! (11/11 completed)
+**Current Milestone:** MILESTONE 3 - Auth (1/5 completed)
 
 ---
 
@@ -149,13 +149,14 @@ Remaining:       33/52
 
 **Target:** 5 plików testowych | ~45 testów | 1-2 dni
 
-### ⏭️ Auth Components (3/5)
+### ✅ Completed (1/5)
 
-- [ ] **TASK 18:** `tests/unit/components/auth/EmailInput.test.tsx`
-  - **Source:** `src/components/auth/EmailInput.tsx`
-  - **Estimated tests:** 8-10
-  - **Coverage target:** 90%
-  - **Commit message:** `test: add EmailInput component tests (9 tests)`
+- [x] **TASK 18:** `tests/unit/components/auth/EmailInput.test.tsx`
+  - **Tests:** 12
+  - **Coverage:** 100% (render, value, onChange, onBlur, error display, aria-invalid, aria-describedby, disabled, ref forwarding, label association)
+  - **Commit:** ✅ Ready to commit
+
+### ⏭️ Auth Components (2/5 remaining)
 
 - [ ] **TASK 19:** `tests/unit/components/auth/PasswordInput.test.tsx`
   - **Source:** `src/components/auth/PasswordInput.tsx`
