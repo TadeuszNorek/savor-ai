@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       20/52 (38%)
+Completed:       21/52 (40%)
 In Progress:     0/52
-Remaining:       32/52
+Remaining:       31/52
 ```
 
-**Current Milestone:** MILESTONE 3 - Auth (1/5 completed)
+**Current Milestone:** MILESTONE 3 - Auth (2/5 completed)
 
 ---
 
@@ -149,20 +149,19 @@ Remaining:       32/52
 
 **Target:** 5 plików testowych | ~45 testów | 1-2 dni
 
-### ✅ Completed (1/5)
+### ✅ Completed (2/5)
 
 - [x] **TASK 18:** `tests/unit/components/auth/EmailInput.test.tsx`
   - **Tests:** 12
   - **Coverage:** 100% (render, value, onChange, onBlur, error display, aria-invalid, aria-describedby, disabled, ref forwarding, label association)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ Auth Components (2/5 remaining)
+- [x] **TASK 19:** `tests/unit/components/auth/PasswordInput.test.tsx`
+  - **Tests:** 17
+  - **Coverage:** 100% (render, custom label, show/hide toggle, value, onChange, onBlur, error display, aria attributes, disabled state, ref forwarding, button aria-label)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 19:** `tests/unit/components/auth/PasswordInput.test.tsx`
-  - **Source:** `src/components/auth/PasswordInput.tsx`
-  - **Estimated tests:** 8-10
-  - **Coverage target:** 90%
-  - **Commit message:** `test: add PasswordInput component tests (9 tests)`
+### ⏭️ Auth Components (1/5 remaining)
 
 - [ ] **TASK 20:** `tests/unit/components/auth/AuthForm.test.tsx`
   - **Source:** `src/components/auth/AuthForm.tsx`
