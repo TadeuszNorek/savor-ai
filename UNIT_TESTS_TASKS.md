@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       14/52 (27%)
+Completed:       15/52 (29%)
 In Progress:     0/52
-Remaining:       38/52
+Remaining:       37/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (6/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (7/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       38/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (6/11)
+### ✅ Completed (7/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -111,13 +111,12 @@ Remaining:       38/52
   - **Coverage:** 100% (Textarea component with value, onChange, disabled, rows, maxLength, aria-invalid)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (3/11 remaining)
+- [x] **TASK 13:** `tests/unit/components/ui/skeleton.test.tsx`
+  - **Tests:** 5
+  - **Coverage:** 100% (Skeleton component with div element, data-slot, className, aria attributes)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 13:** `tests/unit/components/ui/skeleton.test.tsx`
-  - **Source:** `src/components/ui/skeleton.tsx`
-  - **Estimated tests:** 2-3
-  - **Coverage target:** 95%
-  - **Commit message:** `test: add Skeleton component tests (2 tests)`
+### ⏭️ UI Components (2/11 remaining)
 
 - [ ] **TASK 14:** `tests/unit/components/ui/tabs.test.tsx`
   - **Source:** `src/components/ui/tabs.tsx`
