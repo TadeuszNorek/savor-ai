@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       22/52 (42%)
+Completed:       23/52 (44%)
 In Progress:     0/52
-Remaining:       30/52
+Remaining:       29/52
 ```
 
-**Current Milestone:** MILESTONE 3 - Auth (3/5 completed)
+**Current Milestone:** ✅ MILESTONE 3 - Auth COMPLETE! (5/5 completed, 71 tests)
 
 ---
 
@@ -30,7 +30,7 @@ Remaining:       30/52
 ## 🎯 MILESTONE 1: Fundamenty (KRYTYCZNY) ✅ COMPLETE!
 
 **Target:** 6 plików testowych (TASK 1-6) | ~120 testów | 2-3 dni
-**Actual:** 6 plików | 167 testów | 100% coverage
+**Actual:** 6 plików | 160 testów | 100% coverage
 
 ### ✅ Completed (6/6) 🎉
 
@@ -149,7 +149,7 @@ Remaining:       30/52
 
 **Target:** 5 plików testowych | ~45 testów | 1-2 dni
 
-### ✅ Completed (3/5)
+### ✅ Completed (5/5) - ✅ MILESTONE 3 COMPLETE!
 
 - [x] **TASK 18:** `tests/unit/components/auth/EmailInput.test.tsx`
   - **Tests:** 12
@@ -167,21 +167,20 @@ Remaining:       30/52
   - **Commit:** ✅ Ready to commit
   - **Note:** Mocked Supabase client for unit tests
 
-### ⏭️ Auth Components (0/5 remaining) ✅ ALL AUTH COMPONENTS COMPLETE!
+- [x] **TASK 21:** `tests/unit/auth/api.test.ts`
+  - **Tests:** 12
+  - **Coverage:** 100% (login, register, logout functions - POST requests, success responses, error handling)
+  - **Commit:** ✅ Ready to commit
+  - **Note:** Mocked global fetch API
 
-### ⏭️ Auth Logic (2/5)
+- [x] **TASK 22:** `tests/unit/hooks/useAuth.test.ts`
+  - **Tests:** 9
+  - **Coverage:** 90% (initial state, session loading, auth state changes, subscription cleanup, telemetry on cold start, error handling)
+  - **Commit:** ✅ Ready to commit
+  - **Note:** Mocked Supabase client and telemetry
 
-- [ ] **TASK 21:** `tests/unit/auth/api.test.ts`
-  - **Source:** `src/lib/auth/api.ts`
-  - **Estimated tests:** 10-12
-  - **Coverage target:** 85%
-  - **Commit message:** `test: add auth API tests (11 tests)`
-
-- [ ] **TASK 22:** `tests/unit/auth/useAuth.test.ts`
-  - **Source:** `src/lib/auth/useAuth.ts`
-  - **Estimated tests:** 8-10
-  - **Coverage target:** 85%
-  - **Commit message:** `test: add useAuth hook tests (9 tests)`
+### ⏭️ Auth Components ✅ ALL COMPLETE!
+### ⏭️ Auth Logic ✅ ALL COMPLETE!
 
 ---
 
