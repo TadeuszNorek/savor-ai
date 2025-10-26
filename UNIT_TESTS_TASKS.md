@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       8/52 (15%)
+Completed:       9/52 (17%)
 In Progress:     0/52
-Remaining:       44/52
+Remaining:       43/52
 ```
 
-**Current Milestone:** MILESTONE 1 - Fundamenty ✅ COMPLETE!
+**Current Milestone:** MILESTONE 2 - UI & Hooks (1/11 completed)
 
 ---
 
@@ -79,13 +79,14 @@ Remaining:       44/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ⏭️ UI Components (9/11)
+### ✅ Completed (1/11)
 
-- [ ] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
-  - **Source:** `src/components/ui/input.tsx`
-  - **Estimated tests:** 6-8
-  - **Coverage target:** 90%
-  - **Commit message:** `test: add Input component tests (7 tests)`
+- [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
+  - **Tests:** 9
+  - **Coverage:** 100% (Input component with various types and attributes)
+  - **Commit:** ✅ Ready to commit
+
+### ⏭️ UI Components (8/11 remaining)
 
 - [ ] **TASK 8:** `tests/unit/components/ui/label.test.tsx`
   - **Source:** `src/components/ui/label.tsx`
