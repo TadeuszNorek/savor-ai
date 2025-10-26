@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       7/52 (13%)
+Completed:       8/52 (15%)
 In Progress:     0/52
-Remaining:       45/52
+Remaining:       44/52
 ```
 
-**Current Milestone:** MILESTONE 1 - Fundamenty
+**Current Milestone:** MILESTONE 1 - Fundamenty ✅ COMPLETE!
 
 ---
 
@@ -27,11 +27,12 @@ Remaining:       45/52
 
 ---
 
-## 🎯 MILESTONE 1: Fundamenty (KRYTYCZNY)
+## 🎯 MILESTONE 1: Fundamenty (KRYTYCZNY) ✅ COMPLETE!
 
 **Target:** 6 plików testowych (TASK 1-6) | ~120 testów | 2-3 dni
+**Actual:** 6 plików | 167 testów | 100% coverage
 
-### ✅ Completed (5/6)
+### ✅ Completed (6/6) 🎉
 
 - [x] **TASK 1:** `tests/unit/utils/cursor.test.ts`
   - **Tests:** 24
@@ -59,26 +60,18 @@ Remaining:       45/52
   - **Coverage:** 100% (CreateProfileCommandSchema, UpdateProfileCommandSchema, diet types, string arrays)
   - **Commit:** ✅ Ready to commit
 
+- [x] **TASK 6:** `tests/unit/mappers/profile.test.ts`
+  - **Tests:** 35
+  - **Coverage:** 100% (profileDtoToFormValues, emptyProfileFormValues, formValuesToCreateCommand, formValuesToUpdateCommand, normalizeStringArray, hasAtLeastOneField, isFormDirty)
+  - **Commit:** ✅ Ready to commit
+
 ### 🚧 In Progress (0/6)
 
 *No tasks in progress*
 
-### ⏭️ To Do (1/6)
+### ⏭️ To Do (0/6) ✅ ALL COMPLETE!
 
-- [ ] **TASK 6:** `tests/unit/mappers/profile.test.ts`
-  - **Source:** `src/lib/mappers/profile.ts`
-  - **Estimated tests:** 25-30
-  - **Priority:** WYSOKI
-  - **Coverage target:** 100%
-  - **Functions to test:**
-    - `profileDtoToFormValues()` - DTO → ViewModel
-    - `emptyProfileFormValues()` - empty state
-    - `formValuesToCreateCommand()` - create command
-    - `formValuesToUpdateCommand()` - update command (changed fields only)
-    - `normalizeStringArray()` - normalization
-    - `hasAtLeastOneField()` - validation
-    - `isFormDirty()` - dirty checking
-  - **Commit message:** `test: add profile mapper tests (28 tests)`
+*All Milestone 1 tasks completed!*
 
 ---
 
