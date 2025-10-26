@@ -11,9 +11,9 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       3/52 (6%)
+Completed:       4/52 (8%)
 In Progress:     0/52
-Remaining:       49/52
+Remaining:       48/52
 ```
 
 **Current Milestone:** MILESTONE 1 - Fundamenty
@@ -24,7 +24,7 @@ Remaining:       49/52
 
 **Target:** 6 plików testowych | ~120 testów | 2-3 dni
 
-### ✅ Completed (3/6)
+### ✅ Completed (4/6)
 
 - [x] `tests/unit/utils.test.ts`
   - **Tests:** 6
@@ -42,24 +42,16 @@ Remaining:       49/52
   - **Commit:** ✅ Ready to commit
   - **Note:** Fixed bug in cursor.ts (split → lastIndexOf)
 
+- [x] **TASK 2:** `tests/unit/auth/validation.test.ts`
+  - **Tests:** 32
+  - **Coverage:** 100% (validateEmail, validatePassword, validateAuthForm, hasErrors, normalizeEmail)
+  - **Commit:** ✅ Ready to commit
+
 ### 🚧 In Progress (0/6)
 
 *No tasks in progress*
 
-### ⏭️ To Do (3/6)
-
-- [ ] **TASK 2:** `tests/unit/auth/validation.test.ts`
-  - **Source:** `src/lib/auth/validation.ts`
-  - **Estimated tests:** 20-25
-  - **Priority:** KRYTYCZNY
-  - **Coverage target:** 100%
-  - **Functions to test:**
-    - `validateEmail()` - valid/invalid formats, length, trimming
-    - `validatePassword()` - strength, length, whitespace
-    - `validateAuthForm()` - complete form validation
-    - `hasErrors()` - error checking
-    - `normalizeEmail()` - normalization
-  - **Commit message:** `test: add auth validation tests (22 tests)`
+### ⏭️ To Do (2/6)
 
 - [ ] **TASK 3:** `tests/unit/schemas/common.test.ts`
   - **Source:** `src/lib/schemas/common.schema.ts`
