@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       15/52 (29%)
+Completed:       16/52 (31%)
 In Progress:     0/52
-Remaining:       37/52
+Remaining:       36/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (7/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (8/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       37/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (7/11)
+### ✅ Completed (8/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -116,13 +116,12 @@ Remaining:       37/52
   - **Coverage:** 100% (Skeleton component with div element, data-slot, className, aria attributes)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (2/11 remaining)
+- [x] **TASK 14:** `tests/unit/components/ui/tabs.test.tsx`
+  - **Tests:** 14
+  - **Coverage:** 100% (Tabs, TabsList, TabsTrigger, TabsContent with data-slot, className, disabled, composition)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 14:** `tests/unit/components/ui/tabs.test.tsx`
-  - **Source:** `src/components/ui/tabs.tsx`
-  - **Estimated tests:** 6-8
-  - **Coverage target:** 85%
-  - **Commit message:** `test: add Tabs component tests (7 tests)`
+### ⏭️ UI Components (1/11 remaining)
 
 - [ ] **TASK 15:** `tests/unit/components/ui/tooltip.test.tsx`
   - **Source:** `src/components/ui/tooltip.tsx`
