@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       17/52 (33%)
+Completed:       18/52 (35%)
 In Progress:     0/52
-Remaining:       35/52
+Remaining:       34/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (9/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (10/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       35/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (9/11)
+### ✅ Completed (10/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -129,13 +129,12 @@ Remaining:       35/52
 
 ### ⏭️ UI Components (0/11 remaining) ✅ ALL UI COMPONENTS COMPLETE!
 
-### ⏭️ Custom Hooks (2/11)
+### ✅ Custom Hooks (1/2)
 
-- [ ] **TASK 16:** `tests/unit/hooks/useUrlFilters.test.ts`
-  - **Source:** `src/lib/hooks/useUrlFilters.ts`
-  - **Estimated tests:** 10-12
-  - **Coverage target:** 90%
-  - **Commit message:** `test: add useUrlFilters hook tests (11 tests)`
+- [x] **TASK 16:** `tests/unit/hooks/useUrlFilters.test.ts`
+  - **Tests:** 20
+  - **Coverage:** 100% (parseFiltersFromUrl, filtersToSearchParams, useUrlFilters with initialization, setFilters, popstate)
+  - **Commit:** ✅ Ready to commit
 
 - [ ] **TASK 17:** `tests/unit/hooks/useScrollRestoration.test.ts`
   - **Source:** `src/lib/hooks/useScrollRestoration.ts`
