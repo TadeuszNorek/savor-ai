@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       10/52 (19%)
+Completed:       11/52 (21%)
 In Progress:     0/52
-Remaining:       42/52
+Remaining:       41/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (2/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (3/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       42/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (2/11)
+### ✅ Completed (3/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -91,13 +91,12 @@ Remaining:       42/52
   - **Coverage:** 100% (Label component with htmlFor and children)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (7/11 remaining)
+- [x] **TASK 9:** `tests/unit/components/ui/card.test.tsx`
+  - **Tests:** 22
+  - **Coverage:** 100% (All Card components: Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 9:** `tests/unit/components/ui/card.test.tsx`
-  - **Source:** `src/components/ui/card.tsx`
-  - **Estimated tests:** 5-6
-  - **Coverage target:** 90%
-  - **Commit message:** `test: add Card component tests (5 tests)`
+### ⏭️ UI Components (6/11 remaining)
 
 - [ ] **TASK 10:** `tests/unit/components/ui/badge.test.tsx`
   - **Source:** `src/components/ui/badge.tsx`
