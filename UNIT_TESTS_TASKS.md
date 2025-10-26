@@ -11,9 +11,9 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       4/52 (8%)
+Completed:       5/52 (10%)
 In Progress:     0/52
-Remaining:       48/52
+Remaining:       47/52
 ```
 
 **Current Milestone:** MILESTONE 1 - Fundamenty
@@ -24,7 +24,7 @@ Remaining:       48/52
 
 **Target:** 6 plików testowych | ~120 testów | 2-3 dni
 
-### ✅ Completed (4/6)
+### ✅ Completed (5/6)
 
 - [x] `tests/unit/utils.test.ts`
   - **Tests:** 6
@@ -47,21 +47,16 @@ Remaining:       48/52
   - **Coverage:** 100% (validateEmail, validatePassword, validateAuthForm, hasErrors, normalizeEmail)
   - **Commit:** ✅ Ready to commit
 
+- [x] **TASK 3:** `tests/unit/schemas/common.test.ts`
+  - **Tests:** 10
+  - **Coverage:** 100% (UuidSchema, validateUuid)
+  - **Commit:** ✅ Ready to commit
+
 ### 🚧 In Progress (0/6)
 
 *No tasks in progress*
 
-### ⏭️ To Do (2/6)
-
-- [ ] **TASK 3:** `tests/unit/schemas/common.test.ts`
-  - **Source:** `src/lib/schemas/common.schema.ts`
-  - **Estimated tests:** 5-8
-  - **Priority:** KRYTYCZNY
-  - **Coverage target:** 100%
-  - **Functions to test:**
-    - `UuidSchema` - valid/invalid UUIDs
-    - `validateUuid()` - success/error cases
-  - **Commit message:** `test: add common schema validation tests (5 tests)`
+### ⏭️ To Do (1/6)
 
 - [ ] **TASK 4:** `tests/unit/schemas/recipe.test.ts`
   - **Source:** `src/lib/schemas/recipe.schema.ts`
