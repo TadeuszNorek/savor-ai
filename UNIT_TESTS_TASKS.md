@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       16/52 (31%)
+Completed:       17/52 (33%)
 In Progress:     0/52
-Remaining:       36/52
+Remaining:       35/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (8/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (9/11 completed)
 
 ---
 
@@ -79,7 +79,7 @@ Remaining:       36/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (8/11)
+### ✅ Completed (9/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
@@ -121,13 +121,13 @@ Remaining:       36/52
   - **Coverage:** 100% (Tabs, TabsList, TabsTrigger, TabsContent with data-slot, className, disabled, composition)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (1/11 remaining)
+- [x] **TASK 15:** `tests/unit/components/ui/tooltip.test.tsx`
+  - **Tests:** 6
+  - **Coverage:** 95% (TooltipTrigger, TooltipContent with data-slot, className, composition)
+  - **Commit:** ✅ Ready to commit
+  - **Note:** Added ResizeObserver mock to setup.ts for Radix UI support
 
-- [ ] **TASK 15:** `tests/unit/components/ui/tooltip.test.tsx`
-  - **Source:** `src/components/ui/tooltip.tsx`
-  - **Estimated tests:** 4-5
-  - **Coverage target:** 85%
-  - **Commit message:** `test: add Tooltip component tests (4 tests)`
+### ⏭️ UI Components (0/11 remaining) ✅ ALL UI COMPONENTS COMPLETE!
 
 ### ⏭️ Custom Hooks (2/11)
 
