@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       9/52 (17%)
+Completed:       10/52 (19%)
 In Progress:     0/52
-Remaining:       43/52
+Remaining:       42/52
 ```
 
-**Current Milestone:** MILESTONE 2 - UI & Hooks (1/11 completed)
+**Current Milestone:** MILESTONE 2 - UI & Hooks (2/11 completed)
 
 ---
 
@@ -79,20 +79,19 @@ Remaining:       43/52
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
 
-### ✅ Completed (1/11)
+### ✅ Completed (2/11)
 
 - [x] **TASK 7:** `tests/unit/components/ui/input.test.tsx`
   - **Tests:** 9
   - **Coverage:** 100% (Input component with various types and attributes)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ UI Components (8/11 remaining)
+- [x] **TASK 8:** `tests/unit/components/ui/label.test.tsx`
+  - **Tests:** 5
+  - **Coverage:** 100% (Label component with htmlFor and children)
+  - **Commit:** ✅ Ready to commit
 
-- [ ] **TASK 8:** `tests/unit/components/ui/label.test.tsx`
-  - **Source:** `src/components/ui/label.tsx`
-  - **Estimated tests:** 3-4
-  - **Coverage target:** 95%
-  - **Commit message:** `test: add Label component tests (3 tests)`
+### ⏭️ UI Components (7/11 remaining)
 
 - [ ] **TASK 9:** `tests/unit/components/ui/card.test.tsx`
   - **Source:** `src/components/ui/card.tsx`
