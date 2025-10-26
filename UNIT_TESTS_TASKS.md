@@ -11,12 +11,12 @@ Każdy checkbox = jeden plik testowy do zaimplementowania.
 
 ```
 Total Tasks:     52 plików testowych
-Completed:       21/52 (40%)
+Completed:       22/52 (42%)
 In Progress:     0/52
-Remaining:       31/52
+Remaining:       30/52
 ```
 
-**Current Milestone:** MILESTONE 3 - Auth (2/5 completed)
+**Current Milestone:** MILESTONE 3 - Auth (3/5 completed)
 
 ---
 
@@ -149,7 +149,7 @@ Remaining:       31/52
 
 **Target:** 5 plików testowych | ~45 testów | 1-2 dni
 
-### ✅ Completed (2/5)
+### ✅ Completed (3/5)
 
 - [x] **TASK 18:** `tests/unit/components/auth/EmailInput.test.tsx`
   - **Tests:** 12
@@ -161,13 +161,13 @@ Remaining:       31/52
   - **Coverage:** 100% (render, custom label, show/hide toggle, value, onChange, onBlur, error display, aria attributes, disabled state, ref forwarding, button aria-label)
   - **Commit:** ✅ Ready to commit
 
-### ⏭️ Auth Components (1/5 remaining)
+- [x] **TASK 20:** `tests/unit/components/auth/AuthForm.test.tsx`
+  - **Tests:** 21
+  - **Coverage:** 90% (login/register modes, mode switching, form inputs, validation on blur, error clearing, submit button disabled, accessibility)
+  - **Commit:** ✅ Ready to commit
+  - **Note:** Mocked Supabase client for unit tests
 
-- [ ] **TASK 20:** `tests/unit/components/auth/AuthForm.test.tsx`
-  - **Source:** `src/components/auth/AuthForm.tsx`
-  - **Estimated tests:** 12-15
-  - **Coverage target:** 85%
-  - **Commit message:** `test: add AuthForm component tests (13 tests)`
+### ⏭️ Auth Components (0/5 remaining) ✅ ALL AUTH COMPONENTS COMPLETE!
 
 ### ⏭️ Auth Logic (2/5)
 
