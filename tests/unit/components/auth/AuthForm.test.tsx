@@ -233,6 +233,433 @@ describe('AuthForm component', () => {
     });
   });
 
+  describe('Form submission', () => {
+    // Mock window.location.href
+    const originalLocation = window.location;
+
+    beforeEach(() => {
+      // @ts-ignore
+      delete window.location;
+      window.location = { ...originalLocation, href: '' };
+    });
+
+    afterEach(() => {
+      window.location = originalLocation;
+    });
+
+    describe('Successful login', () => {
+      it('should call signInWithPassword with normalized email and password', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '123', email: 'test@example.com' } };
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: mockSession },
+          error: null,
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'Test@Example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(supabaseClient.auth.signInWithPassword).toHaveBeenCalledWith({
+            email: 'test@example.com',
+            password: 'password123',
+          });
+        });
+      });
+
+      it('should redirect to /app on successful login', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '123', email: 'test@example.com' } };
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: mockSession },
+          error: null,
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(window.location.href).toBe('/app');
+        }, { timeout: 3000 });
+      });
+
+      it('should send telemetry event on successful login', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '123', email: 'test@example.com' } };
+        const { sendSessionStartEvent } = await import('@/lib/auth/telemetry');
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: mockSession },
+          error: null,
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(sendSessionStartEvent).toHaveBeenCalled();
+        }, { timeout: 3000 });
+      });
+    });
+
+    describe('Successful registration', () => {
+      it('should call signUp with normalized email and password', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '456', email: 'new@example.com' } };
+
+        vi.mocked(supabaseClient.auth.signUp).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: mockSession },
+          error: null,
+        } as any);
+
+        render(<AuthForm initialMode="register" />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/password \(min\. 8 characters\)/i);
+        const submitButton = screen.getByRole('button', { name: /create account/i });
+
+        await user.type(emailInput, 'NEW@EXAMPLE.COM');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(supabaseClient.auth.signUp).toHaveBeenCalledWith({
+            email: 'new@example.com',
+            password: 'password123',
+          });
+        });
+      });
+
+      it('should redirect to /app on successful registration', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '456', email: 'new@example.com' } };
+
+        vi.mocked(supabaseClient.auth.signUp).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: mockSession },
+          error: null,
+        } as any);
+
+        render(<AuthForm initialMode="register" />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/password \(min\. 8 characters\)/i);
+        const submitButton = screen.getByRole('button', { name: /create account/i });
+
+        await user.type(emailInput, 'new@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(window.location.href).toBe('/app');
+        }, { timeout: 3000 });
+      });
+    });
+
+    describe('Login errors', () => {
+      it('should show error for invalid credentials', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: null, session: null },
+          error: { message: 'Invalid login credentials', name: 'AuthError', status: 400 },
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'wrongpassword');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/invalid email or password/i)).toBeInTheDocument();
+        });
+      });
+
+      it('should show error for unconfirmed email', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: null, session: null },
+          error: { message: 'Email not confirmed', name: 'AuthError', status: 400 },
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/please verify your email address/i)).toBeInTheDocument();
+        });
+      });
+
+      it('should show error for rate limiting', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: null, session: null },
+          error: { message: 'Too many requests, rate limit exceeded', name: 'AuthError', status: 429 },
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/too many attempts/i)).toBeInTheDocument();
+        });
+      });
+
+      it('should show generic error for other login failures', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: null, session: null },
+          error: { message: 'Something went wrong', name: 'AuthError', status: 500 },
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/login failed/i)).toBeInTheDocument();
+        });
+      });
+    });
+
+    describe('Registration errors', () => {
+      it('should show error message on registration failure', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signUp).mockResolvedValueOnce({
+          data: { user: null, session: null },
+          error: { message: 'User already registered', name: 'AuthError', status: 400 },
+        } as any);
+
+        render(<AuthForm initialMode="register" />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/password \(min\. 8 characters\)/i);
+        const submitButton = screen.getByRole('button', { name: /create account/i });
+
+        await user.type(emailInput, 'existing@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/user already registered/i)).toBeInTheDocument();
+        });
+      });
+    });
+
+    describe('Session verification errors', () => {
+      it('should show error when session is not available after login', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '123', email: 'test@example.com' } };
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        // Session check returns null
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: null },
+          error: null,
+        } as any);
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/session error/i)).toBeInTheDocument();
+        }, { timeout: 3000 });
+      });
+
+      it('should show error when session is not available after registration', async () => {
+        const user = userEvent.setup({ delay: null });
+        const mockSession = { user: { id: '456', email: 'new@example.com' } };
+
+        vi.mocked(supabaseClient.auth.signUp).mockResolvedValueOnce({
+          data: { user: mockSession.user, session: mockSession },
+          error: null,
+        } as any);
+
+        // Session check returns null
+        vi.mocked(supabaseClient.auth.getSession).mockResolvedValueOnce({
+          data: { session: null },
+          error: null,
+        } as any);
+
+        render(<AuthForm initialMode="register" />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/password \(min\. 8 characters\)/i);
+        const submitButton = screen.getByRole('button', { name: /create account/i });
+
+        await user.type(emailInput, 'new@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/session error/i)).toBeInTheDocument();
+        }, { timeout: 3000 });
+      });
+    });
+
+    describe('Network errors', () => {
+      it('should show network error on exception during login', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockRejectedValueOnce(
+          new Error('Network request failed')
+        );
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/network error/i)).toBeInTheDocument();
+        }, { timeout: 3000 });
+      });
+
+      it('should show network error on exception during registration', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        vi.mocked(supabaseClient.auth.signUp).mockRejectedValueOnce(
+          new Error('Network request failed')
+        );
+
+        render(<AuthForm initialMode="register" />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/password \(min\. 8 characters\)/i);
+        const submitButton = screen.getByRole('button', { name: /create account/i });
+
+        await user.type(emailInput, 'new@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(/network error/i)).toBeInTheDocument();
+        }, { timeout: 3000 });
+      });
+    });
+
+    describe('Loading state', () => {
+      it('should disable submit button during submission', async () => {
+        const user = userEvent.setup({ delay: null });
+
+        // Mock slow response
+        vi.mocked(supabaseClient.auth.signInWithPassword).mockImplementationOnce(() =>
+          new Promise((resolve) => setTimeout(() => resolve({
+            data: { user: null, session: null },
+            error: { message: 'Error', name: 'AuthError', status: 400 },
+          } as any), 1000))
+        );
+
+        render(<AuthForm />);
+
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/^password$/i);
+        const submitButton = screen.getByRole('button', { name: /sign in/i });
+
+        await user.type(emailInput, 'test@example.com');
+        await user.type(passwordInput, 'password123');
+        await user.click(submitButton);
+
+        // Button should be disabled during submission
+        await waitFor(() => {
+          expect(submitButton).toBeDisabled();
+        });
+      });
+    });
+  });
+
   describe('Accessibility', () => {
     it('should have form with aria-label', () => {
       render(<AuthForm />);

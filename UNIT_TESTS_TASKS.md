@@ -16,7 +16,45 @@ In Progress:     0/52
 Remaining:       29/52
 ```
 
-**Current Milestone:** ✅ MILESTONE 3 - Auth COMPLETE! (5/5 completed, 71 tests)
+**Current Milestone:** ✅ MILESTONE 3 - Auth COMPLETE! (5/5 completed, 86 tests)
+**Overall Coverage:** 🎯 **90.7%** (Target 80% ✅ EXCEEDED!)
+
+---
+
+## 📈 Coverage Summary (Latest Run - After AuthForm Expansion)
+
+**Overall Coverage:** 🎉 **90.70% lines | 90.35% branches | 86.44% functions | 90.74% statements**
+
+**✅ TARGET 80% EXCEEDED!** - Reached **90.7%** coverage (+15.78% improvement)
+
+### 🎯 Major Improvements
+
+| File | Before | After | Change |
+|------|--------|-------|--------|
+| **AuthForm.tsx** | 36.63% | **92.22%** | **+55.59%** ✅ |
+| **Overall Lines** | 74.92% | **90.70%** | **+15.78%** ✅ |
+| **Overall Statements** | 75.39% | **90.74%** | **+15.35%** ✅ |
+| **Overall Branches** | 80.70% | **90.35%** | **+9.65%** ✅ |
+
+### 🟡 Remaining Coverage Gaps (Optional)
+
+| File | Coverage | Missing Lines | Impact |
+|------|----------|---------------|--------|
+| **AuthForm.tsx** | 92.22% | 67, 99-106 | ✅ MINOR - focus on error field edge case |
+| **select.tsx** | 36.36% | 60-162 | 🟡 LOW - Radix UI internals, complex to test |
+| **useScrollRestoration.ts** | 44% | 20-26, 39-51 | 🟡 LOW - scroll position logic |
+| **cursor.ts** | 95.65% | 64 | ✅ MINOR - 1 error path |
+| **useUrlFilters.ts** | 93.1% | 124-126 | ✅ MINOR - error handling |
+| **alert.tsx** | 75% | 38 | ✅ MINOR - not used yet |
+
+### 📊 Files with 100% Coverage (16 files)
+
+✅ **Auth:** EmailInput, PasswordInput, auth API, validation, useAuth
+✅ **UI:** Badge, Button, Card, Input, Label, Skeleton, Tabs, Textarea, Tooltip
+✅ **Data:** All schemas (common, profile, recipe), profile mapper, utils
+
+**Summary:** 16 out of 25 tested files have 100% coverage (64%)
+**Total Tests:** 380 passed
 
 ---
 
@@ -30,13 +68,14 @@ Remaining:       29/52
 ## 🎯 MILESTONE 1: Fundamenty (KRYTYCZNY) ✅ COMPLETE!
 
 **Target:** 6 plików testowych (TASK 1-6) | ~120 testów | 2-3 dni
-**Actual:** 6 plików | 160 testów | 100% coverage
+**Actual:** 6 plików | 160 testów | 98% avg coverage
+**Coverage gaps:** cursor.ts (95.65% - 1 uncovered line)
 
 ### ✅ Completed (6/6) 🎉
 
 - [x] **TASK 1:** `tests/unit/utils/cursor.test.ts`
   - **Tests:** 24
-  - **Coverage:** 100% (encodeCursor, decodeCursor, isValidCursor)
+  - **Coverage:** 95.65% (encodeCursor, decodeCursor, isValidCursor) - Missing: error path line 64
   - **Commit:** ✅ Ready to commit
   - **Note:** Fixed bug in cursor.ts (split → lastIndexOf)
 
@@ -78,7 +117,8 @@ Remaining:       29/52
 ## 🎯 MILESTONE 2: UI & Hooks (WYSOKI) ✅ COMPLETE!
 
 **Target:** 11 plików testowych | ~65 testów | 2-3 dni
-**Actual:** 11 plików | 118 testów | 100% complete
+**Actual:** 11 plików | 118 testów | 88% avg coverage
+**Coverage gaps:** select.tsx (36.36%), useScrollRestoration.ts (44%), useUrlFilters.ts (93.1%)
 
 ### ✅ Completed (11/11) 🎉
 
@@ -104,8 +144,9 @@ Remaining:       29/52
 
 - [x] **TASK 11:** `tests/unit/components/ui/select.test.tsx`
   - **Tests:** 9
-  - **Coverage:** 90% (Select, SelectTrigger, SelectValue with sizes and disabled state)
+  - **Coverage:** 36.36% (Select, SelectTrigger, SelectValue with sizes and disabled state) ⚠️
   - **Commit:** ✅ Ready to commit
+  - **Note:** Missing: SelectContent, SelectItem, SelectGroup - complex Radix UI internals (lines 60-162)
 
 - [x] **TASK 12:** `tests/unit/components/ui/textarea.test.tsx`
   - **Tests:** 9
@@ -124,7 +165,7 @@ Remaining:       29/52
 
 - [x] **TASK 15:** `tests/unit/components/ui/tooltip.test.tsx`
   - **Tests:** 6
-  - **Coverage:** 95% (TooltipTrigger, TooltipContent with data-slot, className, composition)
+  - **Coverage:** 100% (TooltipTrigger, TooltipContent with data-slot, className, composition)
   - **Commit:** ✅ Ready to commit
   - **Note:** Added ResizeObserver mock to setup.ts for Radix UI support
 
@@ -134,20 +175,24 @@ Remaining:       29/52
 
 - [x] **TASK 16:** `tests/unit/hooks/useUrlFilters.test.ts`
   - **Tests:** 20
-  - **Coverage:** 100% (parseFiltersFromUrl, filtersToSearchParams, useUrlFilters with initialization, setFilters, popstate)
+  - **Coverage:** 93.1% (parseFiltersFromUrl, filtersToSearchParams, useUrlFilters with initialization, setFilters, popstate)
   - **Commit:** ✅ Ready to commit
+  - **Note:** Missing: error paths in setFilters (lines 124-126)
 
 - [x] **TASK 17:** `tests/unit/hooks/useScrollRestoration.test.ts`
   - **Tests:** 7
-  - **Coverage:** 85% (ref creation, consistency, error handling, unmount)
+  - **Coverage:** 44% (ref creation, consistency, error handling, unmount) ⚠️
   - **Commit:** ✅ Ready to commit
-  - **Note:** Simplified tests to focus on public API and error handling
+  - **Note:** Missing: scroll position save/restore logic (lines 20-26, 39-51)
 
 ---
 
-## 🎯 MILESTONE 3: Auth (KRYTYCZNY)
+## 🎯 MILESTONE 3: Auth (KRYTYCZNY) ✅ COMPLETE!
 
 **Target:** 5 plików testowych | ~45 testów | 1-2 dni
+**Actual:** 5 plików | **86 testów** | **96% avg coverage** 🎉
+**Coverage:** AuthForm.tsx (92.22%), EmailInput (100%), PasswordInput (100%), api.ts (100%), useAuth.ts (100%)
+**Major Achievement:** AuthForm coverage improved from 36.63% to 92.22% (+55.59%)
 
 ### ✅ Completed (5/5) - ✅ MILESTONE 3 COMPLETE!
 
@@ -162,10 +207,11 @@ Remaining:       29/52
   - **Commit:** ✅ Ready to commit
 
 - [x] **TASK 20:** `tests/unit/components/auth/AuthForm.test.tsx`
-  - **Tests:** 21
-  - **Coverage:** 90% (login/register modes, mode switching, form inputs, validation on blur, error clearing, submit button disabled, accessibility)
+  - **Tests:** 36 (was 21, added 15 submit flow tests)
+  - **Coverage:** 92.22% (login/register modes, mode switching, form inputs, validation, submit flow, error handling, redirects, telemetry) ✅
   - **Commit:** ✅ Ready to commit
-  - **Note:** Mocked Supabase client for unit tests
+  - **Note:** Mocked Supabase client, window.location for redirects
+  - **Added:** Submit flow tests (successful login/register, error handling for invalid credentials/unconfirmed email/rate limiting, session verification errors, network errors, loading state)
 
 - [x] **TASK 21:** `tests/unit/auth/api.test.ts`
   - **Tests:** 12
@@ -175,12 +221,26 @@ Remaining:       29/52
 
 - [x] **TASK 22:** `tests/unit/hooks/useAuth.test.ts`
   - **Tests:** 9
-  - **Coverage:** 90% (initial state, session loading, auth state changes, subscription cleanup, telemetry on cold start, error handling)
+  - **Coverage:** 100% (initial state, session loading, auth state changes, subscription cleanup, telemetry on cold start, error handling)
   - **Commit:** ✅ Ready to commit
   - **Note:** Mocked Supabase client and telemetry
 
 ### ⏭️ Auth Components ✅ ALL COMPLETE!
 ### ⏭️ Auth Logic ✅ ALL COMPLETE!
+
+---
+
+## 🎯 Next Steps
+
+**Status:** ✅ **Coverage target exceeded** (90.7% vs target 80%)
+
+All CRITICAL priority tests complete with excellent coverage. Options:
+
+1. **Continue with MILESTONE 4** (MEDIUM priority) - API clients & components (18 tasks, ~120 tests)
+2. **Stop here** - 90.7% coverage is excellent, remaining gaps are low impact
+3. **Optional improvements** - Fix minor gaps (select.tsx, useScrollRestoration) for even higher coverage
+
+Recommendation: Milestone 4 can wait. Current coverage is production-ready.
 
 ---
 
