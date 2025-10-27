@@ -1,4 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Read environment variables from .env.test
+dotenv.config({ path: path.resolve(process.cwd(), '.env.test') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -38,6 +43,22 @@ export default defineConfig({
 
     /* Capture video on failure */
     video: 'retain-on-failure',
+
+    /* Browser contexts for test isolation */
+    contextOptions: {
+      // Strict mode for better error messages
+      strictSelectors: true,
+    },
+  },
+
+  /* Visual regression testing configuration */
+  expect: {
+    toHaveScreenshot: {
+      // Maximum pixel ratio difference allowed
+      maxDiffPixelRatio: 0.01,
+      // Update snapshots on first run
+      // updateSnapshots: process.env.UPDATE_SNAPSHOTS === 'true' ? 'all' : 'missing',
+    },
   },
 
   /* Configure projects for Chromium only */

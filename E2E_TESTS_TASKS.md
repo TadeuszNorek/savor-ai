@@ -17,63 +17,82 @@ In Progress:     0/12
 Remaining:       11/12
 ```
 
-**Current Phase:** Setup (nie rozpoczęte)
+**Current Phase:** Setup ✅ COMPLETE
 **Framework:** Playwright (Chromium only)
 **Pattern:** Page Object Model
 
 ---
 
-## 🔧 SETUP PHASE: Przygotowanie (Przed testami)
+## 🔧 SETUP PHASE: Przygotowanie ✅ COMPLETE
 
-**Estimated time:** 1 dzień
+**Estimated time:** 1 dzień | **Actual time:** 1 session
 
-### ✅ Completed (0/4)
+### ✅ Completed (4/4)
 
-*No setup tasks completed*
-
-### 🚧 In Progress (0/4)
-
-*No setup tasks in progress*
-
-### ⏭️ To Do (4/4)
-
-- [ ] **SETUP-1:** `e2e/pages/base.page.ts`
+- [x] **SETUP-1:** `e2e/pages/base.page.ts` ✅
   - **Purpose:** Base Page Object Model class
   - **Priority:** KRYTYCZNY
   - **Features:**
-    - Common navigation methods
-    - Wait helpers
-    - Error handling
-    - Screenshot utilities
+    - ✅ Common navigation methods (goto, waitForNavigation, goBack)
+    - ✅ Wait helpers (waitForElement, waitForLoadState, waitForResponse)
+    - ✅ Error handling (getErrorMessage, getSuccessMessage)
+    - ✅ Screenshot utilities (takeScreenshot)
+    - ✅ Locator helpers (getByTestId, getByRole, getByLabel, getByText)
+    - ✅ API wait helpers (waitForRequest, waitForResponse)
   - **Commit:** `test(e2e): add base Page Object Model`
 
-- [ ] **SETUP-2:** `e2e/helpers/auth.helpers.ts`
+- [x] **SETUP-2:** `e2e/helpers/auth.helpers.ts` ✅
   - **Purpose:** Authentication utilities
   - **Priority:** KRYTYCZNY
   - **Features:**
-    - `loginAsUser(page, credentials)`
-    - `createTestUser()`
-    - `logoutUser(page)`
-    - `getAuthToken()`
+    - ✅ `loginAsUser(page, credentials)` - Login via UI
+    - ✅ `loginViaAPI(page, credentials)` - Fast API login
+    - ✅ `createTestUser(userData)` - Create test users in DB
+    - ✅ `deleteTestUser(userId)` - Delete test users
+    - ✅ `logoutUser(page)` - Logout functionality
+    - ✅ `getAuthToken(page)` - Extract auth token
+    - ✅ `saveAuthState(page, path)` - Save session state
+    - ✅ `isAuthenticated(page)` - Check auth status
+    - ✅ `waitForAuth(page)` - Wait for auth completion
   - **Commit:** `test(e2e): add auth helper utilities`
 
-- [ ] **SETUP-3:** `e2e/helpers/cleanup.helpers.ts`
+- [x] **SETUP-3:** `e2e/helpers/cleanup.helpers.ts` ✅
   - **Purpose:** Data cleanup utilities
   - **Priority:** WYSOKI
   - **Features:**
-    - `deleteTestRecipes(userId)`
-    - `deleteTestUser(userId)`
-    - `resetTestData()`
+    - ✅ `deleteTestRecipes(userId)` - Delete user recipes
+    - ✅ `deleteTestRecipe(recipeId)` - Delete single recipe
+    - ✅ `deleteTestEvents(userId)` - Delete telemetry events
+    - ✅ `deleteTestProfile(userId)` - Delete user profile
+    - ✅ `deleteTestUser(userId)` - Delete user + all data
+    - ✅ `deleteTestUsers(userIds)` - Bulk delete
+    - ✅ `cleanupUserData(userId)` - Clean data, keep user
+    - ✅ `resetTestData()` - Reset all test data
+    - ✅ `createTestRecipe(userId, data)` - Create test recipes
+    - ✅ `createTestProfile(userId, data)` - Create test profile
+    - ✅ `countUserRecipes(userId)` - Count recipes
+    - ✅ `getUserRecipes(userId)` - Get all recipes
   - **Commit:** `test(e2e): add cleanup helper utilities`
 
-- [ ] **SETUP-4:** `e2e/fixtures/test-users.ts`
+- [x] **SETUP-4:** `e2e/fixtures/test-users.ts` ✅
   - **Purpose:** Test user credentials
   - **Priority:** WYSOKI
   - **Features:**
-    - Test user accounts
-    - User roles/states
-    - Credential management
+    - ✅ Test user accounts (PRIMARY, SECONDARY, WITH_PROFILE, WITH_RECIPES)
+    - ✅ User roles/states (newUser, activeUser, userWithData)
+    - ✅ Credential management (ALL_TEST_USERS, INVALID_CREDENTIALS)
+    - ✅ Helper functions (getUniqueTestEmail, generateTestUser, isTestUserEmail)
+    - ✅ Signup test user template
+    - ✅ Password reset user template
   - **Commit:** `test(e2e): add test user fixtures`
+
+### 🚧 In Progress (0/4)
+
+*All setup tasks completed*
+
+### ⏭️ To Do (0/4)
+
+*All setup tasks completed*
 
 ---
 
@@ -393,13 +412,13 @@ Remaining:       11/12
 
 ## 📋 Page Object Models Checklist
 
-### ✅ Completed (1/10)
+### ✅ Completed (2/10)
 - [x] `e2e/pages/login.page.ts` ✅
+- [x] `e2e/pages/base.page.ts` ✅
 
-### ⏭️ To Create (9/10)
+### ⏭️ To Create (8/10)
 
 **Priority 1 - KRYTYCZNY:**
-- [ ] `e2e/pages/base.page.ts` - Base POM class
 - [ ] `e2e/pages/app.page.ts` - Main app page
 - [ ] `e2e/pages/signup.page.ts` - Signup form
 
@@ -417,15 +436,15 @@ Remaining:       11/12
 
 ## 🔧 Helpers & Fixtures Checklist
 
-### ✅ Completed (1/5)
+### ✅ Completed (4/5)
 - [x] `e2e/fixtures/test-data.ts` ✅
+- [x] `e2e/helpers/auth.helpers.ts` ✅
+- [x] `e2e/helpers/cleanup.helpers.ts` ✅
+- [x] `e2e/fixtures/test-users.ts` ✅
 
-### ⏭️ To Create (4/5)
+### ⏭️ To Create (1/5)
 
-- [ ] `e2e/helpers/auth.helpers.ts` - Auth utilities
-- [ ] `e2e/helpers/cleanup.helpers.ts` - Data cleanup
-- [ ] `e2e/helpers/recipe.helpers.ts` - Recipe utilities
-- [ ] `e2e/fixtures/test-users.ts` - User credentials
+- [ ] `e2e/helpers/recipe.helpers.ts` - Recipe utilities (optional, can be added later)
 
 ---
 
