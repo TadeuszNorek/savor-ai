@@ -14,8 +14,8 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByLabel(/email/i);
-    this.passwordInput = page.getByLabel(/password/i);
+    this.emailInput = page.getByRole('textbox', { name: /email/i });
+    this.passwordInput = page.locator('input#password');
     this.signInButton = page.getByRole('button', { name: /sign in/i });
     this.signUpButton = page.getByRole('button', { name: /sign up/i });
     this.forgotPasswordLink = page.getByRole('link', {
@@ -28,8 +28,19 @@ export class LoginPage {
   }
 
   async login(email: string, password: string) {
+    // Wait for form to be ready and hydrated
+    await this.page.waitForLoadState('networkidle');
+    await this.emailInput.waitFor({ state: 'visible' });
+    await this.passwordInput.waitFor({ state: 'visible' });
+
+    // Fill form fields - use click first to ensure focus
+    await this.emailInput.click();
     await this.emailInput.fill(email);
+
+    await this.passwordInput.click();
     await this.passwordInput.fill(password);
+
+    // Submit form
     await this.signInButton.click();
   }
 

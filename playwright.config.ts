@@ -33,7 +33,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.BASE_URL || 'http://localhost:4321',
+    baseURL: process.env.BASE_URL || 'http://localhost:3001',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -71,9 +71,14 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:4321',
-    reuseExistingServer: !process.env.CI,
+    command: 'npx dotenvx run --env-file=.env.test -- npm run dev',
+    url: 'http://localhost:3001',
+    reuseExistingServer: false, // Always restart to ensure .env.test is loaded
     timeout: 120000,
+    stdout: 'pipe',
+    stderr: 'pipe',
+    env: {
+      PLAYWRIGHT_TEST: 'true', // Signal to astro.config that we're running tests
+    },
   },
 });
