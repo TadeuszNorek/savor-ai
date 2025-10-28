@@ -31,8 +31,11 @@ test-generate.js
 #planning documents
 .ai/
 
-# cursor-related files
-# .cursor/
+# ide & editor specific files
+.idea/
+.vscode/
+.cursor/
+.claude/
 
 # test coverage
 coverage/
