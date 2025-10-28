@@ -12,12 +12,12 @@
 
 ```
 Total Tasks:     12 plików .spec.ts
-Completed:       3/12 (25%)
+Completed:       4/12 (33%)
 In Progress:     0/12
-Remaining:       9/12
+Remaining:       8/12
 ```
 
-**Current Phase:** Auth (2/3 complete)
+**Current Phase:** Auth ✅ COMPLETE (3/3)
 **Framework:** Playwright (Chromium only)
 **Pattern:** Page Object Model
 
@@ -96,11 +96,11 @@ Remaining:       9/12
 
 ---
 
-## 🎯 JOURNEY 1: Authentication (KRYTYCZNY)
+## 🎯 JOURNEY 1: Authentication (KRYTYCZNY) ✅ COMPLETE
 
-**Estimated tests:** 26 | **Actual tests:** 14 (8 login + 6 signup) | **Estimated time:** 2-3 dni
+**Estimated tests:** 26 | **Actual tests:** 20 (8 login + 6 signup + 6 password-reset) | **Estimated time:** 2-3 dni
 
-### ✅ Completed (2/3)
+### ✅ Completed (3/3)
 
 - [x] **E2E-1:** `e2e/specs/auth/login.spec.ts` ✅
   - **Feature:** Login & Logout flow
@@ -146,26 +146,25 @@ Remaining:       9/12
   - **Notes:** 2 tests skipped due to Supabase email confirmation requirement. All form validation tests passing.
   - **Commit:** `test(e2e): add signup flow tests (6 tests)`
 
-### ⏭️ To Do (1/3)
-
-- [ ] **E2E-3:** `e2e/specs/auth/password-reset.spec.ts`
+- [x] **E2E-3:** `e2e/specs/auth/password-reset.spec.ts` ✅
   - **Feature:** Password reset flow
-  - **Estimated tests:** 6-8
+  - **Actual tests:** 6 active + 2 skipped (8 total)
   - **Priority:** WYSOKI
-  - **Prerequisites:** SETUP-1, SETUP-2
+  - **Prerequisites:** SETUP-1, SETUP-2 ✅
   - **Page Objects:**
-    - `ForgotPasswordPage` (need to create)
-    - `ResetPasswordPage` (need to create)
-  - **Test Cases:**
-    - Request password reset
-    - Success message after request
-    - Invalid email error
-    - Reset password with valid token
-    - Expired token error
-    - Login after successful reset
-    - Cancel reset and return to login
-    - Password strength validation
-  - **Commit:** `test(e2e): add password reset flow tests (8 tests)`
+    - `ForgotPasswordPage` ✅
+    - `ResetPasswordPage` ✅
+  - **Test Cases Implemented:**
+    - ✅ TEST 1: Request password reset success message
+    - ✅ TEST 2: Invalid email format error
+    - ✅ TEST 3: Empty email validation
+    - ✅ TEST 4: Back to login link
+    - ✅ TEST 5: Expired/invalid reset link error
+    - ✅ TEST 6: Request new link from expired page
+    - ⏭️ TEST 7: Password validation on reset form (skipped - requires email token)
+    - ⏭️ TEST 8: Successful password reset (skipped - requires email token)
+  - **Notes:** 2 tests skipped due to email verification requirement. All UI flow and validation tests passing.
+  - **Commit:** `test(e2e): add password reset flow tests (6 tests)`
 
 ---
 
@@ -410,21 +409,21 @@ Remaining:       9/12
 
 ## 📋 Page Object Models Checklist
 
-### ✅ Completed (4/10)
+### ✅ Completed (6/10)
 - [x] `e2e/pages/login.page.ts` ✅
 - [x] `e2e/pages/base.page.ts` ✅
 - [x] `e2e/pages/app.page.ts` ✅
 - [x] `e2e/pages/signup.page.ts` ✅
+- [x] `e2e/pages/forgot-password.page.ts` ✅
+- [x] `e2e/pages/reset-password.page.ts` ✅
 
-### ⏭️ To Create (6/10)
+### ⏭️ To Create (4/10)
 
 **Priority 1 - KRYTYCZNY:**
 
 **Priority 2 - WYSOKI:**
 - [ ] `e2e/pages/recipe-detail.page.ts` - Recipe details
 - [ ] `e2e/pages/profile.page.ts` - Profile management
-- [ ] `e2e/pages/forgot-password.page.ts` - Password reset request
-- [ ] `e2e/pages/reset-password.page.ts` - Password reset form
 
 **Priority 3 - ŚREDNI:**
 - [ ] `e2e/pages/components/header.page.ts` - Header component
@@ -495,14 +494,14 @@ Estimated time:                       2-3 dni
 Total Files:         13 spec files (includes example.spec.ts)
 Total Tests:         ~124 tests (reduced from 128)
 Total Time:          1.5-2 weeks
-Page Objects:        10 files (4 done)
+Page Objects:        10 files (6 done)
 Helpers/Fixtures:    5 files (4 done)
 Coverage:            All critical user journeys ✅
 
 ───────────────────────────────────────────────────────
-Current Progress:    3/13 files (23%)
-Current Tests:       19/124 tests (15%) [8 login + 6 signup + 5 example]
-Status:              🚀 In Progress (Auth phase - 2/3 complete)
+Current Progress:    4/13 files (31%)
+Current Tests:       25/124 tests (20%) [8 login + 6 signup + 6 password-reset + 5 example]
+Status:              🚀 Auth Complete! Moving to Recipe Generation
 ═══════════════════════════════════════════════════════
 ```
 
@@ -522,7 +521,7 @@ Status:              🚀 In Progress (Auth phase - 2/3 complete)
 ```
 ☑ E2E-1: login.spec.ts ✅
 ☑ E2E-2: signup.spec.ts ✅
-□ E2E-3: password-reset.spec.ts
+☑ E2E-3: password-reset.spec.ts ✅
 ```
 
 ### **Phase 3: Core Features** (4-5 dni)
@@ -622,6 +621,6 @@ test(e2e): add AppPage page object model
 
 **⚠️ REMEMBER: Complete UNIT_TESTS_TASKS.md first!**
 
-**Next E2E Task:** E2E-3 (password-reset.spec.ts)
+**Next E2E Task:** E2E-4 (recipe-generation.spec.ts)
 
 *Last updated: 2025-10-28*
