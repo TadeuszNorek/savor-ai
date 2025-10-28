@@ -34,7 +34,7 @@ test-generate.js
 # ide & editor specific files
 .idea/
 .vscode/
-.cursor/
+# .cursor/
 .claude/
 
 # test coverage
