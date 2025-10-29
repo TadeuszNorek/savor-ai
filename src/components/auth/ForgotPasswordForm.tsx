@@ -100,8 +100,8 @@ export function ForgotPasswordForm() {
           <Alert>
             <CheckCircle className="h-4 w-4" />
             <AlertDescription>
-              We've sent password reset instructions to <strong>{email}</strong>.
-              Please check your inbox and spam folder.
+              We've sent password reset instructions to <strong>{email}</strong>. Please check your inbox and spam
+              folder.
             </AlertDescription>
           </Alert>
 
@@ -157,10 +157,7 @@ export function ForgotPasswordForm() {
           <div className="text-center text-sm">
             <p>
               Remember your password?{" "}
-              <a
-                href="/login"
-                className="text-primary hover:underline font-medium"
-              >
+              <a href="/login" className="text-primary hover:underline font-medium">
                 Sign in
               </a>
             </p>

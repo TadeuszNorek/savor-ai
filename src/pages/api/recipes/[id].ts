@@ -33,17 +33,13 @@ export const GET: APIRoute = async ({ request, params, locals }) => {
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -129,17 +125,13 @@ export const DELETE: APIRoute = async ({ request, params, locals }) => {
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);

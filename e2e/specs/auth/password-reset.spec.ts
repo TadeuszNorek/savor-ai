@@ -1,8 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { ForgotPasswordPage } from '../../pages/forgot-password.page';
-import { ResetPasswordPage } from '../../pages/reset-password.page';
-import { LoginPage } from '../../pages/login.page';
-import { INVALID_CREDENTIALS, PRIMARY_TEST_USER } from '../../fixtures/test-users';
+import { test, expect } from "@playwright/test";
+import { ForgotPasswordPage } from "../../pages/forgot-password.page";
+import { ResetPasswordPage } from "../../pages/reset-password.page";
+import { INVALID_CREDENTIALS, PRIMARY_TEST_USER } from "../../fixtures/test-users";
 
 /**
  * E2E Tests for Password Reset Flow
@@ -13,24 +12,20 @@ import { INVALID_CREDENTIALS, PRIMARY_TEST_USER } from '../../fixtures/test-user
  * - Reset password with valid/invalid links
  * - Password validation
  */
-test.describe('Password Reset Flow', () => {
+test.describe("Password Reset Flow", () => {
   let forgotPasswordPage: ForgotPasswordPage;
   let resetPasswordPage: ResetPasswordPage;
-  let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
     forgotPasswordPage = new ForgotPasswordPage(page);
     resetPasswordPage = new ResetPasswordPage(page);
-    loginPage = new LoginPage(page);
   });
 
   /**
    * TEST 1: Request password reset with valid email
    * Verifies UI flow for requesting password reset
    */
-  test('should show success message after requesting password reset', async ({
-    page,
-  }) => {
+  test("should show success message after requesting password reset", async ({ page }) => {
     // Arrange: Navigate to forgot password page
     await forgotPasswordPage.goto();
 
@@ -51,15 +46,13 @@ test.describe('Password Reset Flow', () => {
    * TEST 2: Invalid email format error
    * Tests form validation for invalid email
    */
-  test('should show error for invalid email format', async ({ page }) => {
+  test("should show error for invalid email format", async ({ page }) => {
     // Arrange: Navigate to forgot password page
     await forgotPasswordPage.goto();
 
     // Act: Try to request reset with invalid email
     await forgotPasswordPage.emailInput.click();
-    await forgotPasswordPage.emailInput.fill(
-      INVALID_CREDENTIALS.invalidEmail.email
-    );
+    await forgotPasswordPage.emailInput.fill(INVALID_CREDENTIALS.invalidEmail.email);
 
     // Trigger validation
     await forgotPasswordPage.emailInput.blur();
@@ -79,7 +72,7 @@ test.describe('Password Reset Flow', () => {
    * TEST 3: Empty email error
    * Tests that form validates required field
    */
-  test('should not allow submission with empty email', async ({ page }) => {
+  test("should not allow submission with empty email", async ({ page }) => {
     // Arrange: Navigate to forgot password page
     await forgotPasswordPage.goto();
 
@@ -97,9 +90,7 @@ test.describe('Password Reset Flow', () => {
    * TEST 4: Back to login link
    * Tests navigation back to login page
    */
-  test('should navigate back to login from forgot password page', async ({
-    page,
-  }) => {
+  test("should navigate back to login from forgot password page", async ({ page }) => {
     // Arrange: Navigate to forgot password page
     await forgotPasswordPage.goto();
 
@@ -114,7 +105,7 @@ test.describe('Password Reset Flow', () => {
    * TEST 5: Expired/invalid reset link
    * Tests that expired links show appropriate error
    */
-  test('should show error for invalid reset link', async ({ page }) => {
+  test("should show error for invalid reset link", async ({ page }) => {
     // Arrange: Navigate to reset password page without valid token
     await resetPasswordPage.goto();
 
@@ -135,9 +126,7 @@ test.describe('Password Reset Flow', () => {
    * TEST 6: Request new link from expired page
    * Tests navigation from expired link to forgot password
    */
-  test('should navigate to forgot password from expired link page', async ({
-    page,
-  }) => {
+  test("should navigate to forgot password from expired link page", async ({ page }) => {
     // Arrange: Navigate to reset password page without valid token
     await resetPasswordPage.goto();
     await page.waitForTimeout(2000);
@@ -153,9 +142,7 @@ test.describe('Password Reset Flow', () => {
    * TEST 7: Password validation on reset form
    * NOTE: Skipped - requires valid password recovery session which needs email confirmation
    */
-  test.skip('should validate password strength on reset form', async ({
-    page,
-  }) => {
+  test.skip("should validate password strength on reset form", async () => {
     // This test requires a valid password recovery token from email
     // Skip for now as it's not feasible in E2E without email access
   });
@@ -164,9 +151,7 @@ test.describe('Password Reset Flow', () => {
    * TEST 8: Successful password reset
    * NOTE: Skipped - requires valid password recovery session which needs email confirmation
    */
-  test.skip('should successfully reset password and redirect to login', async ({
-    page,
-  }) => {
+  test.skip("should successfully reset password and redirect to login", async () => {
     // This test requires a valid password recovery token from email
     // Skip for now as it's not feasible in E2E without email access
   });

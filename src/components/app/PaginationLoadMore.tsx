@@ -11,23 +11,14 @@ interface PaginationLoadMoreProps {
  * PaginationLoadMore component - "Load More" button for infinite scroll
  * Shows loading state and disables when no more results
  */
-export function PaginationLoadMore({
-  hasMore,
-  isLoading,
-  onClick,
-}: PaginationLoadMoreProps) {
+export function PaginationLoadMore({ hasMore, isLoading, onClick }: PaginationLoadMoreProps) {
   if (!hasMore && !isLoading) {
     return null;
   }
 
   return (
     <div className="flex justify-center py-4">
-      <Button
-        variant="outline"
-        onClick={onClick}
-        disabled={isLoading || !hasMore}
-        className="min-w-[200px]"
-      >
+      <Button variant="outline" onClick={onClick} disabled={isLoading || !hasMore} className="min-w-[200px]">
         {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

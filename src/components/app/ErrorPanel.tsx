@@ -106,12 +106,7 @@ export function ErrorPanel({ error, onRetry }: ErrorPanelProps) {
         <AlertDescription className="mt-2">
           <p>{description}</p>
           {onRetry && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onRetry}
-              className="mt-4 gap-2"
-            >
+            <Button variant="outline" size="sm" onClick={onRetry} className="mt-4 gap-2">
               <RefreshCw className="h-4 w-4" />
               Try again
             </Button>

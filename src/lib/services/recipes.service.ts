@@ -226,9 +226,8 @@ export class RecipesService {
 
     // Add message for empty results
     if (resultItems.length === 0) {
-      response.message = search || tags
-        ? "No recipes found matching your search criteria"
-        : "You haven't saved any recipes yet";
+      response.message =
+        search || tags ? "No recipes found matching your search criteria" : "You haven't saved any recipes yet";
     }
 
     return response;

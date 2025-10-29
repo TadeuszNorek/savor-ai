@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { AppPage } from '../../pages/app.page';
-import { LoginPage } from '../../pages/login.page';
-import { deleteTestRecipes } from '../../helpers/cleanup.helpers';
+import { test, expect } from "@playwright/test";
+import { AppPage } from "../../pages/app.page";
+import { LoginPage } from "../../pages/login.page";
+import { deleteTestRecipes } from "../../helpers/cleanup.helpers";
 
 /**
  * E2E-4: Recipe Generation Tests
@@ -15,7 +15,7 @@ import { deleteTestRecipes } from '../../helpers/cleanup.helpers';
  * - Saving generated recipes
  */
 
-test.describe('Recipe Generation', () => {
+test.describe("Recipe Generation", () => {
   let appPage: AppPage;
   let loginPage: LoginPage;
   let testUserCredentials: { email: string; password: string };
@@ -23,8 +23,8 @@ test.describe('Recipe Generation', () => {
   test.beforeAll(async () => {
     // Use existing test user from .env.test
     testUserCredentials = {
-      email: process.env.E2E_USERNAME || 'user@gmail.com',
-      password: process.env.E2E_PASSWORD || 'qwerty123',
+      email: process.env.E2E_USERNAME || "user@gmail.com",
+      password: process.env.E2E_PASSWORD || "qwerty123",
     };
   });
 
@@ -44,9 +44,9 @@ test.describe('Recipe Generation', () => {
     await appPage.clickGeneratorTab();
   });
 
-  test.afterEach(async ({}, testInfo) => {
+  test.afterEach(async (_, testInfo) => {
     // Cleanup saved recipes after save-related tests
-    if (testInfo.title.includes('save generated recipe')) {
+    if (testInfo.title.includes("save generated recipe")) {
       const userId = process.env.E2E_USERNAME_ID;
       if (userId) {
         await deleteTestRecipes(userId);
@@ -54,15 +54,15 @@ test.describe('Recipe Generation', () => {
     }
   });
 
-  test('should generate recipe with basic prompt', async ({ page }) => {
+  test("should generate recipe with basic prompt", async () => {
     test.setTimeout(60000); // 60s timeout for AI generation
-    const prompt = 'Quick chicken pasta with vegetables';
+    const prompt = "Quick chicken pasta with vegetables";
 
     // Generate recipe
     await appPage.generateRecipe(prompt);
 
     // Should auto-switch to preview tab
-    await expect(appPage.previewTab).toHaveAttribute('aria-selected', 'true');
+    await expect(appPage.previewTab).toHaveAttribute("aria-selected", "true");
 
     // Recipe should be displayed
     await expect(appPage.recipeTitle).toBeVisible();
@@ -79,25 +79,25 @@ test.describe('Recipe Generation', () => {
     expect(instructionCount).toBeGreaterThan(0);
   });
 
-  test('should disable generate button with empty prompt', async () => {
+  test("should disable generate button with empty prompt", async () => {
     // Button should be disabled initially (empty prompt)
     await expect(appPage.generateButton).toBeDisabled();
 
     // Type a character
-    await appPage.promptInput.fill('a');
+    await appPage.promptInput.fill("a");
     await expect(appPage.generateButton).toBeEnabled();
 
     // Clear input
-    await appPage.promptInput.fill('');
+    await appPage.promptInput.fill("");
     await expect(appPage.generateButton).toBeDisabled();
   });
 
-  test('should update character counter while typing', async () => {
-    const shortPrompt = 'Quick pasta recipe';
+  test("should update character counter while typing", async () => {
+    const shortPrompt = "Quick pasta recipe";
     await appPage.promptInput.fill(shortPrompt);
 
     const counterText = await appPage.getCharacterCountText();
-    expect(counterText).toContain('character');
+    expect(counterText).toContain("character");
 
     // Extract remaining characters
     const remaining = counterText?.match(/(\d+)/)?.[0];
@@ -109,9 +109,9 @@ test.describe('Recipe Generation', () => {
     expect(remainingNum).toBeGreaterThan(0);
   });
 
-  test('should display all recipe components correctly', async () => {
+  test("should display all recipe components correctly", async () => {
     test.setTimeout(60000); // 60s timeout for AI generation
-    const prompt = 'Italian margherita pizza with fresh basil';
+    const prompt = "Italian margherita pizza with fresh basil";
 
     await appPage.generateRecipe(prompt);
 
@@ -133,9 +133,9 @@ test.describe('Recipe Generation', () => {
     await expect(appPage.nutritionSection).toBeVisible();
   });
 
-  test('should adjust recipe servings', async ({ page }) => {
+  test("should adjust recipe servings", async ({ page }) => {
     test.setTimeout(60000); // 60s timeout for AI generation
-    const prompt = 'Simple tomato soup for 4 people';
+    const prompt = "Simple tomato soup for 4 people";
 
     await appPage.generateRecipe(prompt);
 
@@ -161,9 +161,9 @@ test.describe('Recipe Generation', () => {
     expect(updatedText).toBeTruthy();
   });
 
-  test('should save generated recipe', async ({ page }) => {
+  test("should save generated recipe", async ({ page }) => {
     test.setTimeout(60000); // 60s timeout for AI generation
-    const prompt = 'Healthy breakfast smoothie bowl';
+    const prompt = "Healthy breakfast smoothie bowl";
 
     await appPage.generateRecipe(prompt);
 
@@ -175,32 +175,32 @@ test.describe('Recipe Generation', () => {
     await appPage.saveRecipe();
 
     // Success toast should appear (Sonner toast)
-    const successToast = page.locator('[data-sonner-toast]').filter({
+    const successToast = page.locator("[data-sonner-toast]").filter({
       hasText: /recipe saved successfully/i,
     });
     await expect(successToast).toBeVisible();
   });
 
-  test('should switch between Generator and Preview tabs', async () => {
+  test("should switch between Generator and Preview tabs", async () => {
     // Initially on Generator tab
-    await expect(appPage.generatorTab).toHaveAttribute('aria-selected', 'true');
+    await expect(appPage.generatorTab).toHaveAttribute("aria-selected", "true");
     await expect(appPage.promptInput).toBeVisible();
 
     // Switch to Preview tab (empty state)
     await appPage.clickPreviewTab();
-    await expect(appPage.previewTab).toHaveAttribute('aria-selected', 'true');
+    await expect(appPage.previewTab).toHaveAttribute("aria-selected", "true");
     await expect(appPage.emptyStateMessage).toBeVisible();
 
     // Switch back to Generator
     await appPage.clickGeneratorTab();
-    await expect(appPage.generatorTab).toHaveAttribute('aria-selected', 'true');
+    await expect(appPage.generatorTab).toHaveAttribute("aria-selected", "true");
     await expect(appPage.promptInput).toBeVisible();
   });
 
-  test('should regenerate recipe with different prompt', async () => {
+  test("should regenerate recipe with different prompt", async () => {
     test.setTimeout(90000); // 90s timeout for double AI generation
     // First generation
-    const firstPrompt = 'Mexican tacos with beef';
+    const firstPrompt = "Mexican tacos with beef";
     await appPage.generateRecipe(firstPrompt);
 
     const firstTitle = await appPage.getRecipeTitle();
@@ -210,7 +210,7 @@ test.describe('Recipe Generation', () => {
     await appPage.clickGeneratorTab();
 
     // Second generation with different prompt
-    const secondPrompt = 'Japanese sushi rolls with salmon';
+    const secondPrompt = "Japanese sushi rolls with salmon";
     await appPage.generateRecipe(secondPrompt);
 
     const secondTitle = await appPage.getRecipeTitle();
@@ -221,7 +221,7 @@ test.describe('Recipe Generation', () => {
     expect(firstTitle).not.toBe(secondTitle);
   });
 
-  test('should handle empty state in preview', async () => {
+  test("should handle empty state in preview", async () => {
     // When no recipe is generated, preview should show empty state
     await appPage.clickPreviewTab();
 
@@ -232,9 +232,9 @@ test.describe('Recipe Generation', () => {
     await expect(appPage.saveButton).not.toBeVisible();
   });
 
-  test('should show ingredients as interactive buttons', async ({ page }) => {
+  test("should show ingredients as interactive buttons", async ({ page }) => {
     test.setTimeout(60000); // 60s timeout for AI generation
-    const prompt = 'Greek salad with feta cheese';
+    const prompt = "Greek salad with feta cheese";
 
     await appPage.generateRecipe(prompt);
 

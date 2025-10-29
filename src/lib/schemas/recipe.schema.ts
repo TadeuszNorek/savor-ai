@@ -112,9 +112,7 @@ export function normalizeTags(tags: string[] | undefined): string[] {
     return [];
   }
 
-  const normalized = tags
-    .map((tag) => tag.trim().toLowerCase())
-    .filter((tag) => tag.length > 0);
+  const normalized = tags.map((tag) => tag.trim().toLowerCase()).filter((tag) => tag.length > 0);
 
   // Remove duplicates while preserving order
   return Array.from(new Set(normalized));

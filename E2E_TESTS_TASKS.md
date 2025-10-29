@@ -88,11 +88,11 @@ Remaining:       5/12
 
 ### 🚧 In Progress (0/4)
 
-*All setup tasks completed*
+_All setup tasks completed_
 
 ### ⏭️ To Do (0/4)
 
-*All setup tasks completed*
+_All setup tasks completed_
 
 ---
 
@@ -278,22 +278,23 @@ Remaining:       5/12
 
 ### ⏭️ To Do (0/3)
 
-*All Recipe CRUD tests completed*
-  - **Priority:** WYSOKI
-  - **Prerequisites:** E2E-5 (save)
-  - **Page Objects:**
-    - `RecipeListPage`
-    - Confirmation dialog
-  - **Test Cases:**
-    - Delete recipe from list
-    - Confirmation dialog shows
-    - Cancel delete action
-    - Confirm delete action
-    - Recipe removed from list
-    - Success message after delete
-    - Delete button loading state
-    - Delete error handling
-  - **Commit:** `test(e2e): add delete recipe tests (8 tests)`
+_All Recipe CRUD tests completed_
+
+- **Priority:** WYSOKI
+- **Prerequisites:** E2E-5 (save)
+- **Page Objects:**
+  - `RecipeListPage`
+  - Confirmation dialog
+- **Test Cases:**
+  - Delete recipe from list
+  - Confirmation dialog shows
+  - Cancel delete action
+  - Confirm delete action
+  - Recipe removed from list
+  - Success message after delete
+  - Delete button loading state
+  - Delete error handling
+- **Commit:** `test(e2e): add delete recipe tests (8 tests)`
 
 ---
 
@@ -439,6 +440,7 @@ Remaining:       5/12
 ## 📋 Page Object Models Checklist
 
 ### ✅ Completed (6/10)
+
 - [x] `e2e/pages/login.page.ts` ✅
 - [x] `e2e/pages/base.page.ts` ✅
 - [x] `e2e/pages/app.page.ts` ✅
@@ -451,10 +453,12 @@ Remaining:       5/12
 **Priority 1 - KRYTYCZNY:**
 
 **Priority 2 - WYSOKI:**
+
 - [ ] `e2e/pages/recipe-detail.page.ts` - Recipe details
 - [ ] `e2e/pages/profile.page.ts` - Profile management
 
 **Priority 3 - ŚREDNI:**
+
 - [ ] `e2e/pages/components/header.page.ts` - Header component
 - [ ] `e2e/pages/components/user-menu.page.ts` - User menu
 
@@ -463,6 +467,7 @@ Remaining:       5/12
 ## 🔧 Helpers & Fixtures Checklist
 
 ### ✅ Completed (4/5)
+
 - [x] `e2e/fixtures/test-data.ts` ✅
 - [x] `e2e/helpers/auth.helpers.ts` ✅
 - [x] `e2e/helpers/cleanup.helpers.ts` ✅
@@ -477,6 +482,7 @@ Remaining:       5/12
 ## 📊 Summary by Priority
 
 ### KRYTYCZNY (Must Have)
+
 ```
 SETUP-1, SETUP-2                      (setup) ✅
 E2E-1:  login.spec.ts                 (8 tests) ✅
@@ -489,6 +495,7 @@ Estimated time:                       4-5 dni
 ```
 
 ### WYSOKI (Should Have)
+
 ```
 SETUP-3, SETUP-4                      (setup)
 E2E-3:  password-reset.spec.ts        (8 tests)
@@ -502,6 +509,7 @@ Estimated time:                       5-6 dni
 ```
 
 ### ŚREDNI (Nice to Have)
+
 ```
 E2E-9:  filter.spec.ts                (10 tests)
 E2E-10: sort.spec.ts                  (8 tests)
@@ -539,6 +547,7 @@ Status:              🚀 Recipe CRUD Complete! Next: E2E-8 (search)
 ## 🚀 Implementation Order
 
 ### **Phase 1: Setup** (1 dzień)
+
 ```
 □ SETUP-1: base.page.ts
 □ SETUP-2: auth.helpers.ts
@@ -547,6 +556,7 @@ Status:              🚀 Recipe CRUD Complete! Next: E2E-8 (search)
 ```
 
 ### **Phase 2: Auth** (2-3 dni) ✅ COMPLETE
+
 ```
 ☑ E2E-1: login.spec.ts ✅
 ☑ E2E-2: signup.spec.ts ✅
@@ -554,6 +564,7 @@ Status:              🚀 Recipe CRUD Complete! Next: E2E-8 (search)
 ```
 
 ### **Phase 3: Core Features** (4-5 dni) ✅ COMPLETE
+
 ```
 ☑ E2E-4: recipe-generation.spec.ts ✅
 ~ E2E-5: save-recipe.spec.ts (SKIPPED - redundant)
@@ -562,6 +573,7 @@ Status:              🚀 Recipe CRUD Complete! Next: E2E-8 (search)
 ```
 
 ### **Phase 4: Search & Profile** (3-4 dni)
+
 ```
 □ E2E-8: search.spec.ts
 □ E2E-11: profile-management.spec.ts
@@ -569,6 +581,7 @@ Status:              🚀 Recipe CRUD Complete! Next: E2E-8 (search)
 ```
 
 ### **Phase 5: Polish** (1-2 dni)
+
 ```
 □ E2E-10: sort.spec.ts
 □ E2E-13: navigation.spec.ts
@@ -652,4 +665,4 @@ test(e2e): add AppPage page object model
 
 **Next E2E Task:** E2E-8 (search.spec.ts)
 
-*Last updated: 2025-10-29*
+_Last updated: 2025-10-29_

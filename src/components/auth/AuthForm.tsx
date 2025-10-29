@@ -143,7 +143,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
 
         console.log("[AuthForm] Login successful, waiting for session...");
         // Wait for session to be saved to localStorage (prevent race condition)
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         // Verify session is available
         const { data: sessionData } = await supabaseClient.auth.getSession();
@@ -175,7 +175,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
         }
 
         // Wait for session to be saved to localStorage (prevent race condition)
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         // Verify session is available
         const { data: sessionData } = await supabaseClient.auth.getSession();
@@ -219,9 +219,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
       <CardHeader>
         <CardTitle>{isLogin ? "Sign In" : "Create Account"}</CardTitle>
         <CardDescription>
-          {isLogin
-            ? "Enter your email and password to sign in"
-            : "Enter your email and password to create an account"}
+          {isLogin ? "Enter your email and password to sign in" : "Enter your email and password to create an account"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -268,10 +266,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
           {/* Forgot password link - only show in login mode */}
           {isLogin && (
             <div className="text-center text-sm">
-              <a
-                href="/auth/forgot"
-                className="text-muted-foreground hover:text-primary hover:underline"
-              >
+              <a href="/auth/forgot" className="text-muted-foreground hover:text-primary hover:underline">
                 Forgot your password?
               </a>
             </div>

@@ -16,9 +16,7 @@ interface AppLayoutProps {
  * Right panel: Generator and Preview tabs
  */
 export function AppLayout({ selectedRecipeId }: AppLayoutProps) {
-  const [currentSelectedId, setCurrentSelectedId] = useState<string | undefined>(
-    selectedRecipeId
-  );
+  const [currentSelectedId, setCurrentSelectedId] = useState<string | undefined>(selectedRecipeId);
 
   // Collapsible left panel state - persisted in localStorage
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(() => {
@@ -118,9 +116,7 @@ export function AppLayout({ selectedRecipeId }: AppLayoutProps) {
           "flex flex-col h-full border rounded-lg bg-card transition-all duration-300 ease-in-out",
           // Desktop behavior - slide left
           "lg:relative",
-          isLeftPanelCollapsed
-            ? "lg:w-0 lg:overflow-hidden lg:border-0 lg:p-0 lg:gap-0"
-            : "lg:w-[420px]",
+          isLeftPanelCollapsed ? "lg:w-0 lg:overflow-hidden lg:border-0 lg:p-0 lg:gap-0" : "lg:w-[420px]",
           // Mobile behavior - slide from top with overlay (below header)
           "fixed lg:static left-0 right-0 z-40",
           "max-lg:top-16 max-lg:h-[calc(100vh-5rem)] max-lg:mx-4 max-lg:shadow-xl",

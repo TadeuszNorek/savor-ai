@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { AppPage } from '../../pages/app.page';
-import { LoginPage } from '../../pages/login.page';
-import { deleteTestRecipes } from '../../helpers/cleanup.helpers';
+import { test, expect } from "@playwright/test";
+import { AppPage } from "../../pages/app.page";
+import { LoginPage } from "../../pages/login.page";
+import { deleteTestRecipes } from "../../helpers/cleanup.helpers";
 
 /**
  * E2E-7: Recipe Delete Tests
@@ -18,9 +18,9 @@ import { deleteTestRecipes } from '../../helpers/cleanup.helpers';
  * Cleanup: Deletes all test recipes after tests complete
  */
 
-test.describe('Recipe Delete', () => {
+test.describe("Recipe Delete", () => {
   // Run tests serially to ensure single beforeAll execution
-  test.describe.configure({ mode: 'serial' });
+  test.describe.configure({ mode: "serial" });
   let appPage: AppPage;
   let loginPage: LoginPage;
   let testUserCredentials: { email: string; password: string };
@@ -31,10 +31,10 @@ test.describe('Recipe Delete', () => {
 
     // Use existing test user from .env.test
     testUserCredentials = {
-      email: process.env.E2E_USERNAME || 'user@gmail.com',
-      password: process.env.E2E_PASSWORD || 'qwerty123',
+      email: process.env.E2E_USERNAME || "user@gmail.com",
+      password: process.env.E2E_PASSWORD || "qwerty123",
     };
-    testUserId = process.env.E2E_USERNAME_ID || '';
+    testUserId = process.env.E2E_USERNAME_ID || "";
 
     // Setup: Generate and save 2 recipes for testing
     const context = await browser.newContext();
@@ -44,16 +44,13 @@ test.describe('Recipe Delete', () => {
 
     // Login
     await setupLoginPage.goto();
-    await setupLoginPage.login(
-      testUserCredentials.email,
-      testUserCredentials.password
-    );
+    await setupLoginPage.login(testUserCredentials.email, testUserCredentials.password);
     await page.waitForURL(/\/app/);
     await setupAppPage.waitForAppToLoad();
 
     // Generate and save first recipe
     await setupAppPage.clickGeneratorTab();
-    await setupAppPage.generateRecipe('Quick pasta carbonara');
+    await setupAppPage.generateRecipe("Quick pasta carbonara");
     const recipe1Generated = await setupAppPage.isRecipeDisplayed();
     if (recipe1Generated) {
       await setupAppPage.saveRecipe();
@@ -62,7 +59,7 @@ test.describe('Recipe Delete', () => {
 
     // Generate and save second recipe
     await setupAppPage.clickGeneratorTab();
-    await setupAppPage.generateRecipe('Greek salad with feta');
+    await setupAppPage.generateRecipe("Greek salad with feta");
     const recipe2Generated = await setupAppPage.isRecipeDisplayed();
     if (recipe2Generated) {
       await setupAppPage.saveRecipe();
@@ -92,31 +89,31 @@ test.describe('Recipe Delete', () => {
     await appPage.waitForAppToLoad();
   });
 
-  test('should not show delete button for generated recipe', async () => {
+  test("should not show delete button for generated recipe", async () => {
     // Generate a new recipe (not saved)
     await appPage.clickGeneratorTab();
-    await appPage.generateRecipe('Simple tomato soup');
+    await appPage.generateRecipe("Simple tomato soup");
 
     // Delete button should not be visible for draft recipe
     const isDeleteVisible = await appPage.isDeleteButtonVisible();
     expect(isDeleteVisible).toBe(false);
   });
 
-  test('should show delete button for saved recipe', async () => {
+  test("should show delete button for saved recipe", async () => {
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
 
     // Wait for recipe to load
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Delete button should be visible for saved recipe
     await expect(appPage.deleteButton).toBeVisible();
   });
 
-  test('should open confirmation dialog on delete click', async ({ page }) => {
+  test("should open confirmation dialog on delete click", async () => {
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Click delete button
     await appPage.deleteButton.click();
@@ -137,10 +134,10 @@ test.describe('Recipe Delete', () => {
     await expect(appPage.confirmDeleteButton).toBeVisible();
   });
 
-  test('should show recipe name in confirmation dialog', async ({ page }) => {
+  test("should show recipe name in confirmation dialog", async () => {
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Get recipe title
     const recipeTitle = await appPage.getRecipeTitle();
@@ -148,7 +145,7 @@ test.describe('Recipe Delete', () => {
 
     // Click delete button
     await appPage.deleteButton.click();
-    await appPage.confirmDialog.waitFor({ state: 'visible' });
+    await appPage.confirmDialog.waitFor({ state: "visible" });
 
     // Dialog description should contain recipe name
     const description = await appPage.getConfirmDialogDescription();
@@ -157,10 +154,10 @@ test.describe('Recipe Delete', () => {
     expect(description!.length).toBeGreaterThan(0);
   });
 
-  test('should cancel delete action', async ({ page }) => {
+  test("should cancel delete action", async () => {
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Get initial recipe count
     const initialCount = await appPage.getRecipeCardsCount();
@@ -179,22 +176,22 @@ test.describe('Recipe Delete', () => {
     expect(afterCancelCount).toBe(initialCount);
   });
 
-  test('should confirm delete and show success toast', async ({ page }) => {
+  test("should confirm delete and show success toast", async ({ page }) => {
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Delete recipe with confirmation
     await appPage.deleteRecipe();
 
     // Success toast should be visible
-    const successToast = page.locator('[data-sonner-toast]').filter({
+    const successToast = page.locator("[data-sonner-toast]").filter({
       hasText: /recipe deleted successfully/i,
     });
     await expect(successToast).toBeVisible();
   });
 
-  test('should remove recipe from list after deletion', async ({ page }) => {
+  test("should remove recipe from list after deletion", async ({ page }) => {
     // Get initial recipe count
     const initialCount = await appPage.getRecipeCardsCount();
 
@@ -206,7 +203,7 @@ test.describe('Recipe Delete', () => {
 
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Get recipe title before deletion
     const deletedTitle = await appPage.getRecipeTitle();
@@ -223,7 +220,7 @@ test.describe('Recipe Delete', () => {
 
     // Deleted recipe should not be in the list
     // Check if the deleted recipe title is no longer visible in cards
-    const cards = page.locator('h3');
+    const cards = page.locator("h3");
     const cardCount = await cards.count();
 
     for (let i = 0; i < cardCount; i++) {
@@ -232,7 +229,7 @@ test.describe('Recipe Delete', () => {
     }
   });
 
-  test('should close dialog and clear preview after deletion', async ({ page }) => {
+  test("should close dialog and clear preview after deletion", async ({ page }) => {
     // Check if recipes are available
     const recipeCount = await appPage.getRecipeCardsCount();
 
@@ -244,7 +241,7 @@ test.describe('Recipe Delete', () => {
 
     // Click first saved recipe
     await appPage.clickRecipeCard(0);
-    await appPage.recipeTitle.waitFor({ state: 'visible' });
+    await appPage.recipeTitle.waitFor({ state: "visible" });
 
     // Delete recipe
     await appPage.deleteRecipe();

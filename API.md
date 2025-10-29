@@ -7,6 +7,7 @@ SavorAI provides a RESTful API for managing recipes, user profiles, and applicat
 **Base URL:** `http://localhost:4321/api` (development)
 
 **Authentication:** Bearer token in `Authorization` header
+
 ```
 Authorization: Bearer {supabase_jwt_token}
 ```
@@ -39,12 +40,14 @@ Log an application event for analytics purposes.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
 
 **Body:**
+
 ```json
 {
   "type": "session_start",
@@ -56,6 +59,7 @@ Content-Type: application/json
 ```
 
 **Fields:**
+
 - `type` (required): Event type enum
   - `session_start` - User starts new session
   - `profile_edited` - User updates profile
@@ -67,6 +71,7 @@ Content-Type: application/json
 #### Response
 
 **Success (201 Created):**
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -81,6 +86,7 @@ Content-Type: application/json
 ```
 
 **Error (400 Bad Request):**
+
 ```json
 {
   "error": "Bad Request",
@@ -94,6 +100,7 @@ Content-Type: application/json
 ```
 
 **Error (401 Unauthorized):**
+
 ```json
 {
   "error": "Unauthorized",
@@ -130,12 +137,14 @@ Generate a recipe using AI based on user prompt and profile preferences.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
 
 **Body:**
+
 ```json
 {
   "prompt": "Make me a quick pasta dish for dinner"
@@ -143,11 +152,13 @@ Content-Type: application/json
 ```
 
 **Fields:**
+
 - `prompt` (required): User's recipe request (string, max 2000 characters)
 
 #### Response
 
 **Success (200 OK):**
+
 ```json
 {
   "recipe": {
@@ -158,12 +169,7 @@ Content-Type: application/json
     "servings": 2,
     "difficulty": "easy",
     "cuisine": "Italian",
-    "ingredients": [
-      "200g spaghetti",
-      "4 cloves garlic, minced",
-      "3 tbsp olive oil",
-      "Salt and pepper to taste"
-    ],
+    "ingredients": ["200g spaghetti", "4 cloves garlic, minced", "3 tbsp olive oil", "Salt and pepper to taste"],
     "instructions": [
       "Boil pasta according to package directions",
       "Heat olive oil and sauté garlic until fragrant",
@@ -183,6 +189,7 @@ Content-Type: application/json
 ```
 
 **Error (429 Too Many Requests):**
+
 ```json
 {
   "error": "Too Many Requests",
@@ -195,6 +202,7 @@ Content-Type: application/json
 ```
 
 **Error (413 Payload Too Large):**
+
 ```json
 {
   "error": "Payload Too Large",
@@ -204,6 +212,7 @@ Content-Type: application/json
 ```
 
 **Error (503 Service Unavailable):**
+
 ```json
 {
   "error": "Service Unavailable",
@@ -234,12 +243,14 @@ Save a recipe to user's collection. Validates recipe structure, checks size limi
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
 
 **Body:**
+
 ```json
 {
   "recipe": {
@@ -250,12 +261,7 @@ Content-Type: application/json
     "servings": 2,
     "difficulty": "easy",
     "cuisine": "Italian",
-    "ingredients": [
-      "200g spaghetti",
-      "4 cloves garlic, minced",
-      "3 tbsp olive oil",
-      "Salt and pepper to taste"
-    ],
+    "ingredients": ["200g spaghetti", "4 cloves garlic, minced", "3 tbsp olive oil", "Salt and pepper to taste"],
     "instructions": [
       "Boil pasta according to package directions",
       "Heat olive oil and sauté garlic until fragrant",
@@ -280,6 +286,7 @@ Content-Type: application/json
 ```
 
 **Fields:**
+
 - `recipe` (required): Complete recipe object following RecipeSchema
   - `title` (required): Recipe name (1-200 characters)
   - `summary` (optional): Brief description (max 500 characters)
@@ -297,6 +304,7 @@ Content-Type: application/json
 - `tags` (optional): Additional tags (max 20, normalized to lowercase, deduplicated)
 
 **Validation:**
+
 - Recipe size must not exceed 200 KB (204800 bytes) when serialized
 - Tags are normalized: trimmed, converted to lowercase, deduplicated
 - Recipe must not contain ingredients from user's disliked ingredients list
@@ -304,6 +312,7 @@ Content-Type: application/json
 #### Response
 
 **Success (201 Created):**
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -317,10 +326,12 @@ Content-Type: application/json
 ```
 
 **Headers:**
+
 - `Location: /api/recipes/{id}` - URL to fetch full recipe details
 - `X-Request-ID: {request_id}` - Unique request identifier
 
 **Error (400 Bad Request - Validation):**
+
 ```json
 {
   "error": "Bad Request",
@@ -335,6 +346,7 @@ Content-Type: application/json
 ```
 
 **Error (400 Bad Request - Disliked Ingredients):**
+
 ```json
 {
   "error": "Bad Request",
@@ -347,6 +359,7 @@ Content-Type: application/json
 ```
 
 **Error (401 Unauthorized):**
+
 ```json
 {
   "error": "Unauthorized",
@@ -356,6 +369,7 @@ Content-Type: application/json
 ```
 
 **Error (413 Payload Too Large):**
+
 ```json
 {
   "error": "Payload Too Large",
@@ -368,6 +382,7 @@ Content-Type: application/json
 ```
 
 **Error (500 Internal Server Error):**
+
 ```json
 {
   "error": "Internal Server Error",
@@ -417,6 +432,7 @@ curl -X POST http://localhost:4321/api/recipes \
 ```
 
 **Notes:**
+
 - Tags in the request body are normalized (e.g., ["Quick", "EASY", "pasta"] → ["easy", "pasta", "quick"])
 - Duplicate tags are automatically removed
 - The endpoint logs a `recipe_saved` event for analytics (best-effort, non-blocking)
@@ -431,11 +447,13 @@ List user's saved recipes with search, filtering, and pagination.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 ```
 
 **Query Parameters:**
+
 - `search` (optional): Full-text search query (searches title, summary, ingredients)
 - `tags` (optional): Comma-separated tags for OR filtering (e.g., `quick,italian`)
 - `sort` (optional): Sort order - `recent` (default) or `oldest`
@@ -446,6 +464,7 @@ Authorization: Bearer {token}
 #### Response
 
 **Success (200 OK):**
+
 ```json
 {
   "data": [
@@ -467,6 +486,7 @@ Authorization: Bearer {token}
 ```
 
 **Empty Result (200 OK):**
+
 ```json
 {
   "data": [],
@@ -501,16 +521,19 @@ Get full recipe details by ID.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 ```
 
 **Parameters:**
+
 - `id` (path): Recipe UUID
 
 #### Response
 
 **Success (200 OK):**
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -533,6 +556,7 @@ Authorization: Bearer {token}
 ```
 
 **Error (404 Not Found):**
+
 ```json
 {
   "error": "Not Found",
@@ -557,21 +581,25 @@ Delete a recipe from user's collection (hard delete).
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 ```
 
 **Parameters:**
+
 - `id` (path): Recipe UUID
 
 #### Response
 
 **Success (204 No Content):**
+
 ```
 (empty body)
 ```
 
 **Error (404 Not Found):**
+
 ```json
 {
   "error": "Not Found",
@@ -600,12 +628,14 @@ Create initial dietary preferences profile for authenticated user.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
 
 **Body:**
+
 ```json
 {
   "diet_type": "vegetarian",
@@ -615,6 +645,7 @@ Content-Type: application/json
 ```
 
 **Fields (all optional):**
+
 - `diet_type` (optional): One of: `vegan`, `vegetarian`, `pescatarian`, `keto`, `paleo`, `gluten_free`, `dairy_free`, `low_carb`, `mediterranean`, `omnivore`
 - `disliked_ingredients` (optional): Array of ingredients to avoid (max 100 items, each 1-50 chars)
   - Automatically normalized: lowercase, trimmed, deduplicated
@@ -624,6 +655,7 @@ Content-Type: application/json
 #### Response
 
 **Success (201 Created):**
+
 ```json
 {
   "user_id": "123e4567-e89b-12d3-a456-426614174000",
@@ -636,6 +668,7 @@ Content-Type: application/json
 ```
 
 **Error (409 Conflict):**
+
 ```json
 {
   "error": "Conflict",
@@ -645,6 +678,7 @@ Content-Type: application/json
 ```
 
 **Error (400 Bad Request):**
+
 ```json
 {
   "error": "Bad Request",
@@ -671,6 +705,7 @@ curl -X POST http://localhost:4321/api/profile \
 ```
 
 **Notes:**
+
 - Profile is used to personalize AI recipe generation
 - Disliked ingredients are validated when saving recipes (via `insert_recipe_safe` RPC)
 - Arrays are automatically normalized (e.g., ["Italian", "MEXICAN"] → ["italian", "mexican"])
@@ -685,6 +720,7 @@ Retrieve dietary preferences profile for authenticated user.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 ```
@@ -692,6 +728,7 @@ Authorization: Bearer {token}
 #### Response
 
 **Success (200 OK):**
+
 ```json
 {
   "user_id": "123e4567-e89b-12d3-a456-426614174000",
@@ -704,9 +741,11 @@ Authorization: Bearer {token}
 ```
 
 **Headers:**
+
 - `Cache-Control: no-store` - Personalized content, no caching
 
 **Error (404 Not Found):**
+
 ```json
 {
   "error": "Not Found",
@@ -723,6 +762,7 @@ curl -X GET http://localhost:4321/api/profile \
 ```
 
 **Notes:**
+
 - Returns 404 if profile doesn't exist (user must create it first with POST)
 - No event logging for GET operations
 
@@ -735,12 +775,14 @@ Update dietary preferences profile for authenticated user.
 #### Request
 
 **Headers:**
+
 ```
 Authorization: Bearer {token}
 Content-Type: application/json
 ```
 
 **Body:**
+
 ```json
 {
   "diet_type": "vegan",
@@ -749,11 +791,13 @@ Content-Type: application/json
 ```
 
 **Fields (at least one required):**
+
 - `diet_type` (optional): Diet type enum, or `null` to clear the field
 - `disliked_ingredients` (optional): Replaces entire array (not merged)
 - `preferred_cuisines` (optional): Replaces entire array (not merged)
 
 **Validation:**
+
 - At least one field must be provided
 - Arrays replace existing values entirely (not merged)
 - Set `diet_type: null` to explicitly clear the value
@@ -761,6 +805,7 @@ Content-Type: application/json
 #### Response
 
 **Success (200 OK):**
+
 ```json
 {
   "user_id": "123e4567-e89b-12d3-a456-426614174000",
@@ -773,9 +818,11 @@ Content-Type: application/json
 ```
 
 **Headers:**
+
 - `Cache-Control: no-store` - Personalized content, no caching
 
 **Error (400 Bad Request - No Fields):**
+
 ```json
 {
   "error": "Bad Request",
@@ -788,6 +835,7 @@ Content-Type: application/json
 ```
 
 **Error (404 Not Found):**
+
 ```json
 {
   "error": "Not Found",
@@ -816,6 +864,7 @@ curl -X PUT http://localhost:4321/api/profile \
 ```
 
 **Notes:**
+
 - Partial updates supported (only send fields you want to change)
 - Arrays are **replaced entirely**, not merged (e.g., updating `disliked_ingredients` replaces the whole array)
 - `updated_at` timestamp is automatically updated
@@ -839,6 +888,7 @@ All error responses follow this standard format:
 ```
 
 **Common HTTP Status Codes:**
+
 - `200` - Success
 - `201` - Created
 - `204` - No Content (successful deletion)
@@ -864,10 +914,12 @@ All error responses follow this standard format:
 All API endpoints (except public health checks) require authentication via Supabase JWT tokens.
 
 **Getting a Token:**
+
 1. Register/Login via Supabase Auth endpoints
 2. Use the returned `access_token` in all API requests
 
 **Token Format:**
+
 ```
 Authorization: Bearer {access_token}
 ```
@@ -880,6 +932,7 @@ Tokens expire after the configured period (default: 1 hour). Refresh tokens usin
 ## Testing
 
 For detailed testing examples and scenarios, see:
+
 - [Events Testing Guide](.ai/endpoints/log-event-testing-guide.md)
 - [Generate Recipe Testing Guide](.ai/endpoints/generate-recipe-testing-guide.md)
 - [Save Recipe Testing Guide](.ai/endpoints/save-recipe-testing-guide.md)
@@ -892,11 +945,13 @@ For detailed testing examples and scenarios, see:
 ## Changelog
 
 ### 2025-01-17
+
 - ✅ Added `POST /api/profile` - Create user dietary profile
 - ✅ Added `GET /api/profile` - Get user profile
 - ✅ Added `PUT /api/profile` - Update user profile
 
 ### 2025-01-16
+
 - ✅ Added `POST /api/events` - Event logging endpoint
 - ✅ Added `POST /api/recipes/generate` - AI recipe generation
 - ✅ Added `POST /api/recipes` - Save recipe to collection

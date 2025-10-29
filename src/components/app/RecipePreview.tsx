@@ -54,7 +54,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
     return ingredient.replace(/(\d+(\.\d+)?)/g, (match) => {
       const num = parseFloat(match);
       const scaled = num * scalingRatio;
-      return Number.isInteger(scaled) ? scaled.toString() : scaled.toFixed(1).replace(/\.0$/, '');
+      return Number.isInteger(scaled) ? scaled.toString() : scaled.toFixed(1).replace(/\.0$/, "");
     });
   };
 
@@ -84,35 +84,30 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
       <div className="space-y-4">
         <div className="space-y-2">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground">{recipe.title}</h1>
-          {recipe.cuisine && (
-            <p className="text-muted-foreground/70 italic text-sm">{recipe.cuisine}</p>
-          )}
+          {recipe.cuisine && <p className="text-muted-foreground/70 italic text-sm">{recipe.cuisine}</p>}
         </div>
 
-        {recipe.summary && (
-          <p className="text-lg text-muted-foreground leading-relaxed">{recipe.summary}</p>
-        )}
+        {recipe.summary && <p className="text-lg text-muted-foreground leading-relaxed">{recipe.summary}</p>}
 
-        {recipe.description && (
-          <p className="text-muted-foreground leading-relaxed">{recipe.description}</p>
-        )}
+        {recipe.description && <p className="text-muted-foreground leading-relaxed">{recipe.description}</p>}
 
         {/* Tags and Dietary Info */}
         {(tags.length > 0 || (recipe.dietary_info && Object.keys(recipe.dietary_info).length > 0)) && (
           <div className="flex flex-wrap gap-2">
             {/* Dietary info badges - pill style with border-2 */}
-            {recipe.dietary_info && Object.entries(recipe.dietary_info).map(
-              ([key, value]) =>
-                value && (
-                  <Badge
-                    key={key}
-                    variant="outline"
-                    className="rounded-full border-2 bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-700 px-3"
-                  >
-                    {key.replace(/_/g, " ")}
-                  </Badge>
-                )
-            )}
+            {recipe.dietary_info &&
+              Object.entries(recipe.dietary_info).map(
+                ([key, value]) =>
+                  value && (
+                    <Badge
+                      key={key}
+                      variant="outline"
+                      className="rounded-full border-2 bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-700 px-3"
+                    >
+                      {key.replace(/_/g, " ")}
+                    </Badge>
+                  )
+              )}
 
             {/* Regular tags - square with rounded corners */}
             {tags.map((tag) => (
@@ -151,9 +146,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
 
           <div className="flex items-center gap-2">
             <ChefHat className="h-4 w-4 text-muted-foreground" />
-            <Badge className={difficultyColors[recipe.difficulty]}>
-              {recipe.difficulty}
-            </Badge>
+            <Badge className={difficultyColors[recipe.difficulty]}>{recipe.difficulty}</Badge>
           </div>
 
           {/* Servings Adjuster */}
@@ -207,9 +200,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
                   <div
                     className={cn(
                       "mt-0.5 flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
-                      isChecked
-                        ? "border-emerald-500 bg-emerald-500"
-                        : "border-border group-hover:border-primary"
+                      isChecked ? "border-emerald-500 bg-emerald-500" : "border-border group-hover:border-primary"
                     )}
                   >
                     {isChecked && <CheckCircle2 className="w-4 h-4 text-white" />}
@@ -234,7 +225,9 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-foreground">Instructions</h2>
           <div className="text-sm font-medium px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary rounded-full">
-            Step {completedSteps.size < recipe.instructions.length ? completedSteps.size + 1 : recipe.instructions.length} of {recipe.instructions.length}
+            Step{" "}
+            {completedSteps.size < recipe.instructions.length ? completedSteps.size + 1 : recipe.instructions.length} of{" "}
+            {recipe.instructions.length}
           </div>
         </div>
 
@@ -310,7 +303,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
                 <span className="text-xs text-muted-foreground font-medium uppercase mb-1">Calories</span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
-                    {Math.round((recipe.nutrition.calories * scalingRatio) / currentServings * recipe.servings)}
+                    {Math.round(((recipe.nutrition.calories * scalingRatio) / currentServings) * recipe.servings)}
                   </span>
                   <span className="text-sm text-muted-foreground font-medium pb-0.5">kcal</span>
                 </div>
@@ -323,7 +316,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
                 </span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
-                    {Math.round((recipe.nutrition.protein_g * scalingRatio) / currentServings * recipe.servings)}
+                    {Math.round(((recipe.nutrition.protein_g * scalingRatio) / currentServings) * recipe.servings)}
                   </span>
                   <span className="text-sm text-muted-foreground font-medium pb-0.5">g</span>
                 </div>
@@ -336,7 +329,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
                 </span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
-                    {Math.round((recipe.nutrition.carbs_g * scalingRatio) / currentServings * recipe.servings)}
+                    {Math.round(((recipe.nutrition.carbs_g * scalingRatio) / currentServings) * recipe.servings)}
                   </span>
                   <span className="text-sm text-muted-foreground font-medium pb-0.5">g</span>
                 </div>
@@ -349,7 +342,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
                 </span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
-                    {Math.round((recipe.nutrition.fat_g * scalingRatio) / currentServings * recipe.servings)}
+                    {Math.round(((recipe.nutrition.fat_g * scalingRatio) / currentServings) * recipe.servings)}
                   </span>
                   <span className="text-sm text-muted-foreground font-medium pb-0.5">g</span>
                 </div>

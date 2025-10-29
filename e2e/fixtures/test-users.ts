@@ -12,15 +12,15 @@
  * - test-users.ts: Real credentials for actual database users
  */
 
-import type { UserCredentials } from '../helpers/auth.helpers';
+import type { UserCredentials } from "../helpers/auth.helpers";
 
 /**
  * Primary test user - has full profile and recipes
  * Use for: Most standard tests, login flows, recipe operations
  */
 export const PRIMARY_TEST_USER: UserCredentials = {
-  email: 'e2e-primary@test.example.com',
-  password: 'TestPassword123!',
+  email: "e2e-primary@test.example.com",
+  password: "TestPassword123!",
 };
 
 /**
@@ -28,8 +28,8 @@ export const PRIMARY_TEST_USER: UserCredentials = {
  * Use for: Testing new user flows, profile creation, empty states
  */
 export const SECONDARY_TEST_USER: UserCredentials = {
-  email: 'e2e-secondary@test.example.com',
-  password: 'TestPassword123!',
+  email: "e2e-secondary@test.example.com",
+  password: "TestPassword123!",
 };
 
 /**
@@ -43,12 +43,12 @@ export const USER_WITH_PROFILE: UserCredentials & {
     preferred_cuisines: string[];
   };
 } = {
-  email: 'e2e-with-profile@test.example.com',
-  password: 'TestPassword123!',
+  email: "e2e-with-profile@test.example.com",
+  password: "TestPassword123!",
   profile: {
-    diet_type: 'vegetarian',
-    disliked_ingredients: ['peanuts', 'shellfish'],
-    preferred_cuisines: ['italian', 'indian'],
+    diet_type: "vegetarian",
+    disliked_ingredients: ["peanuts", "shellfish"],
+    preferred_cuisines: ["italian", "indian"],
   },
 };
 
@@ -57,8 +57,8 @@ export const USER_WITH_PROFILE: UserCredentials & {
  * Use for: Testing recipe list, search, filter, delete operations
  */
 export const USER_WITH_RECIPES: UserCredentials = {
-  email: 'e2e-with-recipes@test.example.com',
-  password: 'TestPassword123!',
+  email: "e2e-with-recipes@test.example.com",
+  password: "TestPassword123!",
 };
 
 /**
@@ -67,8 +67,8 @@ export const USER_WITH_RECIPES: UserCredentials = {
  * NOTE: This user should NOT exist before the test
  */
 export const SIGNUP_TEST_USER: UserCredentials = {
-  email: 'e2e-signup@test.example.com',
-  password: 'TestPassword123!',
+  email: "e2e-signup@test.example.com",
+  password: "TestPassword123!",
 };
 
 /**
@@ -76,8 +76,8 @@ export const SIGNUP_TEST_USER: UserCredentials = {
  * Use for: Forgot password, reset password flows
  */
 export const PASSWORD_RESET_USER: UserCredentials = {
-  email: 'e2e-reset-password@test.example.com',
-  password: 'TestPassword123!',
+  email: "e2e-reset-password@test.example.com",
+  password: "TestPassword123!",
 };
 
 /**
@@ -98,20 +98,20 @@ export const ALL_TEST_USERS = [
  */
 export const INVALID_CREDENTIALS = {
   nonExistentUser: {
-    email: 'nonexistent@test.example.com',
-    password: 'WrongPassword123!',
+    email: "nonexistent@test.example.com",
+    password: "WrongPassword123!",
   },
   invalidEmail: {
-    email: 'invalid-email-format',
-    password: 'TestPassword123!',
+    email: "invalid-email-format",
+    password: "TestPassword123!",
   },
   shortPassword: {
-    email: 'test@test.example.com',
-    password: 'short',
+    email: "test@test.example.com",
+    password: "short",
   },
   emptyCredentials: {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   },
 } as const;
 
@@ -140,7 +140,7 @@ export const USER_STATES = {
  * @param prefix - Optional prefix for the email
  * @returns Unique email address
  */
-export function getUniqueTestEmail(prefix: string = 'test'): string {
+export function getUniqueTestEmail(prefix = "test"): string {
   const timestamp = Date.now();
   const random = Math.random().toString(36).substring(7);
   return `e2e-${prefix}-${timestamp}-${random}@test.example.com`;
@@ -153,10 +153,7 @@ export function getUniqueTestEmail(prefix: string = 'test'): string {
  * @param password - Optional custom password
  * @returns User credentials
  */
-export function generateTestUser(
-  email?: string,
-  password: string = 'TestPassword123!'
-): UserCredentials {
+export function generateTestUser(email?: string, password = "TestPassword123!"): UserCredentials {
   return {
     email: email || getUniqueTestEmail(),
     password,

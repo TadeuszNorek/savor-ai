@@ -6,7 +6,7 @@ import type { CreateProfileCommand, UpdateProfileCommand, ProfileDTO } from "../
  * Error thrown when profile already exists (for POST operations)
  */
 export class ProfileConflictError extends Error {
-  constructor(message: string = "Profile already exists") {
+  constructor(message = "Profile already exists") {
     super(message);
     this.name = "ProfileConflictError";
   }
@@ -16,7 +16,7 @@ export class ProfileConflictError extends Error {
  * Error thrown when profile is not found (for GET/PUT operations)
  */
 export class ProfileNotFoundError extends Error {
-  constructor(message: string = "Profile not found") {
+  constructor(message = "Profile not found") {
     super(message);
     this.name = "ProfileNotFoundError";
   }
@@ -78,11 +78,7 @@ export class ProfilesService {
    * @throws Error for database errors
    */
   async getProfile(userId: string): Promise<ProfileDTO | null> {
-    const { data, error } = await this.supabase
-      .from("profiles")
-      .select("*")
-      .eq("user_id", userId)
-      .single();
+    const { data, error } = await this.supabase.from("profiles").select("*").eq("user_id", userId).single();
 
     // Profile not found is not an error - return null
     if (error && error.code === "PGRST116") {

@@ -5,30 +5,30 @@
 
 export const TEST_USERS = {
   validUser: {
-    email: 'test@example.com',
-    password: 'TestPassword123!',
+    email: "test@example.com",
+    password: "TestPassword123!",
   },
   invalidUser: {
-    email: 'invalid@example.com',
-    password: 'wrongpassword',
+    email: "invalid@example.com",
+    password: "wrongpassword",
   },
 };
 
 export const TEST_RECIPES = {
   sampleRecipe: {
-    name: 'Test Recipe',
-    description: 'A test recipe for E2E tests',
-    ingredients: ['Ingredient 1', 'Ingredient 2'],
-    instructions: ['Step 1', 'Step 2'],
+    name: "Test Recipe",
+    description: "A test recipe for E2E tests",
+    ingredients: ["Ingredient 1", "Ingredient 2"],
+    instructions: ["Step 1", "Step 2"],
   },
 };
 
 export const TEST_PROFILES = {
   sampleProfile: {
-    displayName: 'Test User',
-    dietType: 'vegetarian',
-    allergies: ['peanuts', 'shellfish'],
-    preferences: ['italian', 'mexican'],
+    displayName: "Test User",
+    dietType: "vegetarian",
+    allergies: ["peanuts", "shellfish"],
+    preferences: ["italian", "mexican"],
   },
 };
 
@@ -36,12 +36,12 @@ export const TEST_PROFILES = {
  * Common URLs for testing
  */
 export const URLS = {
-  home: '/',
-  login: '/login',
-  app: '/app',
-  profile: '/profile',
-  forgotPassword: '/auth/forgot',
-  resetPassword: '/auth/reset',
+  home: "/",
+  login: "/login",
+  app: "/app",
+  profile: "/profile",
+  forgotPassword: "/auth/forgot",
+  resetPassword: "/auth/reset",
 };
 
 /**

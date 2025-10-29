@@ -1,11 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiFetch } from "./http";
-import type {
-  ProfileDTO,
-  CreateProfileCommand,
-  UpdateProfileCommand,
-  ApiError,
-} from "../../types";
+import type { ProfileDTO, CreateProfileCommand, UpdateProfileCommand, ApiError } from "../../types";
 
 // ============================================================================
 // Profile API Functions

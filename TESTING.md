@@ -30,6 +30,7 @@ This project uses a comprehensive testing setup with:
 ### Coverage Goal
 
 Minimum **80% code coverage** for:
+
 - ✅ Lines
 - ✅ Functions
 - ✅ Branches
@@ -40,6 +41,7 @@ Minimum **80% code coverage** for:
 ## Quick Commands
 
 ### Unit Tests
+
 ```bash
 npm test                  # Run tests in watch mode
 npm run test:run          # Run tests once
@@ -49,6 +51,7 @@ npm run test:watch        # Watch mode (alias for npm test)
 ```
 
 ### E2E Tests
+
 ```bash
 npm run test:e2e          # Run E2E tests
 npm run test:e2e:ui       # Run E2E tests in UI mode
@@ -57,6 +60,7 @@ npm run test:e2e:codegen  # Generate test code with Playwright
 ```
 
 ### All Tests
+
 ```bash
 npm run test:all          # Run both unit and E2E tests
 ```
@@ -81,6 +85,7 @@ Testy implementujemy **warstwami** - od fundamentalnych komponentów (bez zależ
 ## Implementation Plan
 
 > **Szczegółowe TODO listy:**
+>
 > - Unit Tests: `UNIT_TESTS_TASKS.md` (52 taski)
 > - E2E Tests: `E2E_TESTS_TASKS.md` (13 tasków)
 
@@ -100,12 +105,14 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 1: Utilities & Pure Functions** (KRYTYCZNY)
 
 **Dlaczego najpierw:**
+
 - Brak zależności zewnętrznych
 - Deterministyczne wyniki
 - Szybkie do napisania
 - Fundamentalne dla reszty aplikacji
 
 **Co testujemy:**
+
 - `src/lib/utils.ts` - funkcja `cn()` ✅
 - `src/lib/utils/cursor.ts` - paginacja kursorowa
 
@@ -116,12 +123,14 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 2: Validation & Schemas** (KRYTYCZNY)
 
 **Dlaczego teraz:**
+
 - Bezpieczeństwo typu
 - Walidacja danych wejściowych
 - Krytyczne dla bezpieczeństwa aplikacji
 - Używane w całej aplikacji
 
 **Co testujemy:**
+
 - `src/lib/auth/validation.ts` - email, password validation
 - `src/lib/schemas/common.schema.ts` - UUID validation
 - `src/lib/schemas/recipe.schema.ts` - Recipe schema
@@ -134,11 +143,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 3: Mappers & Transformers** (WYSOKI)
 
 **Dlaczego teraz:**
+
 - Zależność tylko od schematów
 - Krytyczne dla integralności danych
 - Transformacje DTO ↔ ViewModel
 
 **Co testujemy:**
+
 - `src/lib/mappers/profile.ts` - Profile transformations
 - `src/lib/services/ai/utils/recipe-response-parser.ts` - AI response parsing
 
@@ -149,11 +160,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 4: UI Components - Shadcn/ui** (WYSOKI)
 
 **Dlaczego teraz:**
+
 - Podstawowe building blocks UI
 - Wysokie pokrycie z małym wysiłkiem
 - Używane w całej aplikacji
 
 **Co testujemy:**
+
 - `src/components/ui/button.tsx` ✅
 - `src/components/ui/input.tsx`
 - `src/components/ui/label.tsx`
@@ -172,11 +185,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 5: Custom Hooks** (WYSOKI)
 
 **Dlaczego teraz:**
+
 - Reusable logic
 - Często używane w komponentach
 - Można testować izolowanie
 
 **Co testujemy:**
+
 - `src/lib/hooks/useUrlFilters.ts` - URL parameter handling
 - `src/lib/hooks/useScrollRestoration.ts` - Scroll position restoration
 
@@ -187,11 +202,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 6: API Clients** (ŚREDNI)
 
 **Dlaczego teraz:**
+
 - Używają MSW do mockowania
 - Setup już gotowy
 - Krytyczne dla komunikacji z backendem
 
 **Co testujemy:**
+
 - `src/lib/api/http.ts` - HTTP client
 - `src/lib/api/recipes.ts` - Recipes API
 - `src/lib/api/profile.ts` - Profile API
@@ -203,11 +220,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 7: Auth Components** (KRYTYCZNY)
 
 **Dlaczego teraz:**
+
 - Krytyczna funkcjonalność
 - Security-critical
 - Wymaga dobrze przetestowanych validatorów (już done)
 
 **Co testujemy:**
+
 - `src/components/auth/EmailInput.tsx`
 - `src/components/auth/PasswordInput.tsx`
 - `src/components/auth/AuthForm.tsx`
@@ -221,11 +240,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 8: Application Components** (ŚREDNI)
 
 **Dlaczego teraz:**
+
 - Złożone komponenty biznesowe
 - Wymagają wielu zależności
 - Wysoka wartość biznesowa
 
 **Co testujemy:**
+
 - Recipe Components: RecipeCard, RecipeList, RecipePreview, SearchBar, SortSelect
 - Profile Components: TagsInput, DietTypeSelect, ProfileForm
 
@@ -236,11 +257,13 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 9: Services** (ŚREDNI)
 
 **Dlaczego teraz:**
+
 - Business logic layer
 - Orchestration
 - Wymaga mockowania API
 
 **Co testujemy:**
+
 - `src/lib/services/recipes.service.ts`
 - `src/lib/services/profiles.service.ts`
 - `src/lib/services/events.service.ts`
@@ -252,12 +275,14 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 #### **Faza 10: AI Providers** (NISKI)
 
 **Dlaczego na końcu:**
+
 - Najbardziej złożone
 - Zewnętrzne zależności
 - Wymaga rozbudowanego mockowania
 - Nie wpływa na podstawową funkcjonalność
 
 **Co testujemy:**
+
 - AI Utilities: recipe-prompt-builder, llm-request-manager
 - AI Providers: mock, google, openrouter
 - AI Service: orchestration, fallback logic
@@ -269,6 +294,7 @@ TOTAL:          65 plików         |  ~608 testów  |  5-6 tygodni
 ### 🏆 Milestones
 
 #### **MILESTONE 1: Fundamenty** (Fazy 1-3)
+
 ```
 Tasks:      TASK 1-6 z UNIT_TESTS_TASKS.md
 Tests:      ~120 testów
@@ -278,6 +304,7 @@ Coverage:   Utilities, validation, schemas, mappers
 ```
 
 #### **MILESTONE 2: UI & Hooks** (Fazy 4-5)
+
 ```
 Tasks:      TASK 7-17 z UNIT_TESTS_TASKS.md
 Tests:      ~65 testów
@@ -287,6 +314,7 @@ Coverage:   UI components, custom hooks
 ```
 
 #### **MILESTONE 3: Auth** (Faza 7)
+
 ```
 Tasks:      TASK 18-22 z UNIT_TESTS_TASKS.md
 Tests:      ~45 testów
@@ -296,6 +324,7 @@ Coverage:   Auth components, auth logic
 ```
 
 #### **MILESTONE 4: API & Components** (Fazy 6, 8)
+
 ```
 Tasks:      TASK 23-40 z UNIT_TESTS_TASKS.md
 Tests:      ~120 testów
@@ -305,6 +334,7 @@ Coverage:   API clients, app components
 ```
 
 #### **MILESTONE 5: Services & AI** (Fazy 9-10)
+
 ```
 Tasks:      TASK 41-49 z UNIT_TESTS_TASKS.md
 Tests:      ~130 testów
@@ -320,6 +350,7 @@ Coverage:   Services, AI providers
 **Implementacja: PO zakończeniu Unit Tests**
 
 #### **Journey 1: Authentication**
+
 - Login/Logout
 - Sign up
 - Password reset
@@ -327,12 +358,14 @@ Coverage:   Services, AI providers
 **Oszacowanie:** 30 testów | 2-3 dni
 
 #### **Journey 2: Recipe Generation**
+
 - AI-powered recipe creation
 - Regenerate recipe
 
 **Oszacowanie:** 12 testów | 1-2 dni
 
 #### **Journey 3: Recipe CRUD**
+
 - Save recipe
 - View recipe list & details
 - Delete recipe
@@ -340,6 +373,7 @@ Coverage:   Services, AI providers
 **Oszacowanie:** 28 testów | 3-4 dni
 
 #### **Journey 4: Search & Filter**
+
 - Search recipes
 - Filter by tags
 - Sort recipes
@@ -347,12 +381,14 @@ Coverage:   Services, AI providers
 **Oszacowanie:** 28 testów | 3-4 dni
 
 #### **Journey 5: Profile Management**
+
 - Create/update profile
 - Manage preferences
 
 **Oszacowanie:** 15 testów | 2 dni
 
 #### **Journey 6: Navigation & UI**
+
 - Navigation flows
 - Dark mode
 - Responsive UI
@@ -363,12 +399,12 @@ Coverage:   Services, AI providers
 
 ### 📊 Priorytety - Podsumowanie
 
-| Priorytet | Fazy | Testy | Czas |
-|-----------|------|-------|------|
-| **KRYTYCZNY** | 1-3, 7 | ~165 testów | 4-6 dni |
-| **WYSOKI** | 4-5 | ~65 testów | 2-3 dni |
-| **ŚREDNI** | 6, 8-9 | ~195 testów | 2-3 tygodnie |
-| **NISKI** | 10 | ~75 testów | 1 tydzień |
+| Priorytet     | Fazy   | Testy       | Czas         |
+| ------------- | ------ | ----------- | ------------ |
+| **KRYTYCZNY** | 1-3, 7 | ~165 testów | 4-6 dni      |
+| **WYSOKI**    | 4-5    | ~65 testów  | 2-3 dni      |
+| **ŚREDNI**    | 6, 8-9 | ~195 testów | 2-3 tygodnie |
+| **NISKI**     | 10     | ~75 testów  | 1 tydzień    |
 
 **Rekomendacja:** Zrób Milestones 1-3 (priorytety KRYTYCZNY + WYSOKI) w pierwszej kolejności.
 
@@ -445,19 +481,19 @@ e2e/
 Create `tests/unit/my-function.test.ts`:
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { myFunction } from '@/lib/myFunction';
+import { describe, it, expect } from "vitest";
+import { myFunction } from "@/lib/myFunction";
 
-describe('myFunction', () => {
-  it('should work correctly', () => {
+describe("myFunction", () => {
+  it("should work correctly", () => {
     // Arrange
-    const input = 'test input';
+    const input = "test input";
 
     // Act
     const result = myFunction(input);
 
     // Assert
-    expect(result).toBe('expected output');
+    expect(result).toBe("expected output");
   });
 });
 ```
@@ -499,19 +535,19 @@ describe('MyComponent', () => {
 Create `e2e/specs/my-feature.spec.ts`:
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('My Feature', () => {
+test.describe("My Feature", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto("/");
   });
 
-  test('should display welcome message', async ({ page }) => {
-    await expect(page.getByText('Welcome')).toBeVisible();
+  test("should display welcome message", async ({ page }) => {
+    await expect(page.getByText("Welcome")).toBeVisible();
   });
 
-  test('should navigate to login page', async ({ page }) => {
-    await page.getByRole('link', { name: /login/i }).click();
+  test("should navigate to login page", async ({ page }) => {
+    await page.getByRole("link", { name: /login/i }).click();
     await expect(page).toHaveURL(/\/login/);
   });
 });
@@ -524,29 +560,30 @@ test.describe('My Feature', () => {
 Add handlers to `tests/mocks/handlers.ts`:
 
 ```typescript
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse } from "msw";
 
 export const handlers = [
   // GET request
-  http.get('/api/recipes', () => {
+  http.get("/api/recipes", () => {
     return HttpResponse.json({
-      data: [
-        { id: '1', name: 'Test Recipe', description: 'A test recipe' }
-      ]
+      data: [{ id: "1", name: "Test Recipe", description: "A test recipe" }],
     });
   }),
 
   // POST request
-  http.post('/api/recipes', async ({ request }) => {
+  http.post("/api/recipes", async ({ request }) => {
     const body = await request.json();
-    return HttpResponse.json({
-      success: true,
-      data: body
-    }, { status: 201 });
+    return HttpResponse.json(
+      {
+        success: true,
+        data: body,
+      },
+      { status: 201 }
+    );
   }),
 
   // Error scenario
-  http.delete('/api/recipes/:id', () => {
+  http.delete("/api/recipes/:id", () => {
     return new HttpResponse(null, { status: 500 });
   }),
 ];
@@ -642,12 +679,14 @@ npm run test:coverage
 ```
 
 **Coverage Thresholds (80%):**
+
 - Lines: 80%
 - Functions: 80%
 - Branches: 80%
 - Statements: 80%
 
 **Tips:**
+
 - Focus on critical paths first
 - Don't chase 100% coverage
 - Test behavior, not implementation
@@ -658,6 +697,7 @@ npm run test:coverage
 ## CI/CD
 
 Tests run automatically on:
+
 - ✅ Every push to main/master/develop
 - ✅ Every pull request
 - ✅ Before deployment
@@ -665,6 +705,7 @@ Tests run automatically on:
 See `.github/workflows/test.yml` for configuration.
 
 **CI Pipeline:**
+
 1. Install dependencies
 2. Run unit tests
 3. Run unit tests with coverage
@@ -679,6 +720,7 @@ See `.github/workflows/test.yml` for configuration.
 ### Common Issues
 
 #### **Tests fail with import errors**
+
 ```bash
 # Solution 1: Check vitest.config.ts alias configuration
 # Solution 2: Ensure TypeScript paths match
@@ -687,6 +729,7 @@ npx vitest --clearCache
 ```
 
 #### **Playwright can't find elements**
+
 ```bash
 # Solution 1: Use codegen to generate selectors
 npx playwright codegen
@@ -702,6 +745,7 @@ npx playwright show-trace trace.zip
 ```
 
 #### **MSW not intercepting requests**
+
 ```bash
 # Solution 1: Verify handlers in tests/mocks/handlers.ts
 # Solution 2: Check server setup in tests/setup.ts
@@ -711,6 +755,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 ```
 
 #### **Flaky E2E tests**
+
 ```bash
 # Solution 1: Use Playwright auto-wait (don't use waitForTimeout)
 # Solution 2: Use proper locators (getByRole, not CSS)
@@ -720,6 +765,7 @@ test.describe.configure({ retries: 2 });
 ```
 
 #### **Coverage not updating**
+
 ```bash
 # Solution 1: Clear coverage cache
 rm -rf coverage/
@@ -733,17 +779,20 @@ rm -rf coverage/
 ## Resources
 
 ### Documentation
+
 - [Vitest Docs](https://vitest.dev/)
 - [Playwright Docs](https://playwright.dev/)
 - [Testing Library Docs](https://testing-library.com/)
 - [MSW Docs](https://mswjs.io/)
 
 ### Project Docs
+
 - `UNIT_TESTS_TASKS.md` - Unit test TODO list (52 tasks)
 - `E2E_TESTS_TASKS.md` - E2E test TODO list (13 tasks)
 - `tests/README.md` - Detailed testing documentation
 
 ### Quick Links
+
 - [Vitest API](https://vitest.dev/api/)
 - [Playwright Best Practices](https://playwright.dev/docs/best-practices)
 - [Testing Library Queries](https://testing-library.com/docs/queries/about)
@@ -804,4 +853,4 @@ code E2E_TESTS_TASKS.md
 
 **Start here:** `UNIT_TESTS_TASKS.md` → TASK 1
 
-*Last updated: 2025-10-25*
+_Last updated: 2025-10-25_

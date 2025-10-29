@@ -15,9 +15,7 @@ interface RecipeCardProps {
 export function RecipeCard({ item, selected = false, onClick }: RecipeCardProps) {
   return (
     <Card
-      className={`p-4 cursor-pointer transition-colors hover:bg-accent ${
-        selected ? "border-primary bg-accent" : ""
-      }`}
+      className={`p-4 cursor-pointer transition-colors hover:bg-accent ${selected ? "border-primary bg-accent" : ""}`}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -32,9 +30,7 @@ export function RecipeCard({ item, selected = false, onClick }: RecipeCardProps)
       <div className="space-y-2">
         <h3 className="font-semibold text-lg line-clamp-2">{item.title}</h3>
 
-        {item.summary && (
-          <p className="text-sm text-muted-foreground line-clamp-2">{item.summary}</p>
-        )}
+        {item.summary && <p className="text-sm text-muted-foreground line-clamp-2">{item.summary}</p>}
 
         {item.tags && item.tags.length > 0 && (
           <div className="flex flex-wrap gap-1">

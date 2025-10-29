@@ -17,10 +17,15 @@ const gitignorePath = path.resolve(__dirname, ".gitignore");
 
 const baseConfig = tseslint.config({
   extends: [eslint.configs.recommended, tseslint.configs.strict, tseslint.configs.stylistic],
+  languageOptions: {
+    globals: {
+      process: "readonly",
+      console: "readonly",
+    },
+  },
   rules: {
     "no-console": "warn",
     "no-unused-vars": "off",
-    "linebreak-style": ["error", "windows"], // Windows uses CRLF
   },
 });
 

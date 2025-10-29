@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Signup Page
@@ -17,28 +17,28 @@ export class SignupPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByRole('textbox', { name: /email/i });
-    this.passwordInput = page.locator('input#password');
-    this.createAccountButton = page.getByRole('button', { name: /create account/i });
-    this.signInButton = page.getByRole('button', { name: /sign in/i });
-    this.formElement = page.getByRole('form', { name: /registration form/i });
+    this.emailInput = page.getByRole("textbox", { name: /email/i });
+    this.passwordInput = page.locator("input#password");
+    this.createAccountButton = page.getByRole("button", { name: /create account/i });
+    this.signInButton = page.getByRole("button", { name: /sign in/i });
+    this.formElement = page.getByRole("form", { name: /registration form/i });
   }
 
   /**
    * Navigate to login page and switch to signup mode
    */
   async goto() {
-    await this.page.goto('/login');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto("/login");
+    await this.page.waitForLoadState("networkidle");
 
     // Switch to signup mode by clicking "Sign up" link
-    const signUpLink = this.page.getByRole('button', { name: /sign up/i });
-    await signUpLink.waitFor({ state: 'visible' });
+    const signUpLink = this.page.getByRole("button", { name: /sign up/i });
+    await signUpLink.waitFor({ state: "visible" });
     await this.page.waitForTimeout(500); // Wait for hydration
     await signUpLink.click();
 
     // Wait for mode to switch
-    await this.createAccountButton.waitFor({ state: 'visible', timeout: 5000 });
+    await this.createAccountButton.waitFor({ state: "visible", timeout: 5000 });
   }
 
   /**
@@ -46,9 +46,9 @@ export class SignupPage {
    */
   async signup(email: string, password: string) {
     // Wait for form to be ready and hydrated
-    await this.page.waitForLoadState('networkidle');
-    await this.emailInput.waitFor({ state: 'visible' });
-    await this.passwordInput.waitFor({ state: 'visible' });
+    await this.page.waitForLoadState("networkidle");
+    await this.emailInput.waitFor({ state: "visible" });
+    await this.passwordInput.waitFor({ state: "visible" });
 
     // Fill form fields - use click first to ensure focus
     await this.emailInput.click();
@@ -78,9 +78,9 @@ export class SignupPage {
   /**
    * Get specific error message by field
    */
-  getFieldError(fieldName: 'email' | 'password') {
+  getFieldError(fieldName: "email" | "password") {
     // Field errors appear next to inputs
-    const fieldId = fieldName === 'email' ? 'email' : 'password';
+    const fieldId = fieldName === "email" ? "email" : "password";
     return this.page.locator(`#${fieldId}-error`);
   }
 
@@ -90,7 +90,7 @@ export class SignupPage {
   async switchToLogin() {
     await this.signInButton.click();
     // Wait for mode to switch - the "Sign In" submit button should appear
-    const signInSubmitButton = this.page.getByRole('button', { name: /^sign in$/i });
-    await signInSubmitButton.waitFor({ state: 'visible', timeout: 5000 });
+    const signInSubmitButton = this.page.getByRole("button", { name: /^sign in$/i });
+    await signInSubmitButton.waitFor({ state: "visible", timeout: 5000 });
   }
 }

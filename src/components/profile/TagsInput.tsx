@@ -37,48 +37,48 @@ interface TagsInputProps {
  */
 export const TagsInput = forwardRef<HTMLInputElement, TagsInputProps>(
   ({ name, value, onChange, placeholder, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }, ref) => {
-  const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState("");
 
-  // Add a new tag
-  const addTag = (tag: string) => {
-    const trimmed = tag.trim();
-    if (trimmed.length === 0) return;
-    if (trimmed.length > 50) return; // Max length validation
+    // Add a new tag
+    const addTag = (tag: string) => {
+      const trimmed = tag.trim();
+      if (trimmed.length === 0) return;
+      if (trimmed.length > 50) return; // Max length validation
 
-    // Check if tag already exists (case-insensitive)
-    const normalized = trimmed.toLowerCase();
-    if (value.some((existing) => existing.toLowerCase() === normalized)) {
-      setInputValue(""); // Clear input but don't add duplicate
-      return;
-    }
+      // Check if tag already exists (case-insensitive)
+      const normalized = trimmed.toLowerCase();
+      if (value.some((existing) => existing.toLowerCase() === normalized)) {
+        setInputValue(""); // Clear input but don't add duplicate
+        return;
+      }
 
-    // Add the tag
-    onChange([...value, normalized]);
-    setInputValue("");
-  };
+      // Add the tag
+      onChange([...value, normalized]);
+      setInputValue("");
+    };
 
-  // Remove a tag by index
-  const removeTag = (index: number) => {
-    onChange(value.filter((_, i) => i !== index));
-  };
+    // Remove a tag by index
+    const removeTag = (index: number) => {
+      onChange(value.filter((_, i) => i !== index));
+    };
 
-  // Handle keyboard events
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addTag(inputValue);
-    } else if (e.key === "Backspace" && inputValue === "" && value.length > 0) {
-      // Remove last tag when backspace is pressed on empty input
-      removeTag(value.length - 1);
-    }
-  };
+    // Handle keyboard events
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter" || e.key === ",") {
+        e.preventDefault();
+        addTag(inputValue);
+      } else if (e.key === "Backspace" && inputValue === "" && value.length > 0) {
+        // Remove last tag when backspace is pressed on empty input
+        removeTag(value.length - 1);
+      }
+    };
 
-  // Handle blur (add tag when user leaves input)
-  const handleBlur = () => {
-    if (inputValue.trim()) {
-      addTag(inputValue);
-    }
-  };
+    // Handle blur (add tag when user leaves input)
+    const handleBlur = () => {
+      if (inputValue.trim()) {
+        addTag(inputValue);
+      }
+    };
 
     const maxReached = value.length >= 100;
 

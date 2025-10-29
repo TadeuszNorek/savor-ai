@@ -30,29 +30,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -120,11 +110,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     let profile;
     try {
-      const { data: profileData } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
+      const { data: profileData } = await supabase.from("profiles").select("*").eq("user_id", userId).single();
 
       profile = profileData || undefined;
     } catch (error) {
@@ -159,13 +145,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     } catch (error) {
       // Handle AI-specific errors
       if (error instanceof AiTimeoutError) {
-        return jsonError(
-          503,
-          "Service Unavailable",
-          "AI service timed out. Please try again.",
-          undefined,
-          requestId
-        );
+        return jsonError(503, "Service Unavailable", "AI service timed out. Please try again.", undefined, requestId);
       }
 
       if (error instanceof AiProviderError) {
@@ -238,13 +218,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in /api/recipes/generate:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 

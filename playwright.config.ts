@@ -1,15 +1,15 @@
-import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-import path from 'path';
+import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
+import path from "path";
 
 // Read environment variables from .env.test
-dotenv.config({ path: path.resolve(process.cwd(), '.env.test') });
+dotenv.config({ path: path.resolve(process.cwd(), ".env.test") });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: "./e2e",
 
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -24,25 +24,21 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ['html'],
-    ['list'],
-    ['json', { outputFile: 'test-results/results.json' }],
-  ],
+  reporter: [["html"], ["list"], ["json", { outputFile: "test-results/results.json" }]],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.BASE_URL || 'http://localhost:3001',
+    baseURL: process.env.BASE_URL || "http://localhost:3001",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
 
     /* Capture screenshot on failure */
-    screenshot: 'only-on-failure',
+    screenshot: "only-on-failure",
 
     /* Capture video on failure */
-    video: 'retain-on-failure',
+    video: "retain-on-failure",
 
     /* Browser contexts for test isolation */
     contextOptions: {
@@ -64,21 +60,21 @@ export default defineConfig({
   /* Configure projects for Chromium only */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npx dotenvx run --env-file=.env.test -- npm run dev',
-    url: 'http://localhost:3001',
+    command: "npx dotenvx run --env-file=.env.test -- npm run dev",
+    url: "http://localhost:3001",
     reuseExistingServer: false, // Always restart to ensure .env.test is loaded
     timeout: 120000,
-    stdout: 'pipe',
-    stderr: 'pipe',
+    stdout: "pipe",
+    stderr: "pipe",
     env: {
-      PLAYWRIGHT_TEST: 'true', // Signal to astro.config that we're running tests
+      PLAYWRIGHT_TEST: "true", // Signal to astro.config that we're running tests
     },
   },
 });

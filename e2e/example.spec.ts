@@ -1,35 +1,35 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Home Page', () => {
-  test('should load the home page successfully', async ({ page }) => {
-    await page.goto('/');
+test.describe("Home Page", () => {
+  test("should load the home page successfully", async ({ page }) => {
+    await page.goto("/");
 
     // Wait for the page to load
     await expect(page).toHaveTitle(/savor/i);
 
     // Check if main content is visible
-    await expect(page.locator('body')).toBeVisible();
+    await expect(page.locator("body")).toBeVisible();
   });
 
-  test('should have navigation links', async ({ page }) => {
-    await page.goto('/');
+  test("should have navigation links", async ({ page }) => {
+    await page.goto("/");
 
     // Check for common navigation elements
-    const loginLink = page.getByRole('link', { name: /login|sign in/i });
+    const loginLink = page.getByRole("link", { name: /login|sign in/i });
 
     // Verify login link exists and is visible (may not be present if already logged in)
-    if (await loginLink.count() > 0) {
+    if ((await loginLink.count()) > 0) {
       await expect(loginLink.first()).toBeVisible();
     }
   });
 });
 
-test.describe('Login Page', () => {
+test.describe("Login Page", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/login');
+    await page.goto("/login");
   });
 
-  test('should display login form', async ({ page }) => {
+  test("should display login form", async ({ page }) => {
     // Check if email input is visible
     const emailInput = page.getByLabel(/email/i);
     await expect(emailInput).toBeVisible();
@@ -39,12 +39,12 @@ test.describe('Login Page', () => {
     await expect(passwordInput).toBeVisible();
 
     // Check if submit button exists
-    const signInButton = page.getByRole('button', { name: /sign in/i });
+    const signInButton = page.getByRole("button", { name: /sign in/i });
     await expect(signInButton).toBeVisible();
   });
 
-  test('should show validation errors for empty form', async ({ page }) => {
-    const signInButton = page.getByRole('button', { name: /sign in/i });
+  test("should show validation errors for empty form", async ({ page }) => {
+    const signInButton = page.getByRole("button", { name: /sign in/i });
     await signInButton.click();
 
     // HTML5 validation should prevent form submission
@@ -52,12 +52,12 @@ test.describe('Login Page', () => {
     // Adjust this based on your actual validation implementation
   });
 
-  test('should navigate to forgot password page', async ({ page }) => {
-    const forgotPasswordLink = page.getByRole('link', {
+  test("should navigate to forgot password page", async ({ page }) => {
+    const forgotPasswordLink = page.getByRole("link", {
       name: /forgot password/i,
     });
 
-    if (await forgotPasswordLink.count() > 0) {
+    if ((await forgotPasswordLink.count()) > 0) {
       await forgotPasswordLink.click();
       await expect(page).toHaveURL(/\/auth\/forgot/);
     }

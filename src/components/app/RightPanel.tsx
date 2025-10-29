@@ -3,11 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneratorPanel } from "./GeneratorPanel";
 import { PreviewPanel } from "./PreviewPanel";
 import { useRecipeDetails } from "@/lib/api/recipes";
-import type {
-  RecipeSchema,
-  GenerateRecipeResponse,
-  RecipeSummaryDTO,
-} from "@/types";
+import type { RecipeSchema, GenerateRecipeResponse, RecipeSummaryDTO } from "@/types";
 
 interface RightPanelProps {
   selectedRecipeId?: string;
@@ -111,9 +107,7 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
           </TabsTrigger>
           <TabsTrigger value="preview" className="flex-1">
             Preview
-            {(showDraft || showSaved) && (
-              <span className="ml-2 h-2 w-2 rounded-full bg-primary" />
-            )}
+            {(showDraft || showSaved) && <span className="ml-2 h-2 w-2 rounded-full bg-primary" />}
           </TabsTrigger>
         </TabsList>
 

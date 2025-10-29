@@ -29,23 +29,23 @@ Remaining:       29/52
 
 ### 🎯 Major Improvements
 
-| File | Before | After | Change |
-|------|--------|-------|--------|
-| **AuthForm.tsx** | 36.63% | **92.22%** | **+55.59%** ✅ |
-| **Overall Lines** | 74.92% | **90.70%** | **+15.78%** ✅ |
+| File                   | Before | After      | Change         |
+| ---------------------- | ------ | ---------- | -------------- |
+| **AuthForm.tsx**       | 36.63% | **92.22%** | **+55.59%** ✅ |
+| **Overall Lines**      | 74.92% | **90.70%** | **+15.78%** ✅ |
 | **Overall Statements** | 75.39% | **90.74%** | **+15.35%** ✅ |
-| **Overall Branches** | 80.70% | **90.35%** | **+9.65%** ✅ |
+| **Overall Branches**   | 80.70% | **90.35%** | **+9.65%** ✅  |
 
 ### 🟡 Remaining Coverage Gaps (Optional)
 
-| File | Coverage | Missing Lines | Impact |
-|------|----------|---------------|--------|
-| **AuthForm.tsx** | 92.22% | 67, 99-106 | ✅ MINOR - focus on error field edge case |
-| **select.tsx** | 36.36% | 60-162 | 🟡 LOW - Radix UI internals, complex to test |
-| **useScrollRestoration.ts** | 44% | 20-26, 39-51 | 🟡 LOW - scroll position logic |
-| **cursor.ts** | 95.65% | 64 | ✅ MINOR - 1 error path |
-| **useUrlFilters.ts** | 93.1% | 124-126 | ✅ MINOR - error handling |
-| **alert.tsx** | 75% | 38 | ✅ MINOR - not used yet |
+| File                        | Coverage | Missing Lines | Impact                                       |
+| --------------------------- | -------- | ------------- | -------------------------------------------- |
+| **AuthForm.tsx**            | 92.22%   | 67, 99-106    | ✅ MINOR - focus on error field edge case    |
+| **select.tsx**              | 36.36%   | 60-162        | 🟡 LOW - Radix UI internals, complex to test |
+| **useScrollRestoration.ts** | 44%      | 20-26, 39-51  | 🟡 LOW - scroll position logic               |
+| **cursor.ts**               | 95.65%   | 64            | ✅ MINOR - 1 error path                      |
+| **useUrlFilters.ts**        | 93.1%    | 124-126       | ✅ MINOR - error handling                    |
+| **alert.tsx**               | 75%      | 38            | ✅ MINOR - not used yet                      |
 
 ### 📊 Files with 100% Coverage (16 files)
 
@@ -106,11 +106,11 @@ Remaining:       29/52
 
 ### 🚧 In Progress (0/6)
 
-*No tasks in progress*
+_No tasks in progress_
 
 ### ⏭️ To Do (0/6) ✅ ALL COMPLETE!
 
-*All Milestone 1 tasks completed!*
+_All Milestone 1 tasks completed!_
 
 ---
 
@@ -226,6 +226,7 @@ Remaining:       29/52
   - **Note:** Mocked Supabase client and telemetry
 
 ### ⏭️ Auth Components ✅ ALL COMPLETE!
+
 ### ⏭️ Auth Logic ✅ ALL COMPLETE!
 
 ---
@@ -486,6 +487,7 @@ TASK 18-22 → Milestone 3 (Auth)
 ### Tracking Progress
 
 Aktualizuj `Progress Overview` na górze po każdym zadaniu:
+
 ```
 Completed:    3/52 (6%)   ← increment po każdym tasku
 In Progress:  1/52        ← zawsze max 1
@@ -502,6 +504,7 @@ npm run test:coverage
 ```
 
 **Milestones coverage targets:**
+
 - Milestone 1: >90% core utilities
 - Milestone 2: >85% UI components
 - Milestone 3: >85% auth
@@ -510,5 +513,5 @@ npm run test:coverage
 
 ---
 
-*Last updated: 2025-10-25*
-*Next task: TASK 1 - cursor.test.ts*
+_Last updated: 2025-10-25_
+_Next task: TASK 1 - cursor.test.ts_

@@ -15,13 +15,7 @@ interface SearchBarProps {
  * SearchBar component for full-text search
  * Supports debounced input, Enter key submission, and clear button
  */
-export function SearchBar({
-  value,
-  onChange,
-  onSubmit,
-  disabled = false,
-  maxLength = 200,
-}: SearchBarProps) {
+export function SearchBar({ value, onChange, onSubmit, disabled = false, maxLength = 200 }: SearchBarProps) {
   const [inputValue, setInputValue] = useState(value);
 
   // Sync with external value changes

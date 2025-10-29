@@ -39,7 +39,9 @@ export function ResetPasswordForm() {
   useEffect(() => {
     const checkRecoverySession = async () => {
       try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
+        const {
+          data: { session },
+        } = await supabaseClient.auth.getSession();
 
         // Check if this is a password recovery session
         if (session) {
@@ -58,7 +60,9 @@ export function ResetPasswordForm() {
     checkRecoverySession();
 
     // Subscribe to auth state changes
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabaseClient.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY") {
         setIsRecoverySession(true);
         setIsLoading(false);
@@ -235,10 +239,7 @@ export function ResetPasswordForm() {
           <div className="text-center text-sm">
             <p>
               Remember your password?{" "}
-              <a
-                href="/login"
-                className="text-primary hover:underline font-medium"
-              >
+              <a href="/login" className="text-primary hover:underline font-medium">
                 Sign in
               </a>
             </p>

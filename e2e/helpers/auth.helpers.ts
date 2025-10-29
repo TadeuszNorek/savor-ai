@@ -1,6 +1,6 @@
-import { type Page } from '@playwright/test';
-import { createClient } from '@supabase/supabase-js';
-import { LoginPage } from '../pages/login.page';
+import { type Page } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
+import { LoginPage } from "../pages/login.page";
 
 /**
  * User credentials interface
@@ -26,9 +26,7 @@ function getSupabaseAdminClient() {
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error(
-      'Missing Supabase credentials. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env'
-    );
+    throw new Error("Missing Supabase credentials. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env");
   }
 
   return createClient(supabaseUrl, supabaseServiceKey, {
@@ -46,10 +44,7 @@ function getSupabaseAdminClient() {
  * @param page - Playwright page instance
  * @param credentials - User email and password
  */
-export async function loginAsUser(
-  page: Page,
-  credentials: UserCredentials
-): Promise<void> {
+export async function loginAsUser(page: Page, credentials: UserCredentials): Promise<void> {
   const loginPage = new LoginPage(page);
 
   await loginPage.goto();
@@ -65,12 +60,9 @@ export async function loginAsUser(
  * @param page - Playwright page instance
  * @param credentials - User email and password
  */
-export async function loginViaAPI(
-  page: Page,
-  credentials: UserCredentials
-): Promise<void> {
+export async function loginViaAPI(page: Page, credentials: UserCredentials): Promise<void> {
   // Call the login API endpoint directly
-  const response = await page.request.post('/api/auth/login', {
+  const response = await page.request.post("/api/auth/login", {
     data: {
       email: credentials.email,
       password: credentials.password,
@@ -79,11 +71,11 @@ export async function loginViaAPI(
 
   if (!response.ok()) {
     const error = await response.json();
-    throw new Error(`Login via API failed: ${error.error || 'Unknown error'}`);
+    throw new Error(`Login via API failed: ${error.error || "Unknown error"}`);
   }
 
   // Navigate to app to verify session
-  await page.goto('/app');
+  await page.goto("/app");
   await page.waitForURL(/\/app/);
 }
 
@@ -94,16 +86,14 @@ export async function loginViaAPI(
  * @param userData - Optional user data (email, password)
  * @returns Created user credentials with ID
  */
-export async function createTestUser(
-  userData?: Partial<TestUser>
-): Promise<TestUser> {
+export async function createTestUser(userData?: Partial<TestUser>): Promise<TestUser> {
   const supabase = getSupabaseAdminClient();
 
   // Generate unique email if not provided
   const timestamp = Date.now();
   const randomString = Math.random().toString(36).substring(7);
   const email = userData?.email || `test-${timestamp}-${randomString}@example.com`;
-  const password = userData?.password || 'TestPassword123!';
+  const password = userData?.password || "TestPassword123!";
 
   // Create user via Supabase Admin API
   const { data, error } = await supabase.auth.admin.createUser({
@@ -146,10 +136,10 @@ export async function deleteTestUser(userId: string): Promise<void> {
  */
 export async function logoutUser(page: Page): Promise<void> {
   // Call logout API endpoint
-  await page.request.post('/api/auth/logout');
+  await page.request.post("/api/auth/logout");
 
   // Navigate to login page to verify logout
-  await page.goto('/login');
+  await page.goto("/login");
   await page.waitForURL(/\/login/);
 }
 
@@ -166,8 +156,7 @@ export async function getAuthToken(page: Page): Promise<string | null> {
   // Supabase stores tokens in specific cookie names
   const authCookie = cookies.find(
     (cookie) =>
-      cookie.name.includes('sb-') &&
-      (cookie.name.includes('auth-token') || cookie.name.includes('access-token'))
+      cookie.name.includes("sb-") && (cookie.name.includes("auth-token") || cookie.name.includes("access-token"))
   );
 
   if (!authCookie) {
@@ -178,7 +167,7 @@ export async function getAuthToken(page: Page): Promise<string | null> {
   try {
     const value = decodeURIComponent(authCookie.value);
     // Supabase cookies might be JSON encoded
-    if (value.startsWith('{') || value.startsWith('[')) {
+    if (value.startsWith("{") || value.startsWith("[")) {
       const parsed = JSON.parse(value);
       return parsed.access_token || parsed.token || value;
     }
@@ -209,7 +198,7 @@ export async function isAuthenticated(page: Page): Promise<boolean> {
   const currentUrl = page.url();
 
   // If on /app route, user is authenticated
-  if (currentUrl.includes('/app')) {
+  if (currentUrl.includes("/app")) {
     return true;
   }
 
@@ -225,9 +214,6 @@ export async function isAuthenticated(page: Page): Promise<boolean> {
  * @param page - Playwright page instance
  * @param timeout - Maximum time to wait in ms
  */
-export async function waitForAuth(
-  page: Page,
-  timeout: number = 5000
-): Promise<void> {
+export async function waitForAuth(page: Page, timeout = 5000): Promise<void> {
   await page.waitForURL(/\/app/, { timeout });
 }

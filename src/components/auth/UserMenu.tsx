@@ -60,25 +60,16 @@ export function UserMenu({ email }: UserMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center space-x-2"
-          disabled={isLoggingOut}
-        >
+        <Button variant="ghost" size="sm" className="flex items-center space-x-2" disabled={isLoggingOut}>
           <User className="h-4 w-4" />
-          <span className="text-sm max-w-[150px] truncate hidden sm:inline">
-            {email}
-          </span>
+          <span className="text-sm max-w-[150px] truncate hidden sm:inline">{email}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">Account</p>
-            <p className="text-xs leading-none text-muted-foreground truncate">
-              {email}
-            </p>
+            <p className="text-xs leading-none text-muted-foreground truncate">{email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

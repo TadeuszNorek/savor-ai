@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Login Page
@@ -14,24 +14,24 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByRole('textbox', { name: /email/i });
-    this.passwordInput = page.locator('input#password');
-    this.signInButton = page.getByRole('button', { name: /sign in/i });
-    this.signUpButton = page.getByRole('button', { name: /sign up/i });
-    this.forgotPasswordLink = page.getByRole('link', {
+    this.emailInput = page.getByRole("textbox", { name: /email/i });
+    this.passwordInput = page.locator("input#password");
+    this.signInButton = page.getByRole("button", { name: /sign in/i });
+    this.signUpButton = page.getByRole("button", { name: /sign up/i });
+    this.forgotPasswordLink = page.getByRole("link", {
       name: /forgot password/i,
     });
   }
 
   async goto() {
-    await this.page.goto('/login');
+    await this.page.goto("/login");
   }
 
   async login(email: string, password: string) {
     // Wait for form to be ready and hydrated
-    await this.page.waitForLoadState('networkidle');
-    await this.emailInput.waitFor({ state: 'visible' });
-    await this.passwordInput.waitFor({ state: 'visible' });
+    await this.page.waitForLoadState("networkidle");
+    await this.emailInput.waitFor({ state: "visible" });
+    await this.passwordInput.waitFor({ state: "visible" });
 
     // Fill form fields - use click first to ensure focus
     await this.emailInput.click();
