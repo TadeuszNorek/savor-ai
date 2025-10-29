@@ -4,15 +4,43 @@ import { BasePage } from './base.page';
 /**
  * Page Object Model for App Page (Main Application)
  * Handles interactions with the main application page including
- * user menu, logout, and navigation
+ * user menu, logout, navigation, and recipe generation
  */
 export class AppPage extends BasePage {
+  // Header & Navigation
   readonly userMenuButton: Locator;
   readonly userMenuLogoutItem: Locator;
   readonly userMenuProfileItem: Locator;
   readonly headerLogo: Locator;
   readonly recipesNavLink: Locator;
   readonly generatorNavLink: Locator;
+
+  // Tabs
+  readonly generatorTab: Locator;
+  readonly previewTab: Locator;
+
+  // Generator Panel
+  readonly promptInput: Locator;
+  readonly generateButton: Locator;
+  readonly characterCounter: Locator;
+  readonly errorAlert: Locator;
+  readonly retryButton: Locator;
+
+  // Preview Panel
+  readonly recipeTitle: Locator;
+  readonly recipeSummary: Locator;
+  readonly recipeCuisine: Locator;
+  readonly recipeDescription: Locator;
+  readonly saveButton: Locator;
+  readonly restoreDraftButton: Locator;
+  readonly emptyStateMessage: Locator;
+
+  // Recipe Details
+  readonly servingsDecrease: Locator;
+  readonly servingsIncrease: Locator;
+  readonly ingredientsList: Locator;
+  readonly instructionsList: Locator;
+  readonly nutritionSection: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -26,6 +54,43 @@ export class AppPage extends BasePage {
     this.userMenuButton = page.getByRole('button').filter({ hasText: /@/ });
     this.userMenuProfileItem = page.getByRole('menuitem', { name: /profile/i });
     this.userMenuLogoutItem = page.getByRole('menuitem', { name: /sign out/i });
+
+    // Tabs
+    this.generatorTab = page.getByRole('tab', { name: /generator/i });
+    this.previewTab = page.getByRole('tab', { name: /preview/i });
+
+    // Generator Panel elements
+    this.promptInput = page.locator('#recipe-prompt');
+    this.generateButton = page.getByRole('button', {
+      name: /generate recipe/i,
+    });
+    this.characterCounter = page.locator('#prompt-counter');
+    this.errorAlert = page.locator('[role="alert"]');
+    this.retryButton = page.getByRole('button', { name: /try again/i });
+
+    // Preview Panel elements
+    this.recipeTitle = page.locator('h1').first();
+    this.recipeSummary = page.locator('article p').first();
+    this.recipeCuisine = page.locator('article').getByText(/cuisine/i);
+    this.recipeDescription = page.locator('article p').nth(1);
+    this.saveButton = page.getByRole('button', { name: /save recipe/i });
+    this.restoreDraftButton = page.getByRole('button', {
+      name: /restore from draft/i,
+    });
+    this.emptyStateMessage = page.getByText(/no recipe selected/i);
+
+    // Recipe Details elements
+    this.servingsDecrease = page.getByRole('button', {
+      name: /decrease servings/i,
+    });
+    this.servingsIncrease = page.getByRole('button', {
+      name: /increase servings/i,
+    });
+    // Ingredients are buttons in list items within article
+    this.ingredientsList = page.locator('article').locator('ul').first().locator('li button');
+    // Instructions are buttons with "Toggle step" aria-label
+    this.instructionsList = page.locator('button[aria-label^="Toggle step"]');
+    this.nutritionSection = page.getByRole('heading', { name: /nutrition/i });
   }
 
   /**
@@ -110,5 +175,157 @@ export class AppPage extends BasePage {
   async goToGenerator() {
     await this.generatorNavLink.click();
     await this.page.waitForURL(/\/app#generator/);
+  }
+
+  /**
+   * Click Generator tab
+   */
+  async clickGeneratorTab() {
+    await this.generatorTab.click();
+    await this.promptInput.waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Click Preview tab
+   */
+  async clickPreviewTab() {
+    await this.previewTab.click();
+  }
+
+  /**
+   * Generate a recipe with given prompt
+   * @param prompt - The recipe prompt/description
+   */
+  async generateRecipe(prompt: string) {
+    // Ensure we're on generator tab
+    if (!(await this.promptInput.isVisible())) {
+      await this.clickGeneratorTab();
+    }
+
+    await this.promptInput.waitFor({ state: 'visible' });
+    await this.promptInput.click();
+    await this.promptInput.fill(prompt);
+
+    // Wait for API response
+    const generatePromise = this.page.waitForResponse(
+      (response) =>
+        response.url().includes('/api/recipes/generate') &&
+        (response.status() === 200 || response.status() >= 400)
+    );
+
+    await this.generateButton.click();
+
+    // Wait for generation to complete
+    await generatePromise;
+
+    // Wait for preview tab to be auto-selected (on success) or error alert (on failure)
+    await Promise.race([
+      this.recipeTitle.waitFor({ state: 'visible', timeout: 5000 }),
+      this.errorAlert.waitFor({ state: 'visible', timeout: 5000 }),
+    ]);
+  }
+
+  /**
+   * Check if generate button is disabled
+   */
+  async isGenerateButtonDisabled(): Promise<boolean> {
+    return await this.generateButton.isDisabled();
+  }
+
+  /**
+   * Check if generate button is in loading state
+   */
+  async isGenerating(): Promise<boolean> {
+    const loadingButton = this.page.getByRole('button', {
+      name: /generating/i,
+    });
+    return await loadingButton.isVisible();
+  }
+
+  /**
+   * Get character count text
+   */
+  async getCharacterCountText(): Promise<string | null> {
+    return await this.characterCounter.textContent();
+  }
+
+  /**
+   * Get error message from alert
+   */
+  async getErrorMessage(): Promise<string | null> {
+    if (!(await this.errorAlert.isVisible())) {
+      return null;
+    }
+    return await this.errorAlert.textContent();
+  }
+
+  /**
+   * Check if recipe is displayed in preview
+   */
+  async isRecipeDisplayed(): Promise<boolean> {
+    return await this.recipeTitle.isVisible();
+  }
+
+  /**
+   * Get displayed recipe title
+   */
+  async getRecipeTitle(): Promise<string | null> {
+    if (!(await this.isRecipeDisplayed())) {
+      return null;
+    }
+    return await this.recipeTitle.textContent();
+  }
+
+  /**
+   * Save the displayed recipe
+   */
+  async saveRecipe() {
+    await this.saveButton.waitFor({ state: 'visible' });
+
+    const savePromise = this.page.waitForResponse(
+      (response) =>
+        response.url().includes('/api/recipes') &&
+        response.request().method() === 'POST' &&
+        (response.status() === 200 || response.status() === 201)
+    );
+
+    await this.saveButton.click();
+
+    await savePromise;
+
+    // Wait for success toast (Sonner renders as list item with data-sonner-toast)
+    await this.page
+      .locator('[data-sonner-toast]')
+      .filter({ hasText: /recipe saved successfully/i })
+      .waitFor({ state: 'visible', timeout: 10000 });
+  }
+
+  /**
+   * Check if save button is disabled
+   */
+  async isSaveButtonDisabled(): Promise<boolean> {
+    return await this.saveButton.isDisabled();
+  }
+
+  /**
+   * Adjust servings by clicking increase/decrease buttons
+   */
+  async adjustServings(increase: boolean) {
+    const button = increase ? this.servingsIncrease : this.servingsDecrease;
+    await button.click();
+  }
+
+  /**
+   * Get ingredient count
+   */
+  async getIngredientCount(): Promise<number> {
+    return await this.ingredientsList.count();
+  }
+
+  /**
+   * Get instruction step count
+   */
+  async getInstructionCount(): Promise<number> {
+    return await this.instructionsList.count();
   }
 }
