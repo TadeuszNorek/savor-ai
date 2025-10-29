@@ -42,6 +42,14 @@ export class AppPage extends BasePage {
   readonly instructionsList: Locator;
   readonly nutritionSection: Locator;
 
+  // Delete Recipe (AlertDialog)
+  readonly deleteButton: Locator;
+  readonly confirmDialog: Locator;
+  readonly confirmDialogTitle: Locator;
+  readonly confirmDialogDescription: Locator;
+  readonly confirmCancelButton: Locator;
+  readonly confirmDeleteButton: Locator;
+
   // Recipe List (Left Panel)
   readonly searchInput: Locator;
   readonly sortSelect: Locator;
@@ -100,6 +108,14 @@ export class AppPage extends BasePage {
     // Instructions are buttons with "Toggle step" aria-label
     this.instructionsList = page.locator('button[aria-label^="Toggle step"]');
     this.nutritionSection = page.getByRole('heading', { name: /nutrition/i });
+
+    // Delete Recipe elements (AlertDialog)
+    this.deleteButton = page.getByRole('button', { name: /delete recipe/i });
+    this.confirmDialog = page.getByRole('alertdialog');
+    this.confirmDialogTitle = page.getByRole('alertdialog').getByRole('heading', { name: /are you sure/i });
+    this.confirmDialogDescription = page.getByRole('alertdialog').locator('[class*="AlertDescription"]').or(page.getByText(/permanently delete/i));
+    this.confirmCancelButton = page.getByRole('button', { name: /cancel/i });
+    this.confirmDeleteButton = page.getByRole('alertdialog').getByRole('button', { name: /^delete$/i });
 
     // Recipe List elements (Left Panel)
     this.searchInput = page.getByRole('searchbox');
@@ -396,5 +412,72 @@ export class AppPage extends BasePage {
    */
   async clickLoadMore() {
     await this.loadMoreButton.click();
+  }
+
+  /**
+   * Delete recipe with confirmation
+   */
+  async deleteRecipe() {
+    // Click delete button to open dialog
+    await this.deleteButton.click();
+    await this.confirmDialog.waitFor({ state: 'visible' });
+
+    // Wait for delete API call
+    const deletePromise = this.page.waitForResponse(
+      (response) =>
+        response.url().includes('/api/recipes/') &&
+        response.request().method() === 'DELETE' &&
+        (response.status() === 200 || response.status() === 204)
+    );
+
+    // Confirm deletion
+    await this.confirmDeleteButton.click();
+
+    await deletePromise;
+
+    // Wait for success toast
+    await this.page
+      .locator('[data-sonner-toast]')
+      .filter({ hasText: /recipe deleted successfully/i })
+      .waitFor({ state: 'visible', timeout: 10000 });
+  }
+
+  /**
+   * Cancel recipe deletion
+   */
+  async cancelDeleteRecipe() {
+    // Click delete button to open dialog
+    await this.deleteButton.click();
+    await this.confirmDialog.waitFor({ state: 'visible' });
+
+    // Click cancel
+    await this.confirmCancelButton.click();
+
+    // Dialog should close
+    await this.confirmDialog.waitFor({ state: 'hidden' });
+  }
+
+  /**
+   * Check if delete button is visible
+   */
+  async isDeleteButtonVisible(): Promise<boolean> {
+    return await this.deleteButton.isVisible();
+  }
+
+  /**
+   * Check if delete button is disabled
+   */
+  async isDeleteButtonDisabled(): Promise<boolean> {
+    return await this.deleteButton.isDisabled();
+  }
+
+  /**
+   * Get confirmation dialog description text
+   */
+  async getConfirmDialogDescription(): Promise<string | null> {
+    if (!(await this.confirmDialog.isVisible())) {
+      return null;
+    }
+    return await this.confirmDialogDescription.textContent();
   }
 }
