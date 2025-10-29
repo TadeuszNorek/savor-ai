@@ -19,7 +19,7 @@ export class OpenRouterProvider implements AiProvider {
 
   constructor(config: AiProviderConfig) {
     this.apiKey = config.apiKey;
-    this.model = config.model || "anthropic/claude-3.5-sonnet";
+    this.model = config.model || "deepseek/deepseek-r1-0528:free";
     this.timeout = config.timeout || 30000; // 30 seconds default
   }
 

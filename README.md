@@ -13,7 +13,8 @@ Many users struggle to find recipes that align with their specific diet, allergi
 | **Frontend**  | Astro, React (for interactive islands), TypeScript |
 | **Styling**   | Tailwind CSS, shadcn/ui                          |
 | **Backend**   | Supabase (PostgreSQL, Authentication, RLS)       |
-| **AI**        | Google Gemini                                    |
+| **AI**        | Google Gemini, OpenRouter                        |
+| **Testing**   | Vitest, Playwright, React Testing Library, MSW   |
 | **DevOps**    | GitHub Actions, Docker, DigitalOcean             |
 
 ## Getting Started Locally
@@ -64,6 +65,30 @@ This project includes several scripts to help with development:
 - `npm run lint`: Lints the codebase using ESLint to check for errors and style issues.
 - `npm run lint:fix`: fix lint issues where possible.
 - `npm run format`: Formats all project files using Prettier.
+
+### Testing
+
+- `npm run test`: Runs unit tests using Vitest.
+- `npm run test:watch`: Runs tests in watch mode for development.
+- `npm run test:coverage`: Generates a test coverage report.
+- `npm run test:e2e`: Runs end-to-end tests using Playwright.
+- `npm run test:e2e:ui`: Opens the Playwright UI for interactive E2E testing.
+
+## Testing
+
+### Unit Tests
+- **Framework**: Vitest with React Testing Library
+- **Coverage**: Utility functions, type guards, validators, React hooks, and UI components
+- **Target**: 80% code coverage minimum
+- **Focus**: Individual component logic, edge cases, and pure functions
+
+### E2E Tests
+- **Framework**: Playwright
+- **Coverage**: Critical user journeys (authentication, recipe generation, CRUD operations, search/filter)
+- **Browsers**: Chrome, Firefox, Safari
+- **Focus**: Complete user workflows from registration to recipe management
+
+For detailed testing documentation, see [Test Plan MVP](.ai/test-plan-mvp.md).
 
 ## Project Scope (MVP)
 

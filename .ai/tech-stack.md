@@ -18,6 +18,24 @@ AI - Tutaj przeanalizuj 2 opcje:
 2. Wykorzystanie api key od google aistudio
 - Spore jak na potrzeby mvp projektu i jego prezentacji limity tokenów w ramach korzystanie z darmowego limitu
 
+Testowanie:
+1. Testy jednostkowe (Unit Tests):
+- Vitest - szybki framework testowy z native ESM support, kompatybilny z ekosystemem Vite
+- @testing-library/react - biblioteka do testowania komponentów React z perspektywy użytkownika
+- @testing-library/jest-dom - custom matchers dla asercji DOM
+- MSW (Mock Service Worker) - mockowanie requestów HTTP w testach
+- c8 - coverage reports dla Vitest
+- Pokrycie: utility functions, type guards, validators, React hooks, komponenty UI
+- Cel: minimum 80% code coverage
+
+2. Testy E2E (End-to-End Tests):
+- Playwright - framework do automatyzacji przeglądarek z multi-browser support
+- Wsparcie dla Chrome, Firefox, Safari
+- Auto-wait mechanisms dla stabilnych testów
+- Screenshot/video recording dla failed tests
+- Playwright UI dla interaktywnego debugowania
+- Pokrycie: critical user journeys (autentykacja, generowanie przepisów, CRUD, wyszukiwanie)
+
 CI/CD i Hosting:
-- Github Actions do tworzenia pipeline’ów CI/CD
+- Github Actions do tworzenia pipeline'ów CI/CD (w tym automatyczne uruchamianie testów)
 - DigitalOcean do hostowania aplikacji za pośrednictwem obrazu docker

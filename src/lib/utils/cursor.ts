@@ -34,13 +34,15 @@ export function decodeCursor(cursor: string): CursorData {
     // Decode Base64
     const decoded = Buffer.from(cursor, "base64").toString("utf-8");
 
-    // Split by colon
-    const parts = decoded.split(":");
-    if (parts.length !== 2) {
+    // Split by last colon (timestamp contains colons in time portion)
+    // Find the last colon to separate createdAt from id
+    const lastColonIndex = decoded.lastIndexOf(":");
+    if (lastColonIndex === -1) {
       throw new Error("Invalid cursor format: expected 'created_at:id'");
     }
 
-    const [createdAt, id] = parts;
+    const createdAt = decoded.substring(0, lastColonIndex);
+    const id = decoded.substring(lastColonIndex + 1);
 
     // Validate ISO 8601 format (basic check)
     const dateTest = new Date(createdAt);
