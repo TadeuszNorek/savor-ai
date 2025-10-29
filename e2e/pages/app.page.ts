@@ -42,6 +42,15 @@ export class AppPage extends BasePage {
   readonly instructionsList: Locator;
   readonly nutritionSection: Locator;
 
+  // Recipe List (Left Panel)
+  readonly searchInput: Locator;
+  readonly sortSelect: Locator;
+  readonly recipeCards: Locator;
+  readonly emptyStateList: Locator;
+  readonly loadingSkeletons: Locator;
+  readonly loadMoreButton: Locator;
+  readonly recipeCountText: Locator;
+
   constructor(page: Page) {
     super(page);
 
@@ -91,6 +100,15 @@ export class AppPage extends BasePage {
     // Instructions are buttons with "Toggle step" aria-label
     this.instructionsList = page.locator('button[aria-label^="Toggle step"]');
     this.nutritionSection = page.getByRole('heading', { name: /nutrition/i });
+
+    // Recipe List elements (Left Panel)
+    this.searchInput = page.getByRole('searchbox');
+    this.sortSelect = page.getByRole('combobox', { name: /sort/i });
+    this.recipeCards = page.getByRole('button', { name: /recipe card/i }).or(page.locator('[role="button"]').locator('h3'));
+    this.emptyStateList = page.getByText(/no recipes found/i);
+    this.loadingSkeletons = page.locator('[data-skeleton]');
+    this.loadMoreButton = page.getByRole('button', { name: /load more/i });
+    this.recipeCountText = page.locator('.sr-only[aria-live="polite"]');
   }
 
   /**
@@ -327,5 +345,56 @@ export class AppPage extends BasePage {
    */
   async getInstructionCount(): Promise<number> {
     return await this.instructionsList.count();
+  }
+
+  /**
+   * Search for recipes
+   */
+  async searchRecipes(query: string) {
+    await this.searchInput.fill(query);
+    await this.searchInput.press('Enter');
+  }
+
+  /**
+   * Get recipe cards count
+   */
+  async getRecipeCardsCount(): Promise<number> {
+    return await this.recipeCards.count();
+  }
+
+  /**
+   * Click on a recipe card by index
+   */
+  async clickRecipeCard(index: number) {
+    await this.recipeCards.nth(index).click();
+  }
+
+  /**
+   * Check if empty state is visible
+   */
+  async isEmptyStateVisible(): Promise<boolean> {
+    return await this.emptyStateList.isVisible();
+  }
+
+  /**
+   * Check if loading skeletons are visible
+   */
+  async areLoadingSkeletonsVisible(): Promise<boolean> {
+    const count = await this.loadingSkeletons.count();
+    return count > 0;
+  }
+
+  /**
+   * Get recipe count text (e.g., "Found 5 recipes")
+   */
+  async getRecipeCountText(): Promise<string | null> {
+    return await this.recipeCountText.textContent();
+  }
+
+  /**
+   * Click Load More button
+   */
+  async clickLoadMore() {
+    await this.loadMoreButton.click();
   }
 }

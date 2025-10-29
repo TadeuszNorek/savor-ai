@@ -48,4 +48,4 @@ playwright/.cache/
 *.trace.zip
 
 # vitest
-.vitest/
+.vitest/nul 
