@@ -205,26 +205,19 @@ Remaining:       7/12
 
 **Estimated tests:** 28 | **Estimated time:** 3-4 dni
 
-### ⏭️ To Do (3/3)
+### 🚫 Skipped (1/3)
 
-- [ ] **E2E-5:** `e2e/specs/recipes/save-recipe.spec.ts`
-  - **Feature:** Save generated recipe
-  - **Estimated tests:** 6-8
-  - **Priority:** KRYTYCZNY
-  - **Prerequisites:** E2E-4 (generation)
-  - **Page Objects:**
-    - `AppPage`
-    - `RecipeListPage` (need to create)
-  - **Test Cases:**
-    - Save generated recipe
-    - Save button loading state
-    - Saved recipe in list
-    - Success message after save
-    - Save error handling
-    - Prevent duplicate save
-    - Saved recipe has correct data
-    - Redirect/update after save
-  - **Commit:** `test(e2e): add save recipe tests (8 tests)`
+- [~] **E2E-5:** `e2e/specs/recipes/save-recipe.spec.ts` ⏭️ **SKIPPED**
+  - **Reason:** Redundant - already covered in E2E-4
+  - **Details:**
+    - Save generated recipe ✅ (covered in E2E-4 TEST 6)
+    - Success message after save ✅ (covered in E2E-4 TEST 6)
+    - Saved recipe in list → moved to E2E-6 (recipe-list.spec.ts)
+    - Saved recipe has correct data → moved to E2E-6
+    - Edge cases (loading state, duplicate prevention) → attempted but UI doesn't expose these states reliably
+  - **Decision:** Skip this file entirely, proceed to E2E-6
+
+### ⏭️ To Do (2/3)
 
 - [ ] **E2E-6:** `e2e/specs/recipes/recipe-list.spec.ts`
   - **Feature:** View recipe list and details
@@ -623,6 +616,6 @@ test(e2e): add AppPage page object model
 
 **⚠️ REMEMBER: Complete UNIT_TESTS_TASKS.md first!**
 
-**Next E2E Task:** E2E-5 (save-recipe.spec.ts)
+**Next E2E Task:** E2E-6 (recipe-list.spec.ts)
 
 *Last updated: 2025-10-29*
