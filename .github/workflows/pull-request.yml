@@ -1,0 +1,249 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches: [master, main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: [lint]
+    env:
+      CI: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:run
+
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload unit coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-unit
+          path: |
+            coverage/**
+          retention-days: 7
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [lint]
+    environment: integration
+    env:
+      CI: true
+      # Map secrets to environment variables expected by .env.test
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      PUBLIC_SUPABASE_KEY: ${{ secrets.PUBLIC_SUPABASE_KEY }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      E2E_USERNAME_ID: ${{ secrets.E2E_USERNAME_ID }}
+      E2E_USERNAME: ${{ secrets.E2E_USERNAME }}
+      E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate .env.test from secrets
+        shell: bash
+        run: |
+          cat > .env.test << 'EOF'
+          SUPABASE_URL=${SUPABASE_URL}
+          PUBLIC_SUPABASE_KEY=${PUBLIC_SUPABASE_KEY}
+          SUPABASE_KEY=${SUPABASE_KEY}
+          SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+          E2E_USERNAME_ID=${E2E_USERNAME_ID}
+          E2E_USERNAME=${E2E_USERNAME}
+          E2E_PASSWORD=${E2E_PASSWORD}
+          EOF
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Install browsers according to playwright.config.ts (chromium project only)
+      - name: Install Playwright (chromium only)
+        run: npx playwright install chromium --with-deps
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload E2E raw results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-results
+          path: test-results/
+          retention-days: 7
+
+      # If an E2E coverage directory exists (e.g., when instrumentation is configured), upload it as well
+      - name: Upload E2E coverage (if present)
+        if: always() && hashFiles('coverage-e2e/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-e2e
+          path: coverage-e2e/**
+          retention-days: 7
+
+  status-comment:
+    name: PR Status Comment
+    runs-on: ubuntu-latest
+    needs: [lint, unit-tests, e2e-tests]
+    if: ${{ success() && github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Download unit coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-unit
+          path: artifacts/coverage-unit
+
+      - name: Download E2E results
+        uses: actions/download-artifact@v4
+        with:
+          name: e2e-results
+          path: artifacts/e2e-results
+
+      - name: Compose and post PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            function readJsonSafe(p) {
+              try {
+                return JSON.parse(fs.readFileSync(p, 'utf8'));
+              } catch (e) {
+                return null;
+              }
+            }
+
+            // Summarize unit coverage from coverage-final.json
+            const covPath = path.join(process.cwd(), 'artifacts', 'coverage-unit', 'coverage', 'coverage-final.json');
+            const covJson = readJsonSafe(covPath);
+            let unitSummary = 'N/A';
+            if (covJson) {
+              let sTotal = 0, sCovered = 0;
+              let bTotal = 0, bCovered = 0;
+              let fTotal = 0, fCovered = 0;
+              for (const file of Object.values(covJson)) {
+                // statements
+                const s = file.s || {};
+                sTotal += Object.keys(s).length;
+                sCovered += Object.values(s).filter(v => v > 0).length;
+                // branches
+                const b = file.b || {};
+                for (const arr of Object.values(b)) {
+                  bTotal += Array.isArray(arr) ? arr.length : 0;
+                  bCovered += Array.isArray(arr) ? arr.filter(v => v > 0).length : 0;
+                }
+                // functions
+                const f = file.f || {};
+                fTotal += Object.keys(f).length;
+                fCovered += Object.values(f).filter(v => v > 0).length;
+              }
+              const pct = (c, t) => (t ? (100 * c / t) : 100).toFixed(1);
+              unitSummary = `Statements ${pct(sCovered, sTotal)}% | Branches ${pct(bCovered, bTotal)}% | Functions ${pct(fCovered, fTotal)}%`;
+            }
+
+            // Summarize E2E results from Playwright JSON reporter
+            const e2ePath = path.join(process.cwd(), 'artifacts', 'e2e-results', 'test-results', 'results.json');
+            const e2eJson = readJsonSafe(e2ePath);
+            let e2eSummary = 'N/A';
+            if (e2eJson && e2eJson.suites) {
+              let total = 0, passed = 0, failed = 0, skipped = 0;
+              const walk = (suite) => {
+                if (suite.specs) {
+                  for (const spec of suite.specs) {
+                    for (const test of spec.tests || []) {
+                      total++;
+                      const ok = test.status === 'passed';
+                      const sk = test.status === 'skipped';
+                      if (ok) passed++;
+                      else if (sk) skipped++;
+                      else failed++;
+                    }
+                  }
+                }
+                if (suite.suites) suite.suites.forEach(walk);
+              };
+              e2eJson.suites.forEach(walk);
+              e2eSummary = `${passed}/${total} passed, ${failed} failed, ${skipped} skipped`;
+            }
+
+            const prNumber = context.payload.pull_request.number;
+            const body = [
+              '✅ CI passed for this pull request.',
+              '',
+              '• Lint: passed',
+              `• Unit coverage: ${unitSummary}`,
+              `• E2E tests: ${e2eSummary}`,
+              '',
+              '> Artifacts: unit coverage (coverage-unit), Playwright report (playwright-report), E2E results (e2e-results).'
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body
+            });
