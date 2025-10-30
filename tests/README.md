@@ -52,11 +52,11 @@ This project uses **MSW (Mock Service Worker)** for mocking HTTP requests in tes
 #### Example MSW Handler
 
 ```typescript
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse } from "msw";
 
 export const handlers = [
-  http.get('/api/user', () => {
-    return HttpResponse.json({ name: 'John Doe' });
+  http.get("/api/user", () => {
+    return HttpResponse.json({ name: "John Doe" });
   }),
 ];
 ```
@@ -96,10 +96,10 @@ npm run test:e2e:codegen
 #### Example E2E Test
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('should navigate to home page', async ({ page }) => {
-  await page.goto('/');
+test("should navigate to home page", async ({ page }) => {
+  await page.goto("/");
   await expect(page).toHaveTitle(/savor/i);
 });
 ```
@@ -107,7 +107,7 @@ test('should navigate to home page', async ({ page }) => {
 #### Example Page Object
 
 ```typescript
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator } from "@playwright/test";
 
 export class LoginPage {
   readonly page: Page;

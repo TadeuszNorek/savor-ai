@@ -45,23 +45,15 @@ export function RecipeList({
 
   return (
     <div className="space-y-3">
-      <ul className="space-y-3" role="list">
+      <ul className="space-y-3">
         {allRecipes.map((recipe) => (
           <li key={recipe.id}>
-            <RecipeCard
-              item={recipe}
-              selected={selectedId === recipe.id}
-              onClick={() => onSelect(recipe.id)}
-            />
+            <RecipeCard item={recipe} selected={selectedId === recipe.id} onClick={() => onSelect(recipe.id)} />
           </li>
         ))}
       </ul>
 
-      <PaginationLoadMore
-        hasMore={hasNextPage}
-        isLoading={isFetchingNextPage}
-        onClick={onLoadMore}
-      />
+      <PaginationLoadMore hasMore={hasNextPage} isLoading={isFetchingNextPage} onClick={onLoadMore} />
 
       {/* Announce results count for screen readers */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">

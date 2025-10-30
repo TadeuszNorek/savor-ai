@@ -1,9 +1,9 @@
 import type { RecipeSchema, ProfileDTO } from "../../../../types";
 import type { AiProvider, AiProviderConfig } from "../types";
 import { AiProviderError, AiValidationError } from "../types";
-import { RecipePromptBuilder } from "../utils/recipe-prompt-builder";
-import { RecipeResponseParser } from "../utils/recipe-response-parser";
-import { LLMRequestManager } from "../utils/llm-request-manager";
+import * as RecipePromptBuilder from "../utils/recipe-prompt-builder";
+import * as RecipeResponseParser from "../utils/recipe-response-parser";
+import * as LLMRequestManager from "../utils/llm-request-manager";
 
 /**
  * Google AI Studio Provider

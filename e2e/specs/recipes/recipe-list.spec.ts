@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { AppPage } from '../../pages/app.page';
-import { LoginPage } from '../../pages/login.page';
-import { deleteTestRecipes } from '../../helpers/cleanup.helpers';
+import { test, expect } from "@playwright/test";
+import { AppPage } from "../../pages/app.page";
+import { LoginPage } from "../../pages/login.page";
+import { deleteTestRecipes } from "../../helpers/cleanup.helpers";
 
 /**
  * E2E-6: Recipe List Tests
@@ -17,9 +17,9 @@ import { deleteTestRecipes } from '../../helpers/cleanup.helpers';
  * Cleanup: Deletes all test recipes after tests complete
  */
 
-test.describe('Recipe List', () => {
+test.describe("Recipe List", () => {
   // Run tests serially to ensure single beforeAll execution
-  test.describe.configure({ mode: 'serial' });
+  test.describe.configure({ mode: "serial" });
   let appPage: AppPage;
   let loginPage: LoginPage;
   let testUserCredentials: { email: string; password: string };
@@ -30,10 +30,10 @@ test.describe('Recipe List', () => {
 
     // Use existing test user from .env.test
     testUserCredentials = {
-      email: process.env.E2E_USERNAME || 'user@gmail.com',
-      password: process.env.E2E_PASSWORD || 'qwerty123',
+      email: process.env.E2E_USERNAME || "user@gmail.com",
+      password: process.env.E2E_PASSWORD || "qwerty123",
     };
-    testUserId = process.env.E2E_USERNAME_ID || '';
+    testUserId = process.env.E2E_USERNAME_ID || "";
 
     // Setup: Generate and save 2 recipes for testing
     const context = await browser.newContext();
@@ -43,16 +43,13 @@ test.describe('Recipe List', () => {
 
     // Login
     await setupLoginPage.goto();
-    await setupLoginPage.login(
-      testUserCredentials.email,
-      testUserCredentials.password
-    );
+    await setupLoginPage.login(testUserCredentials.email, testUserCredentials.password);
     await page.waitForURL(/\/app/);
     await setupAppPage.waitForAppToLoad();
 
     // Generate and save first recipe
     await setupAppPage.clickGeneratorTab();
-    await setupAppPage.generateRecipe('Quick pasta carbonara');
+    await setupAppPage.generateRecipe("Quick pasta carbonara");
     const recipe1Generated = await setupAppPage.isRecipeDisplayed();
     if (recipe1Generated) {
       await setupAppPage.saveRecipe();
@@ -61,7 +58,7 @@ test.describe('Recipe List', () => {
 
     // Generate and save second recipe
     await setupAppPage.clickGeneratorTab();
-    await setupAppPage.generateRecipe('Greek salad with feta');
+    await setupAppPage.generateRecipe("Greek salad with feta");
     const recipe2Generated = await setupAppPage.isRecipeDisplayed();
     if (recipe2Generated) {
       await setupAppPage.saveRecipe();
@@ -91,29 +88,31 @@ test.describe('Recipe List', () => {
     await appPage.waitForAppToLoad();
   });
 
-  test('should display list of saved recipes', async () => {
+  test("should display list of saved recipes", async () => {
     // Recipe cards should be visible (at least 2 from setup)
     const recipeCount = await appPage.getRecipeCardsCount();
     expect(recipeCount).toBeGreaterThanOrEqual(2);
 
     // Recipe count text should be visible
     const countText = await appPage.getRecipeCountText();
-    expect(countText).toContain('recipe');
+    expect(countText).toContain("recipe");
     expect(countText).toMatch(/\d+/); // Contains a number
   });
 
-  test('should display recipe cards with correct content', async ({ page }) => {
+  test("should display recipe cards with correct content", async ({ page }) => {
     // Get first recipe card
-    const firstCard = page.locator('h3').first();
+    const firstCard = page.locator("h3").first();
     await expect(firstCard).toBeVisible();
 
     // Card should have title
     const title = await firstCard.textContent();
     expect(title).toBeTruthy();
-    expect(title!.length).toBeGreaterThan(0);
+    if (title) {
+      expect(title.length).toBeGreaterThan(0);
+    }
 
     // Card should have summary (check for any text content in the card)
-    const cardWithSummary = page.locator('p.text-muted-foreground').first();
+    const cardWithSummary = page.locator("p.text-muted-foreground").first();
     if (await cardWithSummary.isVisible()) {
       const summary = await cardWithSummary.textContent();
       expect(summary).toBeTruthy();
@@ -127,7 +126,7 @@ test.describe('Recipe List', () => {
     }
   });
 
-  test('should click recipe card to view details', async ({ page }) => {
+  test("should click recipe card to view details", async ({ page }) => {
     // Click first recipe card
     await appPage.clickRecipeCard(0);
 
@@ -142,7 +141,7 @@ test.describe('Recipe List', () => {
     await expect(appPage.recipeTitle).toBeVisible();
   });
 
-  test('should display correct default sorting', async () => {
+  test("should display correct default sorting", async () => {
     // By default, recipes should be sorted by newest first
     // We can verify this by checking if our test recipes appear in order
     const count = await appPage.getRecipeCardsCount();
@@ -152,7 +151,7 @@ test.describe('Recipe List', () => {
     // This is a basic check - actual order depends on creation timestamps
   });
 
-  test('should have recipe tags in DOM structure', async ({ page }) => {
+  test("should have recipe tags in DOM structure", async ({ page }) => {
     // Check if badge elements exist in DOM (they may not be visible in list view)
     const tags = page.locator('[class*="badge"]');
     const tagCount = await tags.count();
@@ -166,7 +165,7 @@ test.describe('Recipe List', () => {
     expect(tagText).toBeTruthy();
   });
 
-  test('should show recipe count', async () => {
+  test("should show recipe count", async () => {
     const countText = await appPage.getRecipeCountText();
     expect(countText).toBeTruthy();
 
@@ -177,7 +176,7 @@ test.describe('Recipe List', () => {
     expect(countText).toMatch(/\d+/);
   });
 
-  test('should handle navigation between list and preview', async ({ page }) => {
+  test("should handle navigation between list and preview", async ({ page }) => {
     // Click first recipe
     await appPage.clickRecipeCard(0);
     await page.waitForTimeout(500);

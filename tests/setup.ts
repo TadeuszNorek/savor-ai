@@ -1,18 +1,24 @@
-import '@testing-library/jest-dom';
-import { expect, afterEach, beforeAll, afterAll } from 'vitest';
-import { cleanup } from '@testing-library/react';
-import { server } from './mocks/server';
+import "@testing-library/jest-dom";
+import { afterEach, beforeAll, afterAll } from "vitest";
+import { cleanup } from "@testing-library/react";
+import { server } from "./mocks/server";
 
 // Mock ResizeObserver for Radix UI components
 global.ResizeObserver = class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    // Mock implementation - no-op
+  }
+  unobserve() {
+    // Mock implementation - no-op
+  }
+  disconnect() {
+    // Mock implementation - no-op
+  }
 };
 
 // Establish API mocking before all tests
 beforeAll(() => {
-  server.listen({ onUnhandledRequest: 'error' });
+  server.listen({ onUnhandledRequest: "error" });
 });
 
 // Reset any request handlers that we may add during the tests,

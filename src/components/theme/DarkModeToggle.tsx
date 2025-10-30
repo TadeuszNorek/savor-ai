@@ -37,11 +37,7 @@ export function DarkModeToggle() {
           isDark ? "translate-x-7" : "translate-x-1"
         }`}
       >
-        {isDark ? (
-          <Moon className="h-3.5 w-3.5 text-foreground" />
-        ) : (
-          <Sun className="h-3.5 w-3.5 text-foreground" />
-        )}
+        {isDark ? <Moon className="h-3.5 w-3.5 text-foreground" /> : <Sun className="h-3.5 w-3.5 text-foreground" />}
       </span>
     </button>
   );

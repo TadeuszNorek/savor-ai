@@ -79,23 +79,12 @@ function getGenerationErrorMessage(error: ApiError): {
  * GenerateButton component with loading state and error handling
  * Shows retry indicator and error alerts
  */
-export function GenerateButton({
-  onClick,
-  disabled,
-  loading,
-  error,
-  onRetry,
-}: GenerateButtonProps) {
+export function GenerateButton({ onClick, disabled, loading, error, onRetry }: GenerateButtonProps) {
   const errorInfo = error ? getGenerationErrorMessage(error) : null;
 
   return (
     <div className="space-y-4">
-      <Button
-        onClick={onClick}
-        disabled={disabled || loading}
-        className="w-full gap-2"
-        size="lg"
-      >
+      <Button onClick={onClick} disabled={disabled || loading} className="w-full gap-2" size="lg">
         {loading ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin" />
@@ -124,12 +113,7 @@ export function GenerateButton({
           <AlertDescription className="mt-2">
             <p className="text-sm">{errorInfo.description}</p>
             {errorInfo.canRetry && onRetry && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onRetry}
-                className="mt-3 gap-2"
-              >
+              <Button variant="outline" size="sm" onClick={onRetry} className="mt-3 gap-2">
                 <RefreshCw className="h-4 w-4" />
                 Try again
               </Button>

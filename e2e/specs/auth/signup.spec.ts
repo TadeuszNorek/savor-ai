@@ -1,12 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { SignupPage } from '../../pages/signup.page';
-import { AppPage } from '../../pages/app.page';
-import {
-  INVALID_CREDENTIALS,
-  generateTestUser,
-  getUniqueTestEmail,
-} from '../../fixtures/test-users';
-import { createTestUser, deleteTestUser } from '../../helpers/auth.helpers';
+import { test, expect } from "@playwright/test";
+import { SignupPage } from "../../pages/signup.page";
+import { AppPage } from "../../pages/app.page";
+import { INVALID_CREDENTIALS, generateTestUser, getUniqueTestEmail } from "../../fixtures/test-users";
+import { createTestUser, deleteTestUser } from "../../helpers/auth.helpers";
 
 /**
  * E2E Tests for Signup Flow
@@ -17,7 +13,7 @@ import { createTestUser, deleteTestUser } from '../../helpers/auth.helpers';
  * - Email uniqueness
  * - Session creation after signup
  */
-test.describe('Signup Flow', () => {
+test.describe("Signup Flow", () => {
   let signupPage: SignupPage;
   let appPage: AppPage;
   let createdUserIds: string[] = [];
@@ -32,8 +28,8 @@ test.describe('Signup Flow', () => {
     for (const userId of createdUserIds) {
       try {
         await deleteTestUser(userId);
-      } catch (error) {
-        console.warn(`Failed to delete test user ${userId}:`, error);
+      } catch {
+        /* Ignore */
       }
     }
     createdUserIds = [];
@@ -52,14 +48,13 @@ test.describe('Signup Flow', () => {
    * 2. Implementing email verification flow in tests
    * 3. Using API to bypass email confirmation
    */
-  test.skip('should sign up successfully with valid credentials', async ({ page }) => {
+  test.skip("should sign up successfully with valid credentials", async ({ page }) => {
     // Use real-looking email domain
     const timestamp = Date.now();
     const testUser = {
       email: `e2etest${timestamp}@gmail.com`,
-      password: 'TestPassword123!',
+      password: "TestPassword123!",
     };
-    console.log('📝 Attempting signup with:', testUser.email);
 
     // Arrange: Navigate to signup
     await signupPage.goto();
@@ -73,15 +68,13 @@ test.describe('Signup Flow', () => {
 
     // Assert: User menu should be visible (user is authenticated)
     await expect(appPage.userMenuButton).toBeVisible({ timeout: 5000 });
-
-    console.log('✅ Signup successful');
   });
 
   /**
    * TEST 2: Invalid email format error
    * Tests form validation for invalid email format
    */
-  test('should show error for invalid email format', async ({ page }) => {
+  test("should show error for invalid email format", async ({ page }) => {
     // Arrange: Navigate to signup
     await signupPage.goto();
 
@@ -108,8 +101,8 @@ test.describe('Signup Flow', () => {
    * TEST 3: Weak password error
    * Tests form validation for password that's too short
    */
-  test('should show error for weak password (less than 8 characters)', async ({ page }) => {
-    const testEmail = getUniqueTestEmail('weak-password');
+  test("should show error for weak password (less than 8 characters)", async ({ page }) => {
+    const testEmail = getUniqueTestEmail("weak-password");
 
     // Arrange: Navigate to signup
     await signupPage.goto();
@@ -137,12 +130,12 @@ test.describe('Signup Flow', () => {
    * TEST 4: Existing email error
    * Tests that signup fails when email already exists
    */
-  test('should show error when email already exists', async ({ page }) => {
+  test("should show error when email already exists", async ({ page }) => {
     // Arrange: Create a test user first
     const existingUser = generateTestUser();
     const createdUser = await createTestUser(existingUser);
-    createdUserIds.push(createdUser.id!);
-    console.log('🔧 Created existing user:', existingUser.email);
+    expect(createdUser.id).toBeDefined();
+    createdUserIds.push(createdUser.id as string);
 
     // Navigate to signup
     await signupPage.goto();
@@ -170,7 +163,7 @@ test.describe('Signup Flow', () => {
    * TEST 5: Form disabled during submission
    * Tests that form is disabled while signup request is in progress
    */
-  test('should disable form during submission', async ({ page }) => {
+  test("should disable form during submission", async ({ page }) => {
     const testUser = generateTestUser();
 
     // Arrange: Navigate to signup
@@ -201,7 +194,7 @@ test.describe('Signup Flow', () => {
    * TEST 6: Switch to login form
    * Tests switching from signup to login mode
    */
-  test('should allow switching to login form', async ({ page }) => {
+  test("should allow switching to login form", async ({ page }) => {
     // Arrange: Navigate to signup
     await signupPage.goto();
 
@@ -214,7 +207,7 @@ test.describe('Signup Flow', () => {
 
     // Assert: Should switch to login mode
     // The submit button should now say "Sign In" instead of "Create Account"
-    const signInButton = page.getByRole('button', { name: /^sign in$/i });
+    const signInButton = page.getByRole("button", { name: /^sign in$/i });
     await expect(signInButton).toBeVisible({ timeout: 5000 });
 
     // Assert: "Sign up" link should now be visible (for switching back)
@@ -228,14 +221,13 @@ test.describe('Signup Flow', () => {
    * NOTE: Skipped - depends on TEST 1 (successful signup) which is blocked by
    * Supabase email confirmation requirements in test environment.
    */
-  test.skip('should persist session after signup and refresh', async ({ page }) => {
+  test.skip("should persist session after signup and refresh", async ({ page }) => {
     // Use real-looking email domain
     const timestamp = Date.now();
     const testUser = {
       email: `session${timestamp}@gmail.com`,
-      password: 'TestPassword123!',
+      password: "TestPassword123!",
     };
-    console.log('🔄 Testing session persistence for:', testUser.email);
 
     // Arrange: Navigate to signup and complete signup
     await signupPage.goto();
@@ -247,20 +239,18 @@ test.describe('Signup Flow', () => {
 
     // Act: Refresh the page
     await page.reload();
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState("networkidle");
 
     // Assert: Should still be authenticated
     await expect(page).toHaveURL(/\/app/);
     await expect(appPage.userMenuButton).toBeVisible({ timeout: 5000 });
-
-    console.log('✅ Session persisted after refresh');
   });
 
   /**
    * TEST 8: Empty fields validation
    * Tests that form validates required fields
    */
-  test('should not allow submission with empty fields', async ({ page }) => {
+  test("should not allow submission with empty fields", async ({ page }) => {
     // Arrange: Navigate to signup
     await signupPage.goto();
 

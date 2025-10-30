@@ -1,9 +1,9 @@
 import type { RecipeSchema, ProfileDTO } from "../../../../types";
 import type { AiProvider, AiProviderConfig } from "../types";
 import { AiProviderError, AiValidationError } from "../types";
-import { RecipePromptBuilder } from "../utils/recipe-prompt-builder";
-import { RecipeResponseParser } from "../utils/recipe-response-parser";
-import { LLMRequestManager } from "../utils/llm-request-manager";
+import * as RecipePromptBuilder from "../utils/recipe-prompt-builder";
+import * as RecipeResponseParser from "../utils/recipe-response-parser";
+import * as LLMRequestManager from "../utils/llm-request-manager";
 
 /**
  * OpenRouter API Provider
@@ -62,11 +62,7 @@ export class OpenRouterProvider implements AiProvider {
       const data = await response.json();
 
       // Extract content from OpenRouter response format
-      const content = LLMRequestManager.extractContent(
-        data,
-        ["choices", "0", "message", "content"],
-        this.providerName
-      );
+      const content = LLMRequestManager.extractContent(data, ["choices", "0", "message", "content"], this.providerName);
 
       // Parse and validate recipe using shared utility
       const validated = RecipeResponseParser.parseAndValidate(content);

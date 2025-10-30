@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Save, ExternalLink } from "lucide-react";
 
 interface SaveButtonProps {
@@ -19,19 +14,9 @@ interface SaveButtonProps {
  * Shows tooltip with reason when disabled (e.g., disliked ingredients)
  * Links to profile page when blocked by preferences
  */
-export function SaveButton({
-  onClick,
-  disabled,
-  loading,
-  disabledReason,
-}: SaveButtonProps) {
+export function SaveButton({ onClick, disabled, loading, disabledReason }: SaveButtonProps) {
   const button = (
-    <Button
-      onClick={onClick}
-      disabled={disabled || loading}
-      className="gap-2"
-      size="lg"
-    >
+    <Button onClick={onClick} disabled={disabled || loading} className="gap-2" size="lg">
       <Save className="h-5 w-5" />
       {loading ? "Saving..." : "Save recipe"}
     </Button>

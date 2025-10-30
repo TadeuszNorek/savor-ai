@@ -130,9 +130,7 @@ export function normalizeStringArray(items: string[]): string[] {
  * @returns true if at least one field has value
  */
 export function hasAtLeastOneField(values: ProfileFormValues): boolean {
-  return (
-    values.dietType !== null || values.dislikedIngredients.length > 0 || values.preferredCuisines.length > 0
-  );
+  return values.dietType !== null || values.dislikedIngredients.length > 0 || values.preferredCuisines.length > 0;
 }
 
 /**

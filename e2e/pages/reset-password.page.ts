@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Reset Password Page
@@ -17,18 +17,18 @@ export class ResetPasswordPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.passwordInput = page.locator('input#password');
-    this.updateButton = page.getByRole('button', {
+    this.passwordInput = page.locator("input#password");
+    this.updateButton = page.getByRole("button", {
       name: /update password/i,
     });
-    this.backToLoginLink = page.getByRole('link', { name: /sign in/i });
+    this.backToLoginLink = page.getByRole("link", { name: /sign in/i });
     this.successMessage = page.getByText(/password updated/i);
     this.errorAlert = page.locator('[role="alert"]');
     this.expiredLinkMessage = page.getByText(/reset link expired/i);
-    this.requestNewLinkButton = page.getByRole('link', {
+    this.requestNewLinkButton = page.getByRole("link", {
       name: /request new reset link/i,
     });
-    this.formElement = page.getByRole('form', {
+    this.formElement = page.getByRole("form", {
       name: /reset password form/i,
     });
   }
@@ -38,16 +38,16 @@ export class ResetPasswordPage {
    * NOTE: This page requires a valid password recovery token in URL
    */
   async goto(token?: string) {
-    const url = token ? `/auth/reset?token=${token}` : '/auth/reset';
+    const url = token ? `/auth/reset?token=${token}` : "/auth/reset";
     await this.page.goto(url);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**
    * Set new password
    */
   async resetPassword(newPassword: string) {
-    await this.passwordInput.waitFor({ state: 'visible' });
+    await this.passwordInput.waitFor({ state: "visible" });
 
     await this.passwordInput.click();
     await this.passwordInput.fill(newPassword);
@@ -59,7 +59,7 @@ export class ResetPasswordPage {
    * Get success card title
    */
   getSuccessTitle() {
-    return this.page.getByRole('heading', { name: /password updated/i });
+    return this.page.getByRole("heading", { name: /password updated/i });
   }
 
   /**
@@ -73,7 +73,7 @@ export class ResetPasswordPage {
    * Get expired link title
    */
   getExpiredLinkTitle() {
-    return this.page.getByText('Reset link expired', { exact: true });
+    return this.page.getByText("Reset link expired", { exact: true });
   }
 
   /**

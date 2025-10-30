@@ -20,7 +20,7 @@ export const prerender = false;
  * Request Body: { type: EventType, payload?: Json }
  * Response: 201 Created with EventDTO
  */
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -29,29 +29,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -68,7 +58,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -97,13 +87,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       await eventsService.createEvent(userId, eventInput);
     } catch (error) {
       console.error(`Failed to create event for user ${userId}:`, error);
-      return jsonError(
-        500,
-        "Internal Server Error",
-        "Failed to create event",
-        undefined,
-        requestId
-      );
+      return jsonError(500, "Internal Server Error", "Failed to create event", undefined, requestId);
     }
 
     // ========================================================================
@@ -120,13 +104,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in POST /api/events:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 

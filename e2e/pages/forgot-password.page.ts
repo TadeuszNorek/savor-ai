@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator } from "@playwright/test";
 
 /**
  * Page Object Model for Forgot Password Page
@@ -15,14 +15,14 @@ export class ForgotPasswordPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.getByRole('textbox', { name: /email/i });
-    this.sendButton = page.getByRole('button', {
+    this.emailInput = page.getByRole("textbox", { name: /email/i });
+    this.sendButton = page.getByRole("button", {
       name: /send reset instructions/i,
     });
-    this.backToLoginLink = page.getByRole('link', { name: /sign in/i });
+    this.backToLoginLink = page.getByRole("link", { name: /sign in/i });
     this.successMessage = page.getByText(/check your email/i);
     this.errorAlert = page.locator('[role="alert"]');
-    this.formElement = page.getByRole('form', {
+    this.formElement = page.getByRole("form", {
       name: /forgot password form/i,
     });
   }
@@ -31,15 +31,15 @@ export class ForgotPasswordPage {
    * Navigate to forgot password page
    */
   async goto() {
-    await this.page.goto('/auth/forgot');
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto("/auth/forgot");
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**
    * Request password reset for given email
    */
   async requestReset(email: string) {
-    await this.emailInput.waitFor({ state: 'visible' });
+    await this.emailInput.waitFor({ state: "visible" });
 
     await this.emailInput.click();
     await this.emailInput.fill(email);
@@ -51,7 +51,7 @@ export class ForgotPasswordPage {
    * Get success card title
    */
   getSuccessTitle() {
-    return this.page.getByText('Check your email', { exact: true });
+    return this.page.getByText("Check your email", { exact: true });
   }
 
   /**

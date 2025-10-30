@@ -39,9 +39,7 @@ export async function sendSessionStartEvent(): Promise<void> {
     });
 
     if (!response.ok) {
-      console.debug(
-        `session_start event failed: ${response.status} ${response.statusText}`
-      );
+      console.debug(`session_start event failed: ${response.status} ${response.statusText}`);
     } else {
       console.debug("session_start event sent successfully");
     }

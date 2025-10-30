@@ -1,11 +1,5 @@
 import { forwardRef } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import type { DietType } from "../../types";
 
 const DIET_TYPES: { value: DietType; label: string }[] = [

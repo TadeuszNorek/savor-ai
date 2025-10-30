@@ -8,14 +8,14 @@ Many users struggle to find recipes that align with their specific diet, allergi
 
 ## Tech Stack
 
-| Category      | Technology                                       |
-|---------------|--------------------------------------------------|
-| **Frontend**  | Astro, React (for interactive islands), TypeScript |
-| **Styling**   | Tailwind CSS, shadcn/ui                          |
-| **Backend**   | Supabase (PostgreSQL, Authentication, RLS)       |
-| **AI**        | Google Gemini, OpenRouter                        |
-| **Testing**   | Vitest, Playwright, React Testing Library, MSW   |
-| **DevOps**    | GitHub Actions, Docker, DigitalOcean             |
+| Category     | Technology                                         |
+| ------------ | -------------------------------------------------- |
+| **Frontend** | Astro, React (for interactive islands), TypeScript |
+| **Styling**  | Tailwind CSS, shadcn/ui                            |
+| **Backend**  | Supabase (PostgreSQL, Authentication, RLS)         |
+| **AI**       | Google Gemini, OpenRouter                          |
+| **Testing**  | Vitest, Playwright, React Testing Library, MSW     |
+| **DevOps**   | GitHub Actions, Docker, DigitalOcean               |
 
 ## Getting Started Locally
 
@@ -31,21 +31,25 @@ Follow these steps to set up and run the project on your local machine.
 ### Installation & Setup
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/your-username/savor-ai.git
     cd savor-ai
     ```
 
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
 
 3.  **Set up environment variables:**
     Create a `.env` file by copying the example file.
+
     ```bash
     cp .env.example .env
     ```
+
     Open the `.env` file and add your credentials for Supabase and the Google Gemini API.
 
 4.  **Run the development server:**
@@ -77,12 +81,14 @@ This project includes several scripts to help with development:
 ## Testing
 
 ### Unit Tests
+
 - **Framework**: Vitest with React Testing Library
 - **Coverage**: Utility functions, type guards, validators, React hooks, and UI components
 - **Target**: 80% code coverage minimum
 - **Focus**: Individual component logic, edge cases, and pure functions
 
 ### E2E Tests
+
 - **Framework**: Playwright
 - **Coverage**: Critical user journeys (authentication, recipe generation, CRUD operations, search/filter)
 - **Browsers**: Chrome, Firefox, Safari

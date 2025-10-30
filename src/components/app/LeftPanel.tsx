@@ -12,7 +12,6 @@ import { RecipeListSkeleton } from "./RecipeListSkeleton";
 import { useRecipesList } from "@/lib/api/recipes";
 import { useUrlFilters } from "@/lib/hooks/useUrlFilters";
 import { useScrollRestoration } from "@/lib/hooks/useScrollRestoration";
-import type { ListFiltersVM } from "@/types";
 
 interface LeftPanelProps {
   selectedId?: string;
@@ -36,16 +35,7 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
   );
 
   // Fetch recipes with current filters
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch,
-  } = useRecipesList({
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useRecipesList({
     search: filters.search || undefined,
     tags: filters.tags.length > 0 ? filters.tags.join(",") : undefined,
     sort: filters.sort,
@@ -134,17 +124,9 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
 
       {/* Filters Section */}
       <div className="space-y-3 p-4 lg:pb-4 max-lg:pb-3 border-b">
-        <SearchBar
-          value={filters.search || ""}
-          onChange={handleSearchChange}
-          onSubmit={handleSearchSubmit}
-        />
+        <SearchBar value={filters.search || ""} onChange={handleSearchChange} onSubmit={handleSearchSubmit} />
 
-        <TagFilterChips
-          selected={filters.tags}
-          allTags={allTags}
-          onChange={handleTagsChange}
-        />
+        <TagFilterChips selected={filters.tags} allTags={allTags} onChange={handleTagsChange} />
 
         <SortSelect value={filters.sort} onChange={handleSortChange} />
       </div>
@@ -157,11 +139,7 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
           <ErrorPanel error={error as Error} onRetry={handleRetry} />
         ) : totalRecipes === 0 ? (
           <EmptyState
-            message={
-              hasFilters
-                ? "No recipes matching your filters"
-                : "No recipes yet"
-            }
+            message={hasFilters ? "No recipes matching your filters" : "No recipes yet"}
             onCta={!hasFilters ? onGenerateClick : undefined}
           />
         ) : (

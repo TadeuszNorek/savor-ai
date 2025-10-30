@@ -26,9 +26,7 @@ const DietTypeSchema = z.enum([
  * - Removing duplicates
  */
 const normalizeStringArray = (arr: string[]): string[] => {
-  const normalized = arr
-    .map((item) => item.trim().toLowerCase())
-    .filter((item) => item.length > 0);
+  const normalized = arr.map((item) => item.trim().toLowerCase()).filter((item) => item.length > 0);
 
   // Remove duplicates
   return [...new Set(normalized)];
@@ -42,12 +40,7 @@ const normalizeStringArray = (arr: string[]): string[] => {
  * - Automatically normalizes to lowercase, trims, deduplicates
  */
 const StringArraySchema = z
-  .array(
-    z
-      .string()
-      .min(1, "Item cannot be empty")
-      .max(50, "Item cannot exceed 50 characters")
-  )
+  .array(z.string().min(1, "Item cannot be empty").max(50, "Item cannot exceed 50 characters"))
   .max(100, "Array cannot exceed 100 items")
   .transform(normalizeStringArray);
 
@@ -88,9 +81,7 @@ export const UpdateProfileCommandSchema = z
   .strict()
   .refine(
     (data) =>
-      data.diet_type !== undefined ||
-      data.disliked_ingredients !== undefined ||
-      data.preferred_cuisines !== undefined,
+      data.diet_type !== undefined || data.disliked_ingredients !== undefined || data.preferred_cuisines !== undefined,
     {
       message: "At least one field must be provided for update",
       path: ["_root"],

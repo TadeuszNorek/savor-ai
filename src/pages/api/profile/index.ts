@@ -21,7 +21,7 @@ export const prerender = false;
  * - 404 Not Found: Profile doesn't exist (use POST to create)
  * - 500 Internal Server Error: Database errors
  */
-export const GET: APIRoute = async ({ request, locals }) => {
+export const GET: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -30,29 +30,19 @@ export const GET: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -74,26 +64,14 @@ export const GET: APIRoute = async ({ request, locals }) => {
     } catch (error) {
       // General database error
       console.error(`Failed to fetch profile for user ${userId}:`, error);
-      return jsonError(
-        500,
-        "Internal Server Error",
-        "Failed to fetch profile",
-        undefined,
-        requestId
-      );
+      return jsonError(500, "Internal Server Error", "Failed to fetch profile", undefined, requestId);
     }
 
     // ========================================================================
     // 3. Handle profile not found
     // ========================================================================
     if (!profile) {
-      return jsonError(
-        404,
-        "Not Found",
-        "Profile not found; use POST /api/profile to create",
-        undefined,
-        requestId
-      );
+      return jsonError(404, "Not Found", "Profile not found; use POST /api/profile to create", undefined, requestId);
     }
 
     // ========================================================================
@@ -110,13 +88,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in GET /api/profile:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 
@@ -137,7 +109,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
  * - 409 Conflict: Profile already exists (use PUT /api/profile)
  * - 500 Internal Server Error: Database errors
  */
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -146,29 +118,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -185,7 +147,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -226,15 +188,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
 
       // General database error
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       console.error(`Failed to create profile for user ${userId}:`, error);
-      return jsonError(
-        500,
-        "Internal Server Error",
-        "Failed to create profile",
-        undefined,
-        requestId
-      );
+      return jsonError(500, "Internal Server Error", "Failed to create profile", undefined, requestId);
     }
 
     // ========================================================================
@@ -267,13 +222,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in POST /api/profile:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 
@@ -294,7 +243,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
  * - 404 Not Found: Profile doesn't exist (use POST to create)
  * - 500 Internal Server Error: Database errors
  */
-export const PUT: APIRoute = async ({ request, locals }) => {
+export const PUT: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -303,29 +252,19 @@ export const PUT: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -342,7 +281,7 @@ export const PUT: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -373,24 +312,12 @@ export const PUT: APIRoute = async ({ request, locals }) => {
     } catch (error) {
       // Handle profile not found
       if (error instanceof ProfileNotFoundError) {
-        return jsonError(
-          404,
-          "Not Found",
-          "Profile not found; use POST /api/profile to create",
-          undefined,
-          requestId
-        );
+        return jsonError(404, "Not Found", "Profile not found; use POST /api/profile to create", undefined, requestId);
       }
 
       // General database error
       console.error(`Failed to update profile for user ${userId}:`, error);
-      return jsonError(
-        500,
-        "Internal Server Error",
-        "Failed to update profile",
-        undefined,
-        requestId
-      );
+      return jsonError(500, "Internal Server Error", "Failed to update profile", undefined, requestId);
     }
 
     // ========================================================================
@@ -426,13 +353,7 @@ export const PUT: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in PUT /api/profile:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 

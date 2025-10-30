@@ -1,11 +1,10 @@
 import type { APIRoute } from "astro";
-import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { createClient } from "@supabase/supabase-js";
 import { GenerateRecipeCommandSchema } from "../../../lib/schemas/recipe.schema";
 import { AiService } from "../../../lib/services/ai/ai.service";
 import { EventsService } from "../../../lib/services/events.service";
-import { AiError, AiTimeoutError, AiProviderError } from "../../../lib/services/ai/types";
+import { AiTimeoutError, AiProviderError } from "../../../lib/services/ai/types";
 import type { ApiError, GenerateRecipeResponse } from "../../../types";
 import type { Database } from "../../../db/database.types";
 
@@ -21,7 +20,7 @@ export const prerender = false;
  * Request Body: { prompt: string }
  * Response: { recipe: RecipeSchema, generation_id: string, generated_at: string }
  */
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -30,29 +29,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -95,7 +84,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -120,14 +109,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     let profile;
     try {
-      const { data: profileData } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
+      const { data: profileData } = await supabase.from("profiles").select("*").eq("user_id", userId).single();
 
       profile = profileData || undefined;
-    } catch (error) {
+    } catch {
       // Profile is optional, continue without it
       console.log("No profile found for user, continuing without preferences");
     }
@@ -159,13 +144,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     } catch (error) {
       // Handle AI-specific errors
       if (error instanceof AiTimeoutError) {
-        return jsonError(
-          503,
-          "Service Unavailable",
-          "AI service timed out. Please try again.",
-          undefined,
-          requestId
-        );
+        return jsonError(503, "Service Unavailable", "AI service timed out. Please try again.", undefined, requestId);
       }
 
       if (error instanceof AiProviderError) {
@@ -238,13 +217,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in /api/recipes/generate:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 

@@ -23,7 +23,7 @@ export interface AiServiceConfig {
 export class AiService {
   private provider: AiProvider;
   private maxRetries: number;
-  private retryDelay: number = 500; // Base delay in ms for exponential backoff
+  private retryDelay = 500; // Base delay in ms for exponential backoff
 
   constructor(config: AiServiceConfig) {
     this.maxRetries = config.maxRetries ?? 1; // Default: 1 retry as per spec
@@ -114,9 +114,7 @@ export class AiService {
     const maxBytes = 200 * 1024; // 200KB
 
     if (sizeBytes > maxBytes) {
-      throw new Error(
-        `Generated recipe exceeds size limit: ${sizeBytes} bytes (max ${maxBytes} bytes)`
-      );
+      throw new Error(`Generated recipe exceeds size limit: ${sizeBytes} bytes (max ${maxBytes} bytes)`);
     }
   }
 
@@ -155,17 +153,12 @@ export class AiService {
     if (provider === "mock") {
       return new AiService({
         provider: "mock",
-        timeout: import.meta.env.AI_TIMEOUT_MS
-          ? parseInt(import.meta.env.AI_TIMEOUT_MS, 10)
-          : undefined,
+        timeout: import.meta.env.AI_TIMEOUT_MS ? parseInt(import.meta.env.AI_TIMEOUT_MS, 10) : undefined,
       });
     }
 
     // Real providers need API keys
-    const apiKey =
-      provider === "openrouter"
-        ? import.meta.env.OPENROUTER_API_KEY
-        : import.meta.env.GOOGLE_API_KEY;
+    const apiKey = provider === "openrouter" ? import.meta.env.OPENROUTER_API_KEY : import.meta.env.GOOGLE_API_KEY;
 
     if (!apiKey) {
       const keyName = provider === "openrouter" ? "OPENROUTER_API_KEY" : "GOOGLE_API_KEY";
@@ -176,9 +169,7 @@ export class AiService {
       provider,
       apiKey,
       model: import.meta.env.AI_MODEL,
-      timeout: import.meta.env.AI_TIMEOUT_MS
-        ? parseInt(import.meta.env.AI_TIMEOUT_MS, 10)
-        : undefined,
+      timeout: import.meta.env.AI_TIMEOUT_MS ? parseInt(import.meta.env.AI_TIMEOUT_MS, 10) : undefined,
     });
   }
 }

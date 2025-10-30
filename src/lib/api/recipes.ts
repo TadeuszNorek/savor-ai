@@ -1,9 +1,4 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiFetch } from "./http";
 import type {
   RecipeListResponse,
@@ -12,7 +7,6 @@ import type {
   GenerateRecipeResponse,
   SaveRecipeCommand,
   RecipeSummaryDTO,
-  ApiError,
   RecipeQueryParams,
 } from "../../types";
 
@@ -83,7 +77,7 @@ async function saveRecipe(command: SaveRecipeCommand): Promise<RecipeSummaryDTO>
  * @throws ApiError on 404 or server errors
  */
 async function deleteRecipe(id: string): Promise<void> {
-  return apiFetch<void>(`/api/recipes/${id}`, {
+  await apiFetch(`/api/recipes/${id}`, {
     method: "DELETE",
   });
 }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { toast } from "sonner";
 import { useProfileQuery, useCreateProfileMutation, useUpdateProfileMutation } from "../lib/api/profile";
 import {
@@ -127,17 +126,9 @@ export default function ProfileView() {
         </Alert>
       )}
 
-      <ProfileForm
-        initialValues={initialValues}
-        mode={mode}
-        onSubmit={handleSubmit}
-      />
+      <ProfileForm initialValues={initialValues} mode={mode} onSubmit={handleSubmit} />
 
-      {isSubmitting && (
-        <div className="text-sm text-muted-foreground">
-          Saving...
-        </div>
-      )}
+      {isSubmitting && <div className="text-sm text-muted-foreground">Saving...</div>}
     </div>
   );
 }

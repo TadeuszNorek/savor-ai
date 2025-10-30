@@ -81,11 +81,7 @@ export class MockProvider implements AiProvider {
   /**
    * Get recipe template based on type
    */
-  private getRecipeTemplate(
-    type: string,
-    cuisine: string,
-    difficulty: "easy" | "medium" | "hard"
-  ): RecipeSchema {
+  private getRecipeTemplate(type: string, cuisine: string, difficulty: "easy" | "medium" | "hard"): RecipeSchema {
     const templates: Record<string, RecipeSchema> = {
       pasta: {
         title: "Creamy Garlic Pasta",
@@ -184,8 +180,7 @@ export class MockProvider implements AiProvider {
       "stir-fry": {
         title: "Quick Vegetable Stir-Fry",
         summary: "Colorful and crunchy vegetable stir-fry with savory sauce",
-        description:
-          "A quick and healthy stir-fry loaded with crisp vegetables in a flavorful Asian-inspired sauce.",
+        description: "A quick and healthy stir-fry loaded with crisp vegetables in a flavorful Asian-inspired sauce.",
         prep_time_minutes: 15,
         cook_time_minutes: 10,
         servings: 4,
@@ -283,8 +278,7 @@ export class MockProvider implements AiProvider {
       soup: {
         title: "Hearty Vegetable Soup",
         summary: "Comforting and nutritious vegetable soup",
-        description:
-          "A wholesome soup packed with seasonal vegetables in a flavorful herb-infused broth.",
+        description: "A wholesome soup packed with seasonal vegetables in a flavorful herb-infused broth.",
         prep_time_minutes: 15,
         cook_time_minutes: 35,
         servings: 6,
@@ -385,8 +379,7 @@ export class MockProvider implements AiProvider {
       taco: {
         title: "Easy Bean Tacos",
         summary: "Quick and flavorful tacos with seasoned beans",
-        description:
-          "Simple and delicious tacos filled with seasoned black beans and fresh toppings.",
+        description: "Simple and delicious tacos filled with seasoned black beans and fresh toppings.",
         prep_time_minutes: 10,
         cook_time_minutes: 15,
         servings: 4,

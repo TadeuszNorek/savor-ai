@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator } from "@playwright/test";
 
 /**
  * Base Page Object Model class
@@ -28,9 +28,7 @@ export class BasePage {
   /**
    * Wait for the page to reach a specific load state
    */
-  async waitForLoadState(
-    state: 'load' | 'domcontentloaded' | 'networkidle' = 'load'
-  ) {
+  async waitForLoadState(state: "load" | "domcontentloaded" | "networkidle" = "load") {
     await this.page.waitForLoadState(state);
   }
 
@@ -38,14 +36,14 @@ export class BasePage {
    * Wait for an element to be visible
    */
   async waitForElement(locator: Locator, timeout?: number) {
-    await locator.waitFor({ state: 'visible', timeout });
+    await locator.waitFor({ state: "visible", timeout });
   }
 
   /**
    * Wait for an element to be hidden
    */
   async waitForElementHidden(locator: Locator, timeout?: number) {
-    await locator.waitFor({ state: 'hidden', timeout });
+    await locator.waitFor({ state: "hidden", timeout });
   }
 
   /**
@@ -54,12 +52,7 @@ export class BasePage {
    */
   async getErrorMessage(): Promise<string | null> {
     // Try multiple common error selectors
-    const errorSelectors = [
-      '[role="alert"]',
-      '[data-testid="error-message"]',
-      '.error-message',
-      '.alert-error',
-    ];
+    const errorSelectors = ['[role="alert"]', '[data-testid="error-message"]', ".error-message", ".alert-error"];
 
     for (const selector of errorSelectors) {
       const errorElement = this.page.locator(selector).first();
@@ -78,8 +71,8 @@ export class BasePage {
     const successSelectors = [
       '[role="status"]',
       '[data-testid="success-message"]',
-      '.success-message',
-      '.alert-success',
+      ".success-message",
+      ".alert-success",
     ];
 
     for (const selector of successSelectors) {
@@ -168,16 +161,7 @@ export class BasePage {
    * Get element by role
    */
   getByRole(
-    role:
-      | 'button'
-      | 'link'
-      | 'textbox'
-      | 'heading'
-      | 'img'
-      | 'checkbox'
-      | 'radio'
-      | 'alert'
-      | 'status',
+    role: "button" | "link" | "textbox" | "heading" | "img" | "checkbox" | "radio" | "alert" | "status",
     options?: { name?: string | RegExp }
   ): Locator {
     return this.page.getByRole(role, options);
@@ -209,7 +193,7 @@ export class BasePage {
    */
   async hasUrl(url: string | RegExp): Promise<boolean> {
     const currentUrl = this.getCurrentUrl();
-    if (typeof url === 'string') {
+    if (typeof url === "string") {
       return currentUrl.includes(url);
     }
     return url.test(currentUrl);

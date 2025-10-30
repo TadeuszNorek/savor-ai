@@ -49,3 +49,4 @@ playwright/.cache/
 
 # vitest
 .vitest/nul 
+"5_Run linter.txt" 

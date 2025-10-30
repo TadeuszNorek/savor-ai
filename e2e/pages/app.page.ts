@@ -1,5 +1,5 @@
-import { type Page, type Locator } from '@playwright/test';
-import { BasePage } from './base.page';
+import { type Page, type Locator } from "@playwright/test";
+import { BasePage } from "./base.page";
 
 /**
  * Page Object Model for App Page (Main Application)
@@ -63,67 +63,72 @@ export class AppPage extends BasePage {
     super(page);
 
     // Header navigation
-    this.headerLogo = page.getByRole('link', { name: /savorai/i });
-    this.recipesNavLink = page.getByRole('link', { name: /recipes/i });
-    this.generatorNavLink = page.getByRole('link', { name: /generator/i });
+    this.headerLogo = page.getByRole("link", { name: /savorai/i });
+    this.recipesNavLink = page.getByRole("link", { name: /recipes/i });
+    this.generatorNavLink = page.getByRole("link", { name: /generator/i });
 
     // User menu elements
-    this.userMenuButton = page.getByRole('button').filter({ hasText: /@/ });
-    this.userMenuProfileItem = page.getByRole('menuitem', { name: /profile/i });
-    this.userMenuLogoutItem = page.getByRole('menuitem', { name: /sign out/i });
+    this.userMenuButton = page.getByRole("button").filter({ hasText: /@/ });
+    this.userMenuProfileItem = page.getByRole("menuitem", { name: /profile/i });
+    this.userMenuLogoutItem = page.getByRole("menuitem", { name: /sign out/i });
 
     // Tabs
-    this.generatorTab = page.getByRole('tab', { name: /generator/i });
-    this.previewTab = page.getByRole('tab', { name: /preview/i });
+    this.generatorTab = page.getByRole("tab", { name: /generator/i });
+    this.previewTab = page.getByRole("tab", { name: /preview/i });
 
     // Generator Panel elements
-    this.promptInput = page.locator('#recipe-prompt');
-    this.generateButton = page.getByRole('button', {
+    this.promptInput = page.locator("#recipe-prompt");
+    this.generateButton = page.getByRole("button", {
       name: /generate recipe/i,
     });
-    this.characterCounter = page.locator('#prompt-counter');
+    this.characterCounter = page.locator("#prompt-counter");
     this.errorAlert = page.locator('[role="alert"]');
-    this.retryButton = page.getByRole('button', { name: /try again/i });
+    this.retryButton = page.getByRole("button", { name: /try again/i });
 
     // Preview Panel elements
-    this.recipeTitle = page.locator('h1').first();
-    this.recipeSummary = page.locator('article p').first();
-    this.recipeCuisine = page.locator('article').getByText(/cuisine/i);
-    this.recipeDescription = page.locator('article p').nth(1);
-    this.saveButton = page.getByRole('button', { name: /save recipe/i });
-    this.restoreDraftButton = page.getByRole('button', {
+    this.recipeTitle = page.locator("h1").first();
+    this.recipeSummary = page.locator("article p").first();
+    this.recipeCuisine = page.locator("article").getByText(/cuisine/i);
+    this.recipeDescription = page.locator("article p").nth(1);
+    this.saveButton = page.getByRole("button", { name: /save recipe/i });
+    this.restoreDraftButton = page.getByRole("button", {
       name: /restore from draft/i,
     });
     this.emptyStateMessage = page.getByText(/no recipe selected/i);
 
     // Recipe Details elements
-    this.servingsDecrease = page.getByRole('button', {
+    this.servingsDecrease = page.getByRole("button", {
       name: /decrease servings/i,
     });
-    this.servingsIncrease = page.getByRole('button', {
+    this.servingsIncrease = page.getByRole("button", {
       name: /increase servings/i,
     });
     // Ingredients are buttons in list items within article
-    this.ingredientsList = page.locator('article').locator('ul').first().locator('li button');
+    this.ingredientsList = page.locator("article").locator("ul").first().locator("li button");
     // Instructions are buttons with "Toggle step" aria-label
     this.instructionsList = page.locator('button[aria-label^="Toggle step"]');
-    this.nutritionSection = page.getByRole('heading', { name: /nutrition/i });
+    this.nutritionSection = page.getByRole("heading", { name: /nutrition/i });
 
     // Delete Recipe elements (AlertDialog)
-    this.deleteButton = page.getByRole('button', { name: /delete recipe/i });
-    this.confirmDialog = page.getByRole('alertdialog');
-    this.confirmDialogTitle = page.getByRole('alertdialog').getByRole('heading', { name: /are you sure/i });
-    this.confirmDialogDescription = page.getByRole('alertdialog').locator('[class*="AlertDescription"]').or(page.getByText(/permanently delete/i));
-    this.confirmCancelButton = page.getByRole('button', { name: /cancel/i });
-    this.confirmDeleteButton = page.getByRole('alertdialog').getByRole('button', { name: /^delete$/i });
+    this.deleteButton = page.getByRole("button", { name: /delete recipe/i });
+    this.confirmDialog = page.getByRole("alertdialog");
+    this.confirmDialogTitle = page.getByRole("alertdialog").getByRole("heading", { name: /are you sure/i });
+    this.confirmDialogDescription = page
+      .getByRole("alertdialog")
+      .locator('[class*="AlertDescription"]')
+      .or(page.getByText(/permanently delete/i));
+    this.confirmCancelButton = page.getByRole("button", { name: /cancel/i });
+    this.confirmDeleteButton = page.getByRole("alertdialog").getByRole("button", { name: /^delete$/i });
 
     // Recipe List elements (Left Panel)
-    this.searchInput = page.getByRole('searchbox');
-    this.sortSelect = page.getByRole('combobox', { name: /sort/i });
-    this.recipeCards = page.getByRole('button', { name: /recipe card/i }).or(page.locator('[role="button"]').locator('h3'));
+    this.searchInput = page.getByRole("searchbox");
+    this.sortSelect = page.getByRole("combobox", { name: /sort/i });
+    this.recipeCards = page
+      .getByRole("button", { name: /recipe card/i })
+      .or(page.locator('[role="button"]').locator("h3"));
     this.emptyStateList = page.getByText(/no recipes found/i);
-    this.loadingSkeletons = page.locator('[data-skeleton]');
-    this.loadMoreButton = page.getByRole('button', { name: /load more/i });
+    this.loadingSkeletons = page.locator("[data-skeleton]");
+    this.loadMoreButton = page.getByRole("button", { name: /load more/i });
     this.recipeCountText = page.locator('.sr-only[aria-live="polite"]');
   }
 
@@ -131,7 +136,7 @@ export class AppPage extends BasePage {
    * Navigate to the app page
    */
   async goto() {
-    await this.page.goto('/app');
+    await this.page.goto("/app");
   }
 
   /**
@@ -168,7 +173,7 @@ export class AppPage extends BasePage {
 
     // Wait for logout API call
     const logoutPromise = this.page.waitForResponse(
-      (response) => response.url().includes('/api/auth/logout') && response.status() === 200
+      (response) => response.url().includes("/api/auth/logout") && response.status() === 200
     );
 
     await this.userMenuLogoutItem.click();
@@ -191,7 +196,7 @@ export class AppPage extends BasePage {
    * Check if the app page has loaded by verifying key elements
    */
   async waitForAppToLoad() {
-    await this.waitForLoadState('networkidle');
+    await this.waitForLoadState("networkidle");
     await this.waitForElement(this.userMenuButton);
   }
 
@@ -216,7 +221,7 @@ export class AppPage extends BasePage {
    */
   async clickGeneratorTab() {
     await this.generatorTab.click();
-    await this.promptInput.waitFor({ state: 'visible' });
+    await this.promptInput.waitFor({ state: "visible" });
   }
 
   /**
@@ -236,15 +241,14 @@ export class AppPage extends BasePage {
       await this.clickGeneratorTab();
     }
 
-    await this.promptInput.waitFor({ state: 'visible' });
+    await this.promptInput.waitFor({ state: "visible" });
     await this.promptInput.click();
     await this.promptInput.fill(prompt);
 
     // Wait for API response
     const generatePromise = this.page.waitForResponse(
       (response) =>
-        response.url().includes('/api/recipes/generate') &&
-        (response.status() === 200 || response.status() >= 400)
+        response.url().includes("/api/recipes/generate") && (response.status() === 200 || response.status() >= 400)
     );
 
     await this.generateButton.click();
@@ -254,8 +258,8 @@ export class AppPage extends BasePage {
 
     // Wait for preview tab to be auto-selected (on success) or error alert (on failure)
     await Promise.race([
-      this.recipeTitle.waitFor({ state: 'visible', timeout: 5000 }),
-      this.errorAlert.waitFor({ state: 'visible', timeout: 5000 }),
+      this.recipeTitle.waitFor({ state: "visible", timeout: 5000 }),
+      this.errorAlert.waitFor({ state: "visible", timeout: 5000 }),
     ]);
   }
 
@@ -270,7 +274,7 @@ export class AppPage extends BasePage {
    * Check if generate button is in loading state
    */
   async isGenerating(): Promise<boolean> {
-    const loadingButton = this.page.getByRole('button', {
+    const loadingButton = this.page.getByRole("button", {
       name: /generating/i,
     });
     return await loadingButton.isVisible();
@@ -314,12 +318,12 @@ export class AppPage extends BasePage {
    * Save the displayed recipe
    */
   async saveRecipe() {
-    await this.saveButton.waitFor({ state: 'visible' });
+    await this.saveButton.waitFor({ state: "visible" });
 
     const savePromise = this.page.waitForResponse(
       (response) =>
-        response.url().includes('/api/recipes') &&
-        response.request().method() === 'POST' &&
+        response.url().includes("/api/recipes") &&
+        response.request().method() === "POST" &&
         (response.status() === 200 || response.status() === 201)
     );
 
@@ -329,9 +333,9 @@ export class AppPage extends BasePage {
 
     // Wait for success toast (Sonner renders as list item with data-sonner-toast)
     await this.page
-      .locator('[data-sonner-toast]')
+      .locator("[data-sonner-toast]")
       .filter({ hasText: /recipe saved successfully/i })
-      .waitFor({ state: 'visible', timeout: 10000 });
+      .waitFor({ state: "visible", timeout: 10000 });
   }
 
   /**
@@ -368,7 +372,7 @@ export class AppPage extends BasePage {
    */
   async searchRecipes(query: string) {
     await this.searchInput.fill(query);
-    await this.searchInput.press('Enter');
+    await this.searchInput.press("Enter");
   }
 
   /**
@@ -420,13 +424,13 @@ export class AppPage extends BasePage {
   async deleteRecipe() {
     // Click delete button to open dialog
     await this.deleteButton.click();
-    await this.confirmDialog.waitFor({ state: 'visible' });
+    await this.confirmDialog.waitFor({ state: "visible" });
 
     // Wait for delete API call
     const deletePromise = this.page.waitForResponse(
       (response) =>
-        response.url().includes('/api/recipes/') &&
-        response.request().method() === 'DELETE' &&
+        response.url().includes("/api/recipes/") &&
+        response.request().method() === "DELETE" &&
         (response.status() === 200 || response.status() === 204)
     );
 
@@ -437,9 +441,9 @@ export class AppPage extends BasePage {
 
     // Wait for success toast
     await this.page
-      .locator('[data-sonner-toast]')
+      .locator("[data-sonner-toast]")
       .filter({ hasText: /recipe deleted successfully/i })
-      .waitFor({ state: 'visible', timeout: 10000 });
+      .waitFor({ state: "visible", timeout: 10000 });
   }
 
   /**
@@ -448,13 +452,13 @@ export class AppPage extends BasePage {
   async cancelDeleteRecipe() {
     // Click delete button to open dialog
     await this.deleteButton.click();
-    await this.confirmDialog.waitFor({ state: 'visible' });
+    await this.confirmDialog.waitFor({ state: "visible" });
 
     // Click cancel
     await this.confirmCancelButton.click();
 
     // Dialog should close
-    await this.confirmDialog.waitFor({ state: 'hidden' });
+    await this.confirmDialog.waitFor({ state: "hidden" });
   }
 
   /**

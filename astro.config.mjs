@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import * as path from "path";
-import * as fs from "fs";
 
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -11,13 +10,11 @@ import node from "@astrojs/node";
 // Load test environment if PLAYWRIGHT_TEST is set
 let testEnv = {};
 if (process.env.PLAYWRIGHT_TEST) {
-  console.log("🧪 [Astro] Using test environment from .env.test");
   const dotenv = await import("dotenv");
   const envPath = path.resolve(process.cwd(), ".env.test");
   const result = dotenv.config({ path: envPath });
   if (result.parsed) {
     testEnv = result.parsed;
-    console.log("✅ [Astro] Test env loaded:", Object.keys(testEnv).join(", "));
     // Also set in process.env for server-side code
     Object.keys(testEnv).forEach((key) => {
       process.env[key] = testEnv[key];
@@ -29,26 +26,19 @@ if (process.env.PLAYWRIGHT_TEST) {
 function injectTestEnvPlugin() {
   return {
     name: "inject-test-env",
-    config(config, { command, mode }) {
+    config(config) {
       if (process.env.PLAYWRIGHT_TEST && Object.keys(testEnv).length > 0) {
         // Inject test env vars into Vite's define
         const defines = {};
         Object.keys(testEnv).forEach((key) => {
-          if (
-            key.startsWith("PUBLIC_") ||
-            key.startsWith("SUPABASE_") ||
-            key === "SUPABASE_URL"
-          ) {
+          if (key.startsWith("PUBLIC_") || key.startsWith("SUPABASE_") || key === "SUPABASE_URL") {
             defines[`import.meta.env.${key}`] = JSON.stringify(testEnv[key]);
           }
         });
         // Also add PUBLIC_SUPABASE_URL if not present
         if (testEnv.SUPABASE_URL && !testEnv.PUBLIC_SUPABASE_URL) {
-          defines["import.meta.env.PUBLIC_SUPABASE_URL"] = JSON.stringify(
-            testEnv.SUPABASE_URL
-          );
+          defines["import.meta.env.PUBLIC_SUPABASE_URL"] = JSON.stringify(testEnv.SUPABASE_URL);
         }
-        console.log("🔧 [Vite Plugin] Injecting test env defines:", Object.keys(defines));
         return {
           define: {
             ...config.define,

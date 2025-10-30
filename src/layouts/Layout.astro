@@ -21,13 +21,8 @@ const { title = "SavorAI", showHeader = true } = Astro.props;
     <script is:inline>
       // Prevent FOUC (Flash of Unstyled Content) for dark mode
       // This runs before hydration to apply theme class immediately
-      try {
-        const theme = localStorage.getItem('theme') || 'system';
-        const resolved = theme === 'system'
-          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          : theme;
-        document.documentElement.classList.add(resolved);
-      } catch (e) {}
+      // Minified to avoid being reformatted by formatters
+      try {const theme=localStorage.getItem("theme")||"system";const resolved=theme==="system"?(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):theme;document.documentElement.classList.add(resolved)}catch{/* Silently ignore storage errors */}
     </script>
   </head>
   <body>

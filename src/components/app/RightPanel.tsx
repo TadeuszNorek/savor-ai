@@ -3,11 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneratorPanel } from "./GeneratorPanel";
 import { PreviewPanel } from "./PreviewPanel";
 import { useRecipeDetails } from "@/lib/api/recipes";
-import type {
-  RecipeSchema,
-  GenerateRecipeResponse,
-  RecipeSummaryDTO,
-} from "@/types";
+import type { RecipeSchema, GenerateRecipeResponse, RecipeSummaryDTO } from "@/types";
 
 interface RightPanelProps {
   selectedRecipeId?: string;
@@ -28,11 +24,7 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
   const [draftRecipe, setDraftRecipe] = useState<RecipeSchema | undefined>();
 
   // Fetch selected recipe details (if deep-linked)
-  const {
-    data: selectedRecipe,
-    isLoading: isLoadingRecipe,
-    isError: isRecipeError,
-  } = useRecipeDetails(selectedRecipeId || "");
+  const { data: selectedRecipe } = useRecipeDetails(selectedRecipeId || "");
 
   // Switch to preview when recipe is selected via deep-link
   useEffect(() => {
@@ -76,7 +68,7 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
   };
 
   // Handle delete - clear selection and stay on preview tab
-  const handleDeleted = (id: string) => {
+  const handleDeleted = () => {
     // Stay on preview tab - it will show "No recipe selected" placeholder
     // Notify parent to clear selection
     onRecipeDeleted?.();
@@ -111,9 +103,7 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
           </TabsTrigger>
           <TabsTrigger value="preview" className="flex-1">
             Preview
-            {(showDraft || showSaved) && (
-              <span className="ml-2 h-2 w-2 rounded-full bg-primary" />
-            )}
+            {(showDraft || showSaved) && <span className="ml-2 h-2 w-2 rounded-full bg-primary" />}
           </TabsTrigger>
         </TabsList>
 

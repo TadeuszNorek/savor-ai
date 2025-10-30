@@ -11,11 +11,11 @@ import { createSupabaseServerInstance, supabaseClient } from "../db/supabase.cli
  * na poziomie API (RLS + Bearer) i na poziomie UI (guardy klientowe)."
  */
 const PUBLIC_PATHS = [
-  "/",              // Homepage (temporary redirect to /login, future: landing page)
+  "/", // Homepage (temporary redirect to /login, future: landing page)
   "/login",
   "/auth/forgot",
   "/auth/reset",
-  "/profile",       // Client-side auth guard (401 from API → redirect)
+  "/profile", // Client-side auth guard (401 from API → redirect)
   "/api/auth/login",
   "/api/auth/register",
   "/api/auth/logout",

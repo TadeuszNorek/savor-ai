@@ -6,12 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FileText, RotateCcw } from "lucide-react";
 import { useSaveRecipeMutation, useDeleteRecipeMutation } from "@/lib/api/recipes";
 import { useProfileQuery } from "@/lib/api/profile";
-import type {
-  RecipeSchema,
-  RecipeDetailsDTO,
-  RecipeSummaryDTO,
-  PreviewMode,
-} from "@/types";
+import type { RecipeSchema, RecipeDetailsDTO, RecipeSummaryDTO, PreviewMode } from "@/types";
 import { toast } from "sonner";
 
 interface PreviewPanelProps {
@@ -51,9 +46,7 @@ export function PreviewPanel({
     const dislikedList = profile.disliked_ingredients.map((i) => i.toLowerCase());
     const ingredientsList = recipeData.ingredients.map((i) => i.toLowerCase());
 
-    const found = dislikedList.find((disliked) =>
-      ingredientsList.some((ingredient) => ingredient.includes(disliked))
-    );
+    const found = dislikedList.find((disliked) => ingredientsList.some((ingredient) => ingredient.includes(disliked)));
 
     if (found) {
       return `This recipe contains "${found}" which is in your disliked ingredients list.`;
@@ -72,7 +65,7 @@ export function PreviewPanel({
           toast.success("Recipe saved successfully!");
           onSaved?.(summary);
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
           toast.error(error.message || "Failed to save recipe");
         },
       }
@@ -85,7 +78,7 @@ export function PreviewPanel({
         toast.success("Recipe deleted successfully!");
         onDeleted?.(id);
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast.error(error.message || "Failed to delete recipe");
       },
     });
@@ -123,11 +116,7 @@ export function PreviewPanel({
         )}
 
         {/* Recipe preview */}
-        <RecipePreview
-          data={displayData}
-          onTagClick={onTagClick}
-          readonly={mode === "saved"}
-        />
+        <RecipePreview data={displayData} onTagClick={onTagClick} readonly={mode === "saved"} />
 
         {/* Actions bar - bottom */}
         <div className="flex items-center justify-between gap-3 pt-6 border-t">
@@ -142,12 +131,7 @@ export function PreviewPanel({
                   disabledReason={disabledReason || undefined}
                 />
                 {onRestoreDraft && (
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={onRestoreDraft}
-                    className="gap-2"
-                  >
+                  <Button variant="outline" size="lg" onClick={onRestoreDraft} className="gap-2">
                     <RotateCcw className="h-5 w-5" />
                     Restore from draft
                   </Button>

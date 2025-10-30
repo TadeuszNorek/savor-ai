@@ -32,7 +32,7 @@ export const prerender = false;
  *
  * Response: RecipeListResponse with paginated data and metadata
  */
-export const GET: APIRoute = async ({ request, url, locals }) => {
+export const GET: APIRoute = async ({ request, url }) => {
   const requestId = uuidv4();
 
   try {
@@ -41,29 +41,19 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -108,24 +98,12 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
       if (errorMessage.includes("Invalid cursor")) {
-        return jsonError(
-          400,
-          "Bad Request",
-          errorMessage,
-          { cursor: "Invalid cursor format or data" },
-          requestId
-        );
+        return jsonError(400, "Bad Request", errorMessage, { cursor: "Invalid cursor format or data" }, requestId);
       }
 
       // Database error
       console.error(`Database error listing recipes for user ${userId}:`, error);
-      return jsonError(
-        500,
-        "Internal Server Error",
-        "Failed to fetch recipes",
-        undefined,
-        requestId
-      );
+      return jsonError(500, "Internal Server Error", "Failed to fetch recipes", undefined, requestId);
     }
 
     // ========================================================================
@@ -140,13 +118,7 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in GET /api/recipes:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 
@@ -161,7 +133,7 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
  *
  * Response: 201 Created with RecipeSummaryDTO and Location header
  */
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -170,29 +142,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // ========================================================================
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return jsonError(
-        401,
-        "Unauthorized",
-        "Missing or invalid authorization header",
-        undefined,
-        requestId
-      );
+      return jsonError(401, "Unauthorized", "Missing or invalid authorization header", undefined, requestId);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
 
     // Create Supabase client with user's token for RLS to work
-    const supabase = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    const supabase = createClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      },
+    });
 
     // Verify token and get user
     const { data: userData, error: authError } = await supabase.auth.getUser(token);
@@ -209,7 +171,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -263,13 +225,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
       // General database/RPC error
       console.error(`Failed to save recipe for user ${userId}:`, error);
-      return jsonError(
-        500,
-        "Internal Server Error",
-        "Failed to save recipe",
-        undefined,
-        requestId
-      );
+      return jsonError(500, "Internal Server Error", "Failed to save recipe", undefined, requestId);
     }
 
     // ========================================================================
@@ -305,13 +261,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   } catch (error) {
     // Catch-all for unexpected errors
     console.error("Unexpected error in POST /api/recipes:", error);
-    return jsonError(
-      500,
-      "Internal Server Error",
-      "An unexpected error occurred",
-      undefined,
-      requestId
-    );
+    return jsonError(500, "Internal Server Error", "An unexpected error occurred", undefined, requestId);
   }
 };
 

@@ -212,7 +212,7 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="preferredCuisines-helper" className="text-sm text-muted-foreground">
-              We'll prioritize recipes from these cuisines in your recommendations.
+              We&apos;ll prioritize recipes from these cuisines in your recommendations.
             </p>
           </div>
 
@@ -228,7 +228,9 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
             type="submit"
             disabled={!canSubmit}
             className="w-full"
-            aria-label={isSubmitting ? "Saving profile" : mode === "create" ? "Create profile" : "Save changes to profile"}
+            aria-label={
+              isSubmitting ? "Saving profile" : mode === "create" ? "Create profile" : "Save changes to profile"
+            }
           >
             {isSubmitting ? "Saving..." : mode === "create" ? "Create Profile" : "Save Changes"}
           </Button>

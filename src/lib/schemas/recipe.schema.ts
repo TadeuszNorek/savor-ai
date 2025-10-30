@@ -61,6 +61,7 @@ export const GenerateRecipeCommandSchema = z.object({
     .refine(
       (val) => {
         // Basic sanity check: no control characters except newlines and tabs
+        // eslint-disable-next-line no-control-regex
         const hasInvalidChars = /[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/.test(val);
         return !hasInvalidChars;
       },
@@ -112,9 +113,7 @@ export function normalizeTags(tags: string[] | undefined): string[] {
     return [];
   }
 
-  const normalized = tags
-    .map((tag) => tag.trim().toLowerCase())
-    .filter((tag) => tag.length > 0);
+  const normalized = tags.map((tag) => tag.trim().toLowerCase()).filter((tag) => tag.length > 0);
 
   // Remove duplicates while preserving order
   return Array.from(new Set(normalized));

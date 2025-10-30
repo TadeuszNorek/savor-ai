@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "../../db/database.types";
-import type { EventType, EventDTO, CreateEventCommand } from "../../types";
+import type { EventType, CreateEventCommand } from "../../types";
 
 /**
  * Events Service
@@ -21,17 +21,12 @@ export class EventsService {
    * @returns void on success
    * @throws Error if database insert fails
    */
-  async createEvent(
-    userId: string,
-    input: CreateEventCommand
-  ): Promise<void> {
-    const { error } = await this.supabase
-      .from("events")
-      .insert({
-        user_id: userId,
-        type: input.type,
-        payload: input.payload ?? null,
-      });
+  async createEvent(userId: string, input: CreateEventCommand): Promise<void> {
+    const { error } = await this.supabase.from("events").insert({
+      user_id: userId,
+      type: input.type,
+      payload: input.payload ?? null,
+    });
 
     if (error) {
       console.error(`Failed to create event ${input.type} for user ${userId}:`, error);
@@ -47,7 +42,7 @@ export class EventsService {
    * @param windowMinutes - Time window in minutes (default: 60)
    * @returns Number of events in the window
    */
-  async countEventsInWindow(userId: string, type: EventType, windowMinutes: number = 60): Promise<number> {
+  async countEventsInWindow(userId: string, type: EventType, windowMinutes = 60): Promise<number> {
     const windowStart = new Date(Date.now() - windowMinutes * 60 * 1000).toISOString();
 
     const { count, error } = await this.supabase
@@ -72,7 +67,7 @@ export class EventsService {
    * @param maxLength - Maximum length for preview (default: 256)
    * @returns Truncated prompt
    */
-  static truncatePrompt(prompt: string, maxLength: number = 256): string {
+  static truncatePrompt(prompt: string, maxLength = 256): string {
     if (prompt.length <= maxLength) {
       return prompt;
     }

@@ -1,5 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../../src/db/database.types';
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "../../src/db/database.types";
 
 /**
  * Create Supabase admin client for cleanup operations
@@ -10,9 +10,7 @@ function getSupabaseAdminClient() {
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error(
-      'Missing Supabase credentials. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env'
-    );
+    throw new Error("Missing Supabase credentials. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env");
   }
 
   return createClient<Database>(supabaseUrl, supabaseServiceKey, {
@@ -34,16 +32,16 @@ export async function deleteTestRecipes(userId: string): Promise<number> {
 
   // Get count before deletion
   const { count, error: countError } = await supabase
-    .from('recipes')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId);
+    .from("recipes")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId);
 
   if (countError) {
     throw new Error(`Failed to count recipes: ${countError.message}`);
   }
 
   // Delete all recipes for user
-  const { error } = await supabase.from('recipes').delete().eq('user_id', userId);
+  const { error } = await supabase.from("recipes").delete().eq("user_id", userId);
 
   if (error) {
     throw new Error(`Failed to delete recipes: ${error.message}`);
@@ -60,7 +58,7 @@ export async function deleteTestRecipes(userId: string): Promise<number> {
 export async function deleteTestRecipe(recipeId: string): Promise<void> {
   const supabase = getSupabaseAdminClient();
 
-  const { error } = await supabase.from('recipes').delete().eq('id', recipeId);
+  const { error } = await supabase.from("recipes").delete().eq("id", recipeId);
 
   if (error) {
     throw new Error(`Failed to delete recipe: ${error.message}`);
@@ -79,16 +77,16 @@ export async function deleteTestEvents(userId: string): Promise<number> {
 
   // Get count before deletion
   const { count, error: countError } = await supabase
-    .from('events')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId);
+    .from("events")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId);
 
   if (countError) {
     throw new Error(`Failed to count events: ${countError.message}`);
   }
 
   // Delete all events for user
-  const { error } = await supabase.from('events').delete().eq('user_id', userId);
+  const { error } = await supabase.from("events").delete().eq("user_id", userId);
 
   if (error) {
     throw new Error(`Failed to delete events: ${error.message}`);
@@ -105,7 +103,7 @@ export async function deleteTestEvents(userId: string): Promise<number> {
 export async function deleteTestProfile(userId: string): Promise<void> {
   const supabase = getSupabaseAdminClient();
 
-  const { error } = await supabase.from('profiles').delete().eq('user_id', userId);
+  const { error } = await supabase.from("profiles").delete().eq("user_id", userId);
 
   if (error) {
     throw new Error(`Failed to delete profile: ${error.message}`);
@@ -139,9 +137,7 @@ export async function deleteTestUser(userId: string): Promise<void> {
       throw new Error(`Failed to delete auth user: ${authError.message}`);
     }
   } catch (error) {
-    throw new Error(
-      `Failed to delete test user: ${error instanceof Error ? error.message : 'Unknown error'}`
-    );
+    throw new Error(`Failed to delete test user: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
 }
 
@@ -174,9 +170,7 @@ export async function cleanupUserData(userId: string): Promise<void> {
  *
  * @param emailPattern - Pattern to identify test users (default: "test-.*@example.com")
  */
-export async function resetTestData(
-  emailPattern: string = 'test-.*@example.com'
-): Promise<void> {
+export async function resetTestData(emailPattern = "test-.*@example.com"): Promise<void> {
   const supabase = getSupabaseAdminClient();
 
   // List all users (admin only)
@@ -192,7 +186,7 @@ export async function resetTestData(
 
   // Filter test users by email pattern
   const regex = new RegExp(emailPattern);
-  const testUsers = data.users.filter((user: any) => {
+  const testUsers = data.users.filter((user: { email?: string }) => {
     const email = user.email;
     return email && regex.test(email);
   });
@@ -223,15 +217,15 @@ export async function createTestRecipe(
   const supabase = getSupabaseAdminClient();
 
   const { data, error } = await supabase
-    .from('recipes')
+    .from("recipes")
     .insert({
       user_id: userId,
       title: recipeData.title,
-      recipe: recipeData.recipe as any,
+      recipe: recipeData.recipe as unknown,
       tags: recipeData.tags || [],
-      summary: recipeData.summary || '',
+      summary: recipeData.summary || "",
     })
-    .select('id')
+    .select("id")
     .single();
 
   if (error) {
@@ -257,7 +251,7 @@ export async function createTestProfile(
 ): Promise<void> {
   const supabase = getSupabaseAdminClient();
 
-  const { error } = await supabase.from('profiles').insert({
+  const { error } = await supabase.from("profiles").insert({
     user_id: userId,
     diet_type: profileData?.diet_type || null,
     disliked_ingredients: profileData?.disliked_ingredients || null,
@@ -280,9 +274,9 @@ export async function countUserRecipes(userId: string): Promise<number> {
   const supabase = getSupabaseAdminClient();
 
   const { count, error } = await supabase
-    .from('recipes')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId);
+    .from("recipes")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId);
 
   if (error) {
     throw new Error(`Failed to count recipes: ${error.message}`);
@@ -302,10 +296,10 @@ export async function getUserRecipes(userId: string) {
   const supabase = getSupabaseAdminClient();
 
   const { data, error } = await supabase
-    .from('recipes')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
+    .from("recipes")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
 
   if (error) {
     throw new Error(`Failed to get recipes: ${error.message}`);

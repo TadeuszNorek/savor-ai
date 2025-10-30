@@ -39,7 +39,7 @@ export interface AiProviderConfig {
 export class AiError extends Error {
   constructor(
     message: string,
-    public readonly isRetryable: boolean = false,
+    public readonly isRetryable = false,
     public readonly originalError?: unknown
   ) {
     super(message);
@@ -48,14 +48,14 @@ export class AiError extends Error {
 }
 
 export class AiTimeoutError extends AiError {
-  constructor(message: string = "AI request timed out") {
+  constructor(message = "AI request timed out") {
     super(message, true);
     this.name = "AiTimeoutError";
   }
 }
 
 export class AiValidationError extends AiError {
-  constructor(message: string = "AI response validation failed") {
+  constructor(message = "AI response validation failed") {
     super(message, true); // Retryable - LLMs sometimes generate invalid JSON
     this.name = "AiValidationError";
   }
