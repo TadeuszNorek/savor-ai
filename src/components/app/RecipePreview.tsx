@@ -285,7 +285,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
           <div className="mt-8 p-6 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-center">
             <ChefHat className="w-12 h-12 text-emerald-500 dark:text-emerald-400 mx-auto mb-3" />
             <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">Bon Appétit!</h3>
-            <p className="text-emerald-700 dark:text-emerald-300">You've completed this recipe.</p>
+            <p className="text-emerald-700 dark:text-emerald-300">You&apos;ve completed this recipe.</p>
           </div>
         )}
       </section>

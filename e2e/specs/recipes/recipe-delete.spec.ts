@@ -151,7 +151,9 @@ test.describe("Recipe Delete", () => {
     const description = await appPage.getConfirmDialogDescription();
     // Recipe name appears in the description (may be partial match due to HTML structure)
     expect(description).toBeTruthy();
-    expect(description!.length).toBeGreaterThan(0);
+    if (description) {
+      expect(description.length).toBeGreaterThan(0);
+    }
   });
 
   test("should cancel delete action", async () => {

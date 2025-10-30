@@ -134,7 +134,8 @@ test.describe("Signup Flow", () => {
     // Arrange: Create a test user first
     const existingUser = generateTestUser();
     const createdUser = await createTestUser(existingUser);
-    createdUserIds.push(createdUser.id!);
+    expect(createdUser.id).toBeDefined();
+    createdUserIds.push(createdUser.id as string);
 
     // Navigate to signup
     await signupPage.goto();

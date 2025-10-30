@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { X, ChevronDown, ChevronUp } from "lucide-react";
 
 interface TagFilterChipsProps {
@@ -62,7 +61,7 @@ export function TagFilterChips({ selected, allTags, onChange }: TagFilterChipsPr
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium">Tag filters:</label>
+        <span className="text-sm font-medium">Tag filters:</span>
         {hasSelectedTags && (
           <Button
             variant="ghost"

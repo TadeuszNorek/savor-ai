@@ -107,7 +107,9 @@ test.describe("Recipe List", () => {
     // Card should have title
     const title = await firstCard.textContent();
     expect(title).toBeTruthy();
-    expect(title!.length).toBeGreaterThan(0);
+    if (title) {
+      expect(title.length).toBeGreaterThan(0);
+    }
 
     // Card should have summary (check for any text content in the card)
     const cardWithSummary = page.locator("p.text-muted-foreground").first();

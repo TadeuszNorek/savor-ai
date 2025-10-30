@@ -68,7 +68,9 @@ test.describe("Recipe Generation", () => {
     await expect(appPage.recipeTitle).toBeVisible();
     const title = await appPage.getRecipeTitle();
     expect(title).toBeTruthy();
-    expect(title!.length).toBeGreaterThan(0);
+    if (title) {
+      expect(title.length).toBeGreaterThan(0);
+    }
 
     // Should have ingredients
     const ingredientCount = await appPage.getIngredientCount();
@@ -104,9 +106,11 @@ test.describe("Recipe Generation", () => {
     expect(remaining).toBeTruthy();
 
     // Should have less than 2000 characters remaining
-    const remainingNum = parseInt(remaining!);
-    expect(remainingNum).toBeLessThan(2000);
-    expect(remainingNum).toBeGreaterThan(0);
+    if (remaining) {
+      const remainingNum = parseInt(remaining);
+      expect(remainingNum).toBeLessThan(2000);
+      expect(remainingNum).toBeGreaterThan(0);
+    }
   });
 
   test("should display all recipe components correctly", async () => {
@@ -254,7 +258,9 @@ test.describe("Recipe Generation", () => {
     // Get ingredient text
     const ingredientText = await firstIngredient.textContent();
     expect(ingredientText).toBeTruthy();
-    expect(ingredientText!.length).toBeGreaterThan(0);
+    if (ingredientText) {
+      expect(ingredientText.length).toBeGreaterThan(0);
+    }
 
     // Click the ingredient button (toggles completion state)
     await firstIngredient.click();

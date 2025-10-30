@@ -1,10 +1,9 @@
-import { http, HttpResponse } from "msw";
-
 /**
  * MSW Request Handlers
  * Define mock API responses here for use in tests
  *
  * Example:
+ * import { http, HttpResponse } from "msw";
  * export const handlers = [
  *   http.get('/api/user', () => {
  *     return HttpResponse.json({ name: 'John Doe' });

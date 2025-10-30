@@ -25,7 +25,6 @@ function getErrorMessage(error: ApiError | Error): {
 
   // Handle ApiError based on status/message
   const errorMsg = error.message?.toLowerCase() || "";
-  const errorType = error.error?.toLowerCase() || "";
 
   // 400 Bad Request
   if (errorMsg.includes("bad request") || errorMsg.includes("validation")) {

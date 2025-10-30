@@ -44,7 +44,7 @@ export function DeleteButton({ recipeId, recipeName, onDeleted, loading = false 
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete "<strong>{recipeName}</strong>". This action cannot be undone.
+            This will permanently delete &quot;<strong>{recipeName}</strong>&quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

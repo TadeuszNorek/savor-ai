@@ -23,7 +23,7 @@ describe("Input component", () => {
   });
 
   it("should render with different input types", () => {
-    const { rerender, container } = render(<Input type="email" />);
+    const { rerender } = render(<Input type="email" />);
     let input = screen.getByRole("textbox");
     expect(input).toHaveAttribute("type", "email");
 

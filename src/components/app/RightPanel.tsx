@@ -24,11 +24,7 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
   const [draftRecipe, setDraftRecipe] = useState<RecipeSchema | undefined>();
 
   // Fetch selected recipe details (if deep-linked)
-  const {
-    data: selectedRecipe,
-    isLoading: isLoadingRecipe,
-    isError: isRecipeError,
-  } = useRecipeDetails(selectedRecipeId || "");
+  const { data: selectedRecipe } = useRecipeDetails(selectedRecipeId || "");
 
   // Switch to preview when recipe is selected via deep-link
   useEffect(() => {
@@ -72,7 +68,7 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
   };
 
   // Handle delete - clear selection and stay on preview tab
-  const handleDeleted = (id: string) => {
+  const handleDeleted = () => {
     // Stay on preview tab - it will show "No recipe selected" placeholder
     // Notify parent to clear selection
     onRecipeDeleted?.();

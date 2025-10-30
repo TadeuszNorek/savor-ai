@@ -212,7 +212,7 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="preferredCuisines-helper" className="text-sm text-muted-foreground">
-              We'll prioritize recipes from these cuisines in your recommendations.
+              We&apos;ll prioritize recipes from these cuisines in your recommendations.
             </p>
           </div>
 

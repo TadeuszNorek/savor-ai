@@ -1,11 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod";
-import {
-  CreateProfileCommandSchema,
-  UpdateProfileCommandSchema,
-  type CreateProfileCommandInput,
-  type UpdateProfileCommandInput,
-} from "@/lib/schemas/profile.schema";
+import { CreateProfileCommandSchema, UpdateProfileCommandSchema } from "@/lib/schemas/profile.schema";
 
 describe("profile schemas", () => {
   describe("CreateProfileCommandSchema", () => {

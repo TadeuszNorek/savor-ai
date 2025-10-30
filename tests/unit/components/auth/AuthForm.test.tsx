@@ -238,7 +238,7 @@ describe("AuthForm component", () => {
     const originalLocation = window.location;
 
     beforeEach(() => {
-      // @ts-ignore
+      // @ts-expect-error - Deleting read-only property for test mocking
       delete window.location;
       window.location = { ...originalLocation, href: "" };
     });

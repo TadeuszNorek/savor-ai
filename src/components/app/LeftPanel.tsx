@@ -12,7 +12,6 @@ import { RecipeListSkeleton } from "./RecipeListSkeleton";
 import { useRecipesList } from "@/lib/api/recipes";
 import { useUrlFilters } from "@/lib/hooks/useUrlFilters";
 import { useScrollRestoration } from "@/lib/hooks/useScrollRestoration";
-import type { ListFiltersVM } from "@/types";
 
 interface LeftPanelProps {
   selectedId?: string;
