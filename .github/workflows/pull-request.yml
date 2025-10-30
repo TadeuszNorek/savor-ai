@@ -90,7 +90,7 @@ jobs:
       - name: Generate .env.test from secrets
         shell: bash
         run: |
-          cat > .env.test << 'EOF'
+          cat > .env.test <<EOF
           SUPABASE_URL=${SUPABASE_URL}
           PUBLIC_SUPABASE_KEY=${PUBLIC_SUPABASE_KEY}
           SUPABASE_KEY=${SUPABASE_KEY}
