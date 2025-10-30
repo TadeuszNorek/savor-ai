@@ -13,8 +13,7 @@ describe("useScrollRestoration hook", () => {
         mockSessionStorage[key] = value;
       }),
       removeItem: vi.fn((key: string) => {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete mockSessionStorage[key];
+        Reflect.deleteProperty(mockSessionStorage, key);
       }),
       clear: vi.fn(() => {
         mockSessionStorage = {};

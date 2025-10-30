@@ -61,6 +61,7 @@ export const GenerateRecipeCommandSchema = z.object({
     .refine(
       (val) => {
         // Basic sanity check: no control characters except newlines and tabs
+        // eslint-disable-next-line no-control-regex
         const hasInvalidChars = /[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/.test(val);
         return !hasInvalidChars;
       },

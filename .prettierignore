@@ -1,0 +1,2 @@
+# Astro files with inline scripts have parsing issues with Prettier
+src/layouts/Layout.astro

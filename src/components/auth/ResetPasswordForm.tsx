@@ -62,7 +62,7 @@ export function ResetPasswordForm() {
     // Subscribe to auth state changes
     const {
       data: { subscription },
-    } = supabaseClient.auth.onAuthStateChange((event, session) => {
+    } = supabaseClient.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") {
         setIsRecoverySession(true);
         setIsLoading(false);
@@ -201,7 +201,7 @@ export function ResetPasswordForm() {
       <CardHeader>
         <CardTitle>Set new password</CardTitle>
         <CardDescription>
-          Enter a new password for your account. Make sure it's at least 8 characters long.
+          Enter a new password for your account. Make sure it&apos;s at least 8 characters long.
         </CardDescription>
       </CardHeader>
       <CardContent>

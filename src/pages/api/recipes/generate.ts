@@ -1,11 +1,10 @@
 import type { APIRoute } from "astro";
-import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { createClient } from "@supabase/supabase-js";
 import { GenerateRecipeCommandSchema } from "../../../lib/schemas/recipe.schema";
 import { AiService } from "../../../lib/services/ai/ai.service";
 import { EventsService } from "../../../lib/services/events.service";
-import { AiError, AiTimeoutError, AiProviderError } from "../../../lib/services/ai/types";
+import { AiTimeoutError, AiProviderError } from "../../../lib/services/ai/types";
 import type { ApiError, GenerateRecipeResponse } from "../../../types";
 import type { Database } from "../../../db/database.types";
 
@@ -21,7 +20,7 @@ export const prerender = false;
  * Request Body: { prompt: string }
  * Response: { recipe: RecipeSchema, generation_id: string, generated_at: string }
  */
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -85,7 +84,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -113,7 +112,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       const { data: profileData } = await supabase.from("profiles").select("*").eq("user_id", userId).single();
 
       profile = profileData || undefined;
-    } catch (error) {
+    } catch {
       // Profile is optional, continue without it
       console.log("No profile found for user, continuing without preferences");
     }

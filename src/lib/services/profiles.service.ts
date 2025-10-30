@@ -106,7 +106,7 @@ export class ProfilesService {
   async updateProfile(userId: string, command: UpdateProfileCommand): Promise<ProfileDTO> {
     // Build update object conditionally to support null values
     // (undefined means "don't update", null means "clear the value")
-    const updateFields: any = {
+    const updateFields: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
     };
 

@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "../../db/database.types";
-import type { EventType, EventDTO, CreateEventCommand } from "../../types";
+import type { EventType, CreateEventCommand } from "../../types";
 
 /**
  * Events Service

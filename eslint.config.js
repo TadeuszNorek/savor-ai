@@ -62,11 +62,28 @@ const reactConfig = tseslint.config({
   },
 });
 
+const testConfig = tseslint.config({
+  files: ["**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}", "e2e/**/*.ts", "tests/**/*.ts"],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
+});
+
+const astroConfig = tseslint.config({
+  files: ["**/*.astro"],
+  rules: {
+    // Disable prettier for Astro files due to known parsing issues with inline scripts
+    "prettier/prettier": "off",
+  },
+});
+
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
   baseConfig,
   jsxA11yConfig,
   reactConfig,
+  testConfig,
   eslintPluginAstro.configs["flat/recommended"],
-  eslintPluginPrettier
+  eslintPluginPrettier,
+  astroConfig // Must be after prettier to override its rules for Astro files
 );

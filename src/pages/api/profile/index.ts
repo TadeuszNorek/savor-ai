@@ -21,7 +21,7 @@ export const prerender = false;
  * - 404 Not Found: Profile doesn't exist (use POST to create)
  * - 500 Internal Server Error: Database errors
  */
-export const GET: APIRoute = async ({ request, locals }) => {
+export const GET: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -109,7 +109,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
  * - 409 Conflict: Profile already exists (use PUT /api/profile)
  * - 500 Internal Server Error: Database errors
  */
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -147,7 +147,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 
@@ -188,7 +188,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
 
       // General database error
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       console.error(`Failed to create profile for user ${userId}:`, error);
       return jsonError(500, "Internal Server Error", "Failed to create profile", undefined, requestId);
     }
@@ -244,7 +243,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
  * - 404 Not Found: Profile doesn't exist (use POST to create)
  * - 500 Internal Server Error: Database errors
  */
-export const PUT: APIRoute = async ({ request, locals }) => {
+export const PUT: APIRoute = async ({ request }) => {
   const requestId = uuidv4();
 
   try {
@@ -282,7 +281,7 @@ export const PUT: APIRoute = async ({ request, locals }) => {
     let body: unknown;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch {
       return jsonError(400, "Bad Request", "Invalid JSON in request body", undefined, requestId);
     }
 

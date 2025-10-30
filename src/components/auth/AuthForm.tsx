@@ -164,7 +164,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
         console.log("[AuthForm] Redirecting to /app");
         window.location.href = "/app";
       } else {
-        const { data, error } = await supabaseClient.auth.signUp({
+        const { error } = await supabaseClient.auth.signUp({
           email: normalizedEmail,
           password: values.password,
         });
@@ -276,7 +276,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
           <div className="text-center text-sm">
             {isLogin ? (
               <p>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <button
                   type="button"
                   onClick={handleModeSwitch}

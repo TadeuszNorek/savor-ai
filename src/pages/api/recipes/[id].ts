@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { createClient } from "@supabase/supabase-js";
 import { UuidSchema } from "../../../lib/schemas/common.schema";
@@ -18,7 +17,7 @@ export const prerender = false;
  * Authorization: User can only access their own recipes
  * Response: RecipeDetailsDTO with full recipe JSONB
  */
-export const GET: APIRoute = async ({ request, params, locals }) => {
+export const GET: APIRoute = async ({ request, params }) => {
   const requestId = uuidv4();
 
   try {
@@ -110,7 +109,7 @@ export const GET: APIRoute = async ({ request, params, locals }) => {
  * Authorization: User can only delete their own recipes
  * Response: 204 No Content on success
  */
-export const DELETE: APIRoute = async ({ request, params, locals }) => {
+export const DELETE: APIRoute = async ({ request, params }) => {
   const requestId = uuidv4();
 
   try {

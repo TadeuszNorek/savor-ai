@@ -186,7 +186,7 @@ export async function resetTestData(emailPattern = "test-.*@example.com"): Promi
 
   // Filter test users by email pattern
   const regex = new RegExp(emailPattern);
-  const testUsers = data.users.filter((user: any) => {
+  const testUsers = data.users.filter((user: { email?: string }) => {
     const email = user.email;
     return email && regex.test(email);
   });
@@ -221,7 +221,7 @@ export async function createTestRecipe(
     .insert({
       user_id: userId,
       title: recipeData.title,
-      recipe: recipeData.recipe as any,
+      recipe: recipeData.recipe as unknown,
       tags: recipeData.tags || [],
       summary: recipeData.summary || "",
     })

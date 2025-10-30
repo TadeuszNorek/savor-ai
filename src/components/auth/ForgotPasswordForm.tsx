@@ -100,7 +100,7 @@ export function ForgotPasswordForm() {
           <Alert>
             <CheckCircle className="h-4 w-4" />
             <AlertDescription>
-              We've sent password reset instructions to <strong>{email}</strong>. Please check your inbox and spam
+              We&apos;ve sent password reset instructions to <strong>{email}</strong>. Please check your inbox and spam
               folder.
             </AlertDescription>
           </Alert>
@@ -120,7 +120,7 @@ export function ForgotPasswordForm() {
       <CardHeader>
         <CardTitle>Forgot your password?</CardTitle>
         <CardDescription>
-          Enter your email address and we'll send you instructions to reset your password.
+          Enter your email address and we&apos;ll send you instructions to reset your password.
         </CardDescription>
       </CardHeader>
       <CardContent>

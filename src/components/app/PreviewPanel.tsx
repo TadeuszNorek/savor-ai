@@ -65,7 +65,7 @@ export function PreviewPanel({
           toast.success("Recipe saved successfully!");
           onSaved?.(summary);
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
           toast.error(error.message || "Failed to save recipe");
         },
       }
@@ -78,7 +78,7 @@ export function PreviewPanel({
         toast.success("Recipe deleted successfully!");
         onDeleted?.(id);
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast.error(error.message || "Failed to delete recipe");
       },
     });
