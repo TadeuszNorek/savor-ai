@@ -106,6 +106,9 @@ npm run test:e2e:ci
 
 # Run full CI pipeline locally (lint + unit tests + E2E)
 npm run test:ci
+
+# Quick pre-push check (lint + unit tests, skips slow E2E)
+npm run pre-push
 ```
 
 **Why run in CI mode locally?**
@@ -113,6 +116,8 @@ npm run test:ci
 - Tests run sequentially (workers=1) to avoid race conditions
 - Enables retries (2) to catch flaky tests
 - Forbids test.only to prevent accidental commits
+
+**⚠️ IMPORTANT:** Some errors (like Playwright runtime checks) are **only caught when tests run**, not during linting. Always run `npm run test:e2e:ci` locally before pushing E2E test changes.
 
 For detailed testing documentation, see [Test Plan MVP](.ai/test-plan-mvp.md).
 

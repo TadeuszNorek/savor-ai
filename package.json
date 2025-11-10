@@ -22,7 +22,8 @@
     "test:e2e:codegen": "playwright codegen",
     "test:e2e:ci": "playwright test --forbid-only --retries=2 --workers=1",
     "test:all": "npm run test:run && npm run test:e2e",
-    "test:ci": "npm run lint && npm run test:run && npm run test:e2e:ci"
+    "test:ci": "npm run lint && npm run test:run && npm run test:e2e:ci",
+    "pre-push": "npm run lint && npm run test:run"
   },
   "dependencies": {
     "@astrojs/node": "^9.4.3",
