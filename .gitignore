@@ -48,5 +48,7 @@ playwright/.cache/
 *.trace.zip
 
 # vitest
-.vitest/nul 
-"5_Run linter.txt" 
+.vitest/
+
+# error logs from debugging
+error-logs/
