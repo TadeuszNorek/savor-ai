@@ -44,7 +44,8 @@ test.describe("Recipe Generation", () => {
     await appPage.clickGeneratorTab();
   });
 
-  test.afterEach(async (_, testInfo) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  test.afterEach(async ({ page }, testInfo) => {
     // Cleanup saved recipes after save-related tests
     if (testInfo.title.includes("save generated recipe")) {
       const userId = process.env.E2E_USERNAME_ID;

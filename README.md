@@ -77,6 +77,8 @@ This project includes several scripts to help with development:
 - `npm run test:coverage`: Generates a test coverage report.
 - `npm run test:e2e`: Runs end-to-end tests using Playwright.
 - `npm run test:e2e:ui`: Opens the Playwright UI for interactive E2E testing.
+- `npm run test:e2e:ci`: Runs E2E tests in CI mode (same settings as GitHub Actions).
+- `npm run test:ci`: Runs full CI pipeline locally (lint + unit tests + E2E in CI mode).
 
 ## Testing
 
@@ -93,6 +95,29 @@ This project includes several scripts to help with development:
 - **Coverage**: Critical user journeys (authentication, recipe generation, CRUD operations, search/filter)
 - **Browsers**: Chrome, Firefox, Safari
 - **Focus**: Complete user workflows from registration to recipe management
+
+### Running Tests in CI Mode
+
+To ensure your local environment matches GitHub Actions exactly:
+
+```bash
+# Run E2E tests with CI settings (forbid-only, retries=2, workers=1)
+npm run test:e2e:ci
+
+# Run full CI pipeline locally (lint + unit tests + E2E)
+npm run test:ci
+
+# Quick pre-push check (lint + unit tests, skips slow E2E)
+npm run pre-push
+```
+
+**Why run in CI mode locally?**
+- Catches errors that only appear in CI (stricter validation)
+- Tests run sequentially (workers=1) to avoid race conditions
+- Enables retries (2) to catch flaky tests
+- Forbids test.only to prevent accidental commits
+
+**⚠️ IMPORTANT:** Some errors (like Playwright runtime checks) are **only caught when tests run**, not during linting. Always run `npm run test:e2e:ci` locally before pushing E2E test changes.
 
 For detailed testing documentation, see [Test Plan MVP](.ai/test-plan-mvp.md).
 

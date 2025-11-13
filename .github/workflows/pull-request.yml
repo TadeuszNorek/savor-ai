@@ -83,6 +83,7 @@ jobs:
       E2E_USERNAME_ID: ${{ secrets.E2E_USERNAME_ID }}
       E2E_USERNAME: ${{ secrets.E2E_USERNAME }}
       E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+      AI_PROVIDER: mock
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -90,7 +91,7 @@ jobs:
       - name: Generate .env.test from secrets
         shell: bash
         run: |
-          cat > .env.test << 'EOF'
+          cat > .env.test <<EOF
           SUPABASE_URL=${SUPABASE_URL}
           PUBLIC_SUPABASE_KEY=${PUBLIC_SUPABASE_KEY}
           SUPABASE_KEY=${SUPABASE_KEY}
@@ -98,7 +99,35 @@ jobs:
           E2E_USERNAME_ID=${E2E_USERNAME_ID}
           E2E_USERNAME=${E2E_USERNAME}
           E2E_PASSWORD=${E2E_PASSWORD}
+          AI_PROVIDER=${AI_PROVIDER}
           EOF
+
+      - name: Validate test env
+        run: |
+          node <<'EOS'
+          const required = [
+            'SUPABASE_URL',
+            'PUBLIC_SUPABASE_KEY',
+            'SUPABASE_KEY',
+            'SUPABASE_SERVICE_ROLE_KEY',
+            'E2E_USERNAME_ID',
+            'E2E_USERNAME',
+            'E2E_PASSWORD',
+            'AI_PROVIDER',
+          ];
+          const missing = required.filter((key) => {
+            const value = process.env[key];
+            return !value || value.includes('${') || value.trim() === '';
+          });
+          if (missing.length) {
+            throw new Error(`Missing or placeholder secrets: ${missing.join(', ')}`);
+          }
+          try {
+            new URL(process.env.SUPABASE_URL);
+          } catch (e) {
+            throw new Error(`SUPABASE_URL is not a valid URL: ${e.message}`);
+          }
+          EOS
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

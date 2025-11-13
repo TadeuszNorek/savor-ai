@@ -31,11 +31,11 @@ test.describe("Login Page", () => {
 
   test("should display login form", async ({ page }) => {
     // Check if email input is visible
-    const emailInput = page.getByLabel(/email/i);
+    const emailInput = page.getByRole("textbox", { name: /email/i });
     await expect(emailInput).toBeVisible();
 
-    // Check if password input is visible
-    const passwordInput = page.getByLabel(/password/i);
+    // Check if password input is visible (use role to avoid matching the "Show password" button)
+    const passwordInput = page.getByLabel(/^password$/i);
     await expect(passwordInput).toBeVisible();
 
     // Check if submit button exists
