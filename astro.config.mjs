@@ -5,7 +5,7 @@ import * as path from "path";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 
 // Load test environment if PLAYWRIGHT_TEST is set
 let testEnv = {};
