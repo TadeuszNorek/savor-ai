@@ -28,6 +28,7 @@ export function Header() {
         {/* Logo/Brand */}
         <div className="mr-6 flex">
           <a href="/" className="flex items-center space-x-2">
+            <img src="/favicon.svg" alt="SavorAI Logo" className="h-6 w-6" />
             <span className="text-xl font-bold">SavorAI</span>
           </a>
         </div>

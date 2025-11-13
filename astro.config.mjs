@@ -5,7 +5,7 @@ import * as path from "path";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel/serverless";
 
 // Load test environment if PLAYWRIGHT_TEST is set
 let testEnv = {};
@@ -62,7 +62,5 @@ export default defineConfig({
     ],
     envPrefix: ["PUBLIC_", "SUPABASE_"], // Allow SUPABASE_ vars in import.meta.env
   },
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
 });
