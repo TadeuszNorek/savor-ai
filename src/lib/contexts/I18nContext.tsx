@@ -1,11 +1,21 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import type { LanguageCode } from "../../types";
 import { isLanguageCode, DEFAULT_LANGUAGE } from "../../types";
+import { translations, getTranslation } from "../i18n/translations";
 
 interface I18nContextType {
   lang: LanguageCode;
   setLang: (lang: LanguageCode) => Promise<void>;
   isLoading: boolean;
+  /**
+   * Translate a key to the current language
+   * @param key - Dot-separated path to translation (e.g., 'generator.title')
+   * @param replacements - Optional key-value pairs for placeholder replacement
+   * @example
+   * t('generator.title') // => 'AI Recipe Generator' or 'Generator Przepisów AI'
+   * t('recipePreview.ingredientsProgress', { count: 3, total: 10 }) // => '3 of 10'
+   */
+  t: (key: string, replacements?: Record<string, string | number>) => string;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -115,7 +125,17 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
     [lang, authToken]
   );
 
-  return <I18nContext.Provider value={{ lang, setLang, isLoading }}>{children}</I18nContext.Provider>;
+  /**
+   * Translation function - gets translation for current language
+   */
+  const t = useCallback(
+    (key: string, replacements?: Record<string, string | number>): string => {
+      return getTranslation(translations[lang], key, replacements);
+    },
+    [lang]
+  );
+
+  return <I18nContext.Provider value={{ lang, setLang, isLoading, t }}>{children}</I18nContext.Provider>;
 }
 
 /**

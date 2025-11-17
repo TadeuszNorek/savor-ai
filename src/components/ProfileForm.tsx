@@ -43,7 +43,7 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
   const [values, setValues] = useState<ProfileFormValues>(initialValues);
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormValues, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
 
   // Refs for focus management
   const dietTypeRef = useRef<HTMLButtonElement>(null);
@@ -146,17 +146,15 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
     <form onSubmit={handleSubmit} ref={formRef} aria-label="Profile preferences form">
       <Card>
         <CardHeader>
-          <CardTitle>{mode === "create" ? "Create Profile" : "Edit Profile"}</CardTitle>
+          <CardTitle>{mode === "create" ? t('profile.createTitle') : t('profile.editTitle')}</CardTitle>
           <CardDescription>
-            {mode === "create"
-              ? "Set up your dietary preferences to get started."
-              : "Update your dietary preferences to refine your recommendations."}
+            {mode === "create" ? t('profile.createDescription') : t('profile.editDescription')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Diet Type */}
           <div className="space-y-2">
-            <Label htmlFor="dietType">Diet Type (Optional)</Label>
+            <Label htmlFor="dietType">{t('profile.dietTypeLabel')}</Label>
             <DietTypeSelect
               value={values.dietType}
               onChange={handleDietTypeChange}
@@ -170,18 +168,18 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="dietType-helper" className="text-sm text-muted-foreground">
-              Select your dietary preference to filter recipes accordingly.
+              {t('profile.dietTypeHelper')}
             </p>
           </div>
 
           {/* Disliked Ingredients */}
           <div className="space-y-2">
-            <Label htmlFor="dislikedIngredients">Disliked Ingredients (Optional)</Label>
+            <Label htmlFor="dislikedIngredients">{t('profile.dislikedIngredientsLabel')}</Label>
             <TagsInput
               name="dislikedIngredients"
               value={values.dislikedIngredients}
               onChange={handleDislikedIngredientsChange}
-              placeholder="Add ingredients you want to avoid..."
+              placeholder={t('profile.dislikedIngredientsPlaceholder')}
               ref={dislikedIngredientsRef}
               aria-invalid={!!errors.dislikedIngredients}
               aria-describedby={errors.dislikedIngredients ? "dislikedIngredients-error" : "dislikedIngredients-helper"}
@@ -192,21 +190,19 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="dislikedIngredients-helper" className="text-sm text-muted-foreground">
-              Recipes containing these ingredients will be blocked from saving.{" "}
-              <strong className="text-foreground">
-                Enter in {lang === "pl" ? "Polish" : "English"} (current UI language).
-              </strong>
+              {t('profile.dislikedIngredientsHelper')}{" "}
+              <strong className="text-foreground">{t('profile.dislikedIngredientsLanguageHint')}</strong>
             </p>
           </div>
 
           {/* Preferred Cuisines */}
           <div className="space-y-2">
-            <Label htmlFor="preferredCuisines">Preferred Cuisines (Optional)</Label>
+            <Label htmlFor="preferredCuisines">{t('profile.preferredCuisinesLabel')}</Label>
             <TagsInput
               name="preferredCuisines"
               value={values.preferredCuisines}
               onChange={handlePreferredCuisinesChange}
-              placeholder="Add cuisines you enjoy..."
+              placeholder={t('profile.preferredCuisinesPlaceholder')}
               ref={preferredCuisinesRef}
               aria-invalid={!!errors.preferredCuisines}
               aria-describedby={errors.preferredCuisines ? "preferredCuisines-error" : "preferredCuisines-helper"}
@@ -217,17 +213,15 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="preferredCuisines-helper" className="text-sm text-muted-foreground">
-              We&apos;ll prioritize recipes from these cuisines in your recommendations.{" "}
-              <strong className="text-foreground">
-                Enter in {lang === "pl" ? "Polish" : "English"} (current UI language).
-              </strong>
+              {t('profile.preferredCuisinesHelper')}{" "}
+              <strong className="text-foreground">{t('profile.preferredCuisinesLanguageHint')}</strong>
             </p>
           </div>
 
           {/* General validation error */}
           {!isValid && (
             <div className="text-sm text-destructive" role="alert" aria-live="polite">
-              Please fill in at least one field to save your profile.
+              {t('profile.atLeastOneFieldRequired')}
             </div>
           )}
 
@@ -237,10 +231,14 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
             disabled={!canSubmit}
             className="w-full"
             aria-label={
-              isSubmitting ? "Saving profile" : mode === "create" ? "Create profile" : "Save changes to profile"
+              isSubmitting
+                ? t('common.saving')
+                : mode === "create"
+                  ? t('profile.createButton')
+                  : t('profile.saveButton')
             }
           >
-            {isSubmitting ? "Saving..." : mode === "create" ? "Create Profile" : "Save Changes"}
+            {isSubmitting ? t('common.saving') : mode === "create" ? t('profile.createButton') : t('profile.saveButton')}
           </Button>
         </CardContent>
       </Card>

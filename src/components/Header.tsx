@@ -3,6 +3,7 @@ import { LanguageSwitcher } from "./i18n/LanguageSwitcher";
 import { Button } from "./ui/button";
 import { UserMenu } from "./auth/UserMenu";
 import { useAuth } from "../lib/auth/useAuth";
+import { useI18n } from "../lib/contexts/I18nContext";
 import { BookOpen, Sparkles } from "lucide-react";
 
 /**
@@ -22,6 +23,7 @@ import { BookOpen, Sparkles } from "lucide-react";
  */
 export function Header() {
   const { user, loading } = useAuth();
+  const { t } = useI18n();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -40,13 +42,13 @@ export function Header() {
             <Button variant="ghost" size="sm" asChild>
               <a href="/app" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                Recipes
+                {t('header.recipes')}
               </a>
             </Button>
             <Button variant="ghost" size="sm" asChild>
               <a href="/app#generator" className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4" />
-                Generator
+                {t('header.generator')}
               </a>
             </Button>
           </nav>
@@ -69,7 +71,7 @@ export function Header() {
               ) : (
                 // Show sign in link when not authenticated
                 <Button variant="ghost" size="sm" asChild>
-                  <a href="/login">Sign In</a>
+                  <a href="/login">{t('header.signIn')}</a>
                 </Button>
               )}
             </>
