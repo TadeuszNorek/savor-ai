@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FileText, RotateCcw } from "lucide-react";
 import { useSaveRecipeMutation, useDeleteRecipeMutation } from "@/lib/api/recipes";
 import { useProfileQuery } from "@/lib/api/profile";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import type { RecipeSchema, RecipeDetailsDTO, RecipeSummaryDTO, PreviewMode } from "@/types";
 import { toast } from "sonner";
 
@@ -34,6 +35,7 @@ export function PreviewPanel({
   onRestoreDraft,
 }: PreviewPanelProps) {
   const { data: profile } = useProfileQuery();
+  const { lang } = useI18n();
   const saveMutation = useSaveRecipeMutation();
   const deleteMutation = useDeleteRecipeMutation();
 
@@ -59,7 +61,7 @@ export function PreviewPanel({
     if (!recipe) return;
 
     saveMutation.mutate(
-      { recipe, tags: recipe.tags },
+      { recipe, tags: recipe.tags, language: lang },
       {
         onSuccess: (summary) => {
           toast.success("Recipe saved successfully!");

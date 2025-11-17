@@ -4,6 +4,7 @@ import { Label } from "./ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { DietTypeSelect } from "./profile/DietTypeSelect";
 import { TagsInput } from "./profile/TagsInput";
+import { useI18n } from "../lib/contexts/I18nContext";
 import {
   normalizeStringArray,
   hasAtLeastOneField,
@@ -42,6 +43,7 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
   const [values, setValues] = useState<ProfileFormValues>(initialValues);
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormValues, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { lang } = useI18n();
 
   // Refs for focus management
   const dietTypeRef = useRef<HTMLButtonElement>(null);
@@ -190,7 +192,10 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="dislikedIngredients-helper" className="text-sm text-muted-foreground">
-              Recipes containing these ingredients will be blocked from saving.
+              Recipes containing these ingredients will be blocked from saving.{" "}
+              <strong className="text-foreground">
+                Enter in {lang === "pl" ? "Polish" : "English"} (current UI language).
+              </strong>
             </p>
           </div>
 
@@ -212,7 +217,10 @@ export function ProfileForm({ initialValues, mode, onSubmit }: ProfileFormProps)
               </p>
             )}
             <p id="preferredCuisines-helper" className="text-sm text-muted-foreground">
-              We&apos;ll prioritize recipes from these cuisines in your recommendations.
+              We&apos;ll prioritize recipes from these cuisines in your recommendations.{" "}
+              <strong className="text-foreground">
+                Enter in {lang === "pl" ? "Polish" : "English"} (current UI language).
+              </strong>
             </p>
           </div>
 

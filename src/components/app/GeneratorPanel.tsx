@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TextareaWithCounter } from "./TextareaWithCounter";
 import { GenerateButton } from "./GenerateButton";
 import { useGenerateRecipeMutation } from "@/lib/api/recipes";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import type { GeneratorDraftVM, GenerateRecipeResponse, ApiError } from "@/types";
 
 interface GeneratorPanelProps {
@@ -15,6 +16,7 @@ interface GeneratorPanelProps {
 export function GeneratorPanel({ onGenerated }: GeneratorPanelProps) {
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState<ApiError | null>(null);
+  const { lang } = useI18n();
 
   const generateMutation = useGenerateRecipeMutation();
 
@@ -32,7 +34,7 @@ export function GeneratorPanel({ onGenerated }: GeneratorPanelProps) {
 
     setError(null);
     generateMutation.mutate(
-      { prompt: prompt.trim() },
+      { prompt: prompt.trim(), lang },
       {
         onSuccess: (response) => {
           // Save draft to sessionStorage
