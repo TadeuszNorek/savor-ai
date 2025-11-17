@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import { Save, ExternalLink } from "lucide-react";
 
 interface SaveButtonProps {
@@ -15,10 +16,12 @@ interface SaveButtonProps {
  * Links to profile page when blocked by preferences
  */
 export function SaveButton({ onClick, disabled, loading, disabledReason }: SaveButtonProps) {
+  const { t } = useI18n();
+
   const button = (
     <Button onClick={onClick} disabled={disabled || loading} className="gap-2" size="lg">
       <Save className="h-5 w-5" />
-      {loading ? "Saving..." : "Save recipe"}
+      {loading ? t('common.saving') : t('recipeSave.saveButton')}
     </Button>
   );
 
@@ -38,7 +41,7 @@ export function SaveButton({ onClick, disabled, loading, disabledReason }: SaveB
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <ExternalLink className="h-3 w-3" />
-              Update dietary preferences
+              {t('recipeSave.updatePreferences')}
             </a>
           )}
         </div>

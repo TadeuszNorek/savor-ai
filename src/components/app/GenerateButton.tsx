@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, Sparkles, AlertCircle, RefreshCw } from "lucide-react";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import type { ApiError } from "@/types";
 
 interface GenerateButtonProps {
@@ -14,7 +15,10 @@ interface GenerateButtonProps {
 /**
  * Maps API error to user-friendly message for generation
  */
-function getGenerationErrorMessage(error: ApiError): {
+function getGenerationErrorMessage(
+  error: ApiError,
+  t: (key: string, replacements?: Record<string, string | number>) => string
+): {
   title: string;
   description: string;
   canRetry: boolean;
@@ -24,8 +28,8 @@ function getGenerationErrorMessage(error: ApiError): {
   // 400 Bad Request - validation error
   if (errorMsg.includes("validation") || errorMsg.includes("bad request")) {
     return {
-      title: "Invalid prompt",
-      description: "Make sure the prompt is between 1-2000 characters and doesn't contain forbidden patterns.",
+      title: t('generator.errorInvalidPromptTitle'),
+      description: t('generator.errorInvalidPromptDesc'),
       canRetry: false,
     };
   }
@@ -33,8 +37,8 @@ function getGenerationErrorMessage(error: ApiError): {
   // 413 Payload Too Large
   if (errorMsg.includes("too large") || errorMsg.includes("413")) {
     return {
-      title: "Result too large",
-      description: "Generated recipe exceeds 200KB limit. Try a simpler prompt.",
+      title: t('generator.errorTooLargeTitle'),
+      description: t('generator.errorTooLargeDesc'),
       canRetry: true,
     };
   }
@@ -43,8 +47,8 @@ function getGenerationErrorMessage(error: ApiError): {
   if (errorMsg.includes("too many") || errorMsg.includes("429")) {
     const retryAfter = (error.details?.retry_after as number) || 60;
     return {
-      title: "Rate limit exceeded",
-      description: `Please wait ${retryAfter} seconds before trying again.`,
+      title: t('generator.errorRateLimitTitle'),
+      description: t('generator.errorRateLimitDesc', { retryAfter }),
       canRetry: false,
     };
   }
@@ -52,8 +56,8 @@ function getGenerationErrorMessage(error: ApiError): {
   // 503 Service Unavailable
   if (errorMsg.includes("unavailable") || errorMsg.includes("503")) {
     return {
-      title: "AI service unavailable",
-      description: "AI service is temporarily unavailable. Please try again in a moment.",
+      title: t('generator.errorServiceUnavailableTitle'),
+      description: t('generator.errorServiceUnavailableDesc'),
       canRetry: true,
     };
   }
@@ -61,16 +65,16 @@ function getGenerationErrorMessage(error: ApiError): {
   // 500 Internal Server Error
   if (errorMsg.includes("internal") || errorMsg.includes("500")) {
     return {
-      title: "Server error",
-      description: "We're sorry, something went wrong. Please try again.",
+      title: t('generator.errorServerTitle'),
+      description: t('generator.errorServerDesc'),
       canRetry: true,
     };
   }
 
   // Generic error
   return {
-    title: "An error occurred",
-    description: error.message || "Failed to generate recipe. Please try again.",
+    title: t('generator.errorGenericTitle'),
+    description: error.message || t('generator.errorGenericDesc'),
     canRetry: true,
   };
 }
@@ -80,7 +84,8 @@ function getGenerationErrorMessage(error: ApiError): {
  * Shows retry indicator and error alerts
  */
 export function GenerateButton({ onClick, disabled, loading, error, onRetry }: GenerateButtonProps) {
-  const errorInfo = error ? getGenerationErrorMessage(error) : null;
+  const { t } = useI18n();
+  const errorInfo = error ? getGenerationErrorMessage(error, t) : null;
 
   return (
     <div className="space-y-4">
@@ -88,21 +93,19 @@ export function GenerateButton({ onClick, disabled, loading, error, onRetry }: G
         {loading ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin" />
-            Generating...
+            {t('generator.generating')}
           </>
         ) : (
           <>
             <Sparkles className="h-5 w-5" />
-            Generate recipe
+            {t('generator.generateButton')}
           </>
         )}
       </Button>
 
       {loading && (
         <div className="text-xs text-center text-muted-foreground" aria-live="polite">
-          AI is analyzing your prompt and creating a recipe...
-          <br />
-          This may take a few seconds.
+          {t('generator.generatingStatus')}
         </div>
       )}
 
@@ -115,7 +118,7 @@ export function GenerateButton({ onClick, disabled, loading, error, onRetry }: G
             {errorInfo.canRetry && onRetry && (
               <Button variant="outline" size="sm" onClick={onRetry} className="mt-3 gap-2">
                 <RefreshCw className="h-4 w-4" />
-                Try again
+                {t('generator.tryAgain')}
               </Button>
             )}
           </AlertDescription>

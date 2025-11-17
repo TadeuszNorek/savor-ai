@@ -1,5 +1,6 @@
 import { RecipeCard } from "./RecipeCard";
 import { PaginationLoadMore } from "./PaginationLoadMore";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import type { RecipeListResponse } from "@/types";
 
 interface RecipeListProps {
@@ -28,6 +29,7 @@ export function RecipeList({
   hasNextPage,
   isFetchingNextPage,
 }: RecipeListProps) {
+  const { t } = useI18n();
   // Flatten all pages into single array
   const allRecipes = pages.flatMap((page) => page.data);
 
@@ -43,6 +45,10 @@ export function RecipeList({
     return null; // Empty state handled by EmptyState in parent
   }
 
+  const foundMessage = allRecipes.length === 1
+    ? t('recipeList.foundRecipe', { count: allRecipes.length })
+    : t('recipeList.foundRecipes', { count: allRecipes.length });
+
   return (
     <div className="space-y-3">
       <ul className="space-y-3">
@@ -57,7 +63,7 @@ export function RecipeList({
 
       {/* Announce results count for screen readers */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
-        Found {allRecipes.length} {allRecipes.length === 1 ? "recipe" : "recipes"}
+        {foundMessage}
       </div>
     </div>
   );

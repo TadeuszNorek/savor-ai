@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FileText, Sparkles } from "lucide-react";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface EmptyStateProps {
   message?: string;
@@ -11,8 +12,8 @@ interface EmptyStateProps {
  * Shows friendly message and CTA to generate first recipe
  */
 export function EmptyState({ message, onCta }: EmptyStateProps) {
-  const defaultMessage = "No recipes found";
-  const displayMessage = message || defaultMessage;
+  const { t } = useI18n();
+  const displayMessage = message || t('recipeList.emptyStateNoResults');
 
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
@@ -24,14 +25,14 @@ export function EmptyState({ message, onCta }: EmptyStateProps) {
 
       <p className="text-sm text-muted-foreground mb-6 max-w-sm">
         {onCta
-          ? "Start your culinary journey! Generate your first recipe using AI."
-          : "Try changing filters or search for something else."}
+          ? t('recipeList.emptyStateStartJourney')
+          : t('recipeList.emptyStateNoResultsDesc')}
       </p>
 
       {onCta && (
         <Button onClick={onCta} size="lg" className="gap-2">
           <Sparkles className="h-5 w-5" />
-          Generate first recipe
+          {t('recipeList.emptyStateCta')}
         </Button>
       )}
     </div>

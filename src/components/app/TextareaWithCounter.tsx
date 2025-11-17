@@ -1,5 +1,6 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface TextareaWithCounterProps {
   value: string;
@@ -22,6 +23,7 @@ export function TextareaWithCounter({
   label = "Recipe generation prompt",
   placeholder = "Describe the recipe you want to generate...",
 }: TextareaWithCounterProps) {
+  const { t } = useI18n();
   const remaining = maxLength - value.length;
   const isNearLimit = remaining < 100;
   const isAtLimit = remaining === 0;
@@ -57,8 +59,8 @@ export function TextareaWithCounter({
         }`}
         aria-live="polite"
       >
-        {value.length} / {maxLength} characters
-        {isAtLimit && " (limit reached)"}
+        {t('generator.charactersCounter', { count: value.length, max: maxLength })}
+        {isAtLimit && t('generator.limitReached')}
       </div>
     </div>
   );

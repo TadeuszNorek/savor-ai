@@ -30,6 +30,9 @@ export interface Translations {
     profile: string;
     signIn: string;
     signOut: string;
+    account: string;
+    signingOut: string;
+    logoutFailed: string;
   };
   generator: {
     title: string;
@@ -37,10 +40,27 @@ export interface Translations {
     placeholder: string;
     generateButton: string;
     generating: string;
+    generatingStatus: string;
     tipsTitle: string;
     tip1: string;
     tip2: string;
     tip3: string;
+    charactersCounter: string; // "{count} / {max} characters"
+    limitReached: string; // " (limit reached)"
+    // Error messages
+    errorInvalidPromptTitle: string;
+    errorInvalidPromptDesc: string;
+    errorTooLargeTitle: string;
+    errorTooLargeDesc: string;
+    errorRateLimitTitle: string;
+    errorRateLimitDesc: string; // with {retryAfter} placeholder
+    errorServiceUnavailableTitle: string;
+    errorServiceUnavailableDesc: string;
+    errorServerTitle: string;
+    errorServerDesc: string;
+    errorGenericTitle: string;
+    errorGenericDesc: string;
+    tryAgain: string;
   };
   recipePreview: {
     prepTime: string;
@@ -58,6 +78,12 @@ export interface Translations {
     fat: string;
     completionMessage: string;
     completionSubtitle: string;
+    // PreviewPanel actions
+    deleteSuccess: string;
+    deleteError: string;
+    emptyStateTitle: string;
+    emptyStateDesc: string;
+    restoreDraft: string;
   };
   recipeSave: {
     saveButton: string;
@@ -71,13 +97,27 @@ export interface Translations {
     emptyStateTitle: string;
     emptyStateDescription: string;
     emptyStateCta: string;
+    emptyStateNoResults: string;
+    emptyStateNoResultsDesc: string;
+    emptyStateStartJourney: string;
     searchPlaceholder: string;
+    searchAriaLabel: string;
+    clearSearch: string;
+    search: string;
+    sortBy: string;
+    selectSorting: string;
     sortRecent: string;
     sortOldest: string;
     sortNameAsc: string;
     sortNameDesc: string;
     loadMore: string;
     loading: string;
+    foundRecipe: string; // "Found {count} recipe"
+    foundRecipes: string; // "Found {count} recipes"
+    deleteRecipe: string;
+    deleteConfirmTitle: string;
+    deleteConfirmDesc: string; // with {name} placeholder
+    deleteConfirmButton: string;
   };
   profile: {
     title: string;
@@ -133,6 +173,9 @@ export const translations: Record<'pl' | 'en', Translations> = {
       profile: 'Profil',
       signIn: 'Zaloguj się',
       signOut: 'Wyloguj się',
+      account: 'Konto',
+      signingOut: 'Wylogowywanie...',
+      logoutFailed: 'Nie udało się wylogować. Spróbuj ponownie.',
     },
     generator: {
       title: 'Generator Przepisów AI',
@@ -140,10 +183,27 @@ export const translations: Record<'pl' | 'en', Translations> = {
       placeholder: 'Np. "Szybki obiad dla dwóch osób z kurczakiem i warzywami" lub "Wegański deser czekoladowy bez cukru"',
       generateButton: 'Generuj przepis',
       generating: 'Generowanie...',
+      generatingStatus: 'AI analizuje Twój prompt i tworzy przepis... To może potrwać kilka sekund.',
       tipsTitle: 'Wskazówki:',
       tip1: 'Bądź konkretny - opisz składniki, rodzaj kuchni lub preferencje dietetyczne',
       tip2: 'Możesz określić liczbę porcji, czas przygotowania lub poziom trudności',
       tip3: 'AI stworzy kompletny przepis ze składnikami, instrukcjami i informacjami odżywczymi',
+      charactersCounter: '{count} / {max} znaków',
+      limitReached: ' (osiągnięto limit)',
+      // Error messages
+      errorInvalidPromptTitle: 'Nieprawidłowy prompt',
+      errorInvalidPromptDesc: 'Upewnij się, że prompt ma od 1 do 2000 znaków i nie zawiera zabronionych wzorców.',
+      errorTooLargeTitle: 'Wynik zbyt duży',
+      errorTooLargeDesc: 'Wygenerowany przepis przekracza limit 200KB. Spróbuj prostszego promptu.',
+      errorRateLimitTitle: 'Przekroczono limit żądań',
+      errorRateLimitDesc: 'Poczekaj {retryAfter} sekund przed ponowną próbą.',
+      errorServiceUnavailableTitle: 'Usługa AI niedostępna',
+      errorServiceUnavailableDesc: 'Usługa AI jest tymczasowo niedostępna. Spróbuj ponownie za chwilę.',
+      errorServerTitle: 'Błąd serwera',
+      errorServerDesc: 'Przepraszamy, coś poszło nie tak. Spróbuj ponownie.',
+      errorGenericTitle: 'Wystąpił błąd',
+      errorGenericDesc: 'Nie udało się wygenerować przepisu. Spróbuj ponownie.',
+      tryAgain: 'Spróbuj ponownie',
     },
     recipePreview: {
       prepTime: 'Przygotowanie',
@@ -161,6 +221,12 @@ export const translations: Record<'pl' | 'en', Translations> = {
       fat: 'Tłuszcze',
       completionMessage: 'Smacznego!',
       completionSubtitle: 'Ukończyłeś ten przepis.',
+      // PreviewPanel actions
+      deleteSuccess: 'Przepis usunięty pomyślnie!',
+      deleteError: 'Nie udało się usunąć przepisu',
+      emptyStateTitle: 'Nie wybrano przepisu',
+      emptyStateDesc: 'Wybierz przepis z listy lub wygeneruj nowy za pomocą AI, aby go tutaj zobaczyć.',
+      restoreDraft: 'Przywróć z wersji roboczej',
     },
     recipeSave: {
       saveButton: 'Zapisz przepis',
@@ -174,13 +240,27 @@ export const translations: Record<'pl' | 'en', Translations> = {
       emptyStateTitle: 'Brak przepisów',
       emptyStateDescription: 'Wybierz przepis z listy lub wygeneruj nowy za pomocą AI, aby go tutaj zobaczyć.',
       emptyStateCta: 'Wygeneruj pierwszy przepis',
+      emptyStateNoResults: 'Nie znaleziono przepisów',
+      emptyStateNoResultsDesc: 'Spróbuj zmienić filtry lub wyszukaj coś innego.',
+      emptyStateStartJourney: 'Rozpocznij swoją kulinarną przygodę! Wygeneruj swój pierwszy przepis za pomocą AI.',
       searchPlaceholder: 'Szukaj przepisów...',
+      searchAriaLabel: 'Szukaj przepisów',
+      clearSearch: 'Wyczyść wyszukiwanie',
+      search: 'Szukaj',
+      sortBy: 'Sortuj według:',
+      selectSorting: 'Wybierz sortowanie',
       sortRecent: 'Najnowsze',
       sortOldest: 'Najstarsze',
       sortNameAsc: 'Nazwa A-Z',
       sortNameDesc: 'Nazwa Z-A',
       loadMore: 'Załaduj więcej',
-      loading: 'Ładowanie przepisów...',
+      loading: 'Ładowanie...',
+      foundRecipe: 'Znaleziono {count} przepis',
+      foundRecipes: 'Znaleziono {count} przepisów',
+      deleteRecipe: 'Usuń przepis',
+      deleteConfirmTitle: 'Czy na pewno?',
+      deleteConfirmDesc: 'To spowoduje trwałe usunięcie "{name}". Ta operacja jest nieodwracalna.',
+      deleteConfirmButton: 'Usuń',
     },
     profile: {
       title: 'Profil',
@@ -234,6 +314,9 @@ export const translations: Record<'pl' | 'en', Translations> = {
       profile: 'Profile',
       signIn: 'Sign In',
       signOut: 'Sign Out',
+      account: 'Account',
+      signingOut: 'Signing out...',
+      logoutFailed: 'Failed to logout. Please try again.',
     },
     generator: {
       title: 'AI Recipe Generator',
@@ -241,10 +324,27 @@ export const translations: Record<'pl' | 'en', Translations> = {
       placeholder: 'E.g. "Quick dinner for two with chicken and vegetables" or "Vegan chocolate dessert without sugar"',
       generateButton: 'Generate recipe',
       generating: 'Generating...',
+      generatingStatus: 'AI is analyzing your prompt and creating a recipe... This may take a few seconds.',
       tipsTitle: 'Tips:',
       tip1: 'Be specific - describe ingredients, cuisine type, or dietary preferences',
       tip2: 'You can specify number of servings, preparation time, or difficulty level',
       tip3: 'AI will create a complete recipe with ingredients, instructions, and nutritional info',
+      charactersCounter: '{count} / {max} characters',
+      limitReached: ' (limit reached)',
+      // Error messages
+      errorInvalidPromptTitle: 'Invalid prompt',
+      errorInvalidPromptDesc: 'Make sure the prompt is between 1-2000 characters and doesn\'t contain forbidden patterns.',
+      errorTooLargeTitle: 'Result too large',
+      errorTooLargeDesc: 'Generated recipe exceeds 200KB limit. Try a simpler prompt.',
+      errorRateLimitTitle: 'Rate limit exceeded',
+      errorRateLimitDesc: 'Please wait {retryAfter} seconds before trying again.',
+      errorServiceUnavailableTitle: 'AI service unavailable',
+      errorServiceUnavailableDesc: 'AI service is temporarily unavailable. Please try again in a moment.',
+      errorServerTitle: 'Server error',
+      errorServerDesc: 'We\'re sorry, something went wrong. Please try again.',
+      errorGenericTitle: 'An error occurred',
+      errorGenericDesc: 'Failed to generate recipe. Please try again.',
+      tryAgain: 'Try again',
     },
     recipePreview: {
       prepTime: 'Prep',
@@ -262,6 +362,12 @@ export const translations: Record<'pl' | 'en', Translations> = {
       fat: 'Fat',
       completionMessage: 'Bon Appétit!',
       completionSubtitle: "You've completed this recipe.",
+      // PreviewPanel actions
+      deleteSuccess: 'Recipe deleted successfully!',
+      deleteError: 'Failed to delete recipe',
+      emptyStateTitle: 'No recipe selected',
+      emptyStateDesc: 'Select a recipe from the list or generate a new one using AI to see it here.',
+      restoreDraft: 'Restore from draft',
     },
     recipeSave: {
       saveButton: 'Save recipe',
@@ -275,13 +381,27 @@ export const translations: Record<'pl' | 'en', Translations> = {
       emptyStateTitle: 'No recipe selected',
       emptyStateDescription: 'Select a recipe from the list or generate a new one using AI to see it here.',
       emptyStateCta: 'Generate first recipe',
+      emptyStateNoResults: 'No recipes found',
+      emptyStateNoResultsDesc: 'Try changing filters or search for something else.',
+      emptyStateStartJourney: 'Start your culinary journey! Generate your first recipe using AI.',
       searchPlaceholder: 'Search recipes...',
-      sortRecent: 'Recent',
-      sortOldest: 'Oldest',
+      searchAriaLabel: 'Search recipes',
+      clearSearch: 'Clear search',
+      search: 'Search',
+      sortBy: 'Sort by:',
+      selectSorting: 'Select sorting',
+      sortRecent: 'Recently added',
+      sortOldest: 'Oldest first',
       sortNameAsc: 'Name A-Z',
       sortNameDesc: 'Name Z-A',
       loadMore: 'Load more',
-      loading: 'Loading recipes...',
+      loading: 'Loading...',
+      foundRecipe: 'Found {count} recipe',
+      foundRecipes: 'Found {count} recipes',
+      deleteRecipe: 'Delete recipe',
+      deleteConfirmTitle: 'Are you sure?',
+      deleteConfirmDesc: 'This will permanently delete "{name}". This action cannot be undone.',
+      deleteConfirmButton: 'Delete',
     },
     profile: {
       title: 'Profile',

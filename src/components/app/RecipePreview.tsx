@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, ChefHat, Flame, CheckCircle2, Beef, Wheat, Droplet } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import type { RecipeSchema, RecipeDetailsDTO } from "@/types";
 
 interface RecipePreviewProps {
@@ -18,6 +19,7 @@ interface RecipePreviewProps {
 export function RecipePreview({ data, onTagClick, readonly = false }: RecipePreviewProps) {
   const recipe = "recipe" in data ? (data as RecipeDetailsDTO).recipe : (data as RecipeSchema);
   const tags = "tags" in data && Array.isArray(data.tags) ? data.tags : recipe.tags || [];
+  const { t } = useI18n();
 
   // Deterministic color palette for tags (hash-based)
   const tagColorPalette = [
@@ -140,7 +142,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="h-4 w-4" />
             <span>
-              Prep: {recipe.prep_time_minutes}m | Cook: {recipe.cook_time_minutes}m
+              {t('recipePreview.prepTime')}: {recipe.prep_time_minutes}m | {t('recipePreview.cookTime')}: {recipe.cook_time_minutes}m
             </span>
           </div>
 
@@ -152,7 +154,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
           {/* Servings Adjuster */}
           <div className="flex items-center gap-3 bg-primary/5 dark:bg-primary/10 py-2 px-4 rounded-full border border-primary/20">
             <Users className="h-4 w-4 text-primary" />
-            <span className="text-sm text-muted-foreground font-medium uppercase tracking-wide">Serves:</span>
+            <span className="text-sm text-muted-foreground font-medium uppercase tracking-wide">{t('recipePreview.servings')}:</span>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setCurrentServings(Math.max(1, currentServings - 1))}
@@ -177,9 +179,9 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
       {/* Ingredients */}
       <section className="border-t pt-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-foreground">Ingredients</h2>
+          <h2 className="text-xl font-bold text-foreground">{t('recipePreview.ingredients')}</h2>
           <span className="text-sm text-muted-foreground">
-            {completedIngredients.size} of {recipe.ingredients.length}
+            {t('recipePreview.ingredientsProgress', { count: completedIngredients.size, total: recipe.ingredients.length })}
           </span>
         </div>
 
@@ -223,11 +225,12 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
       {/* Instructions */}
       <section className="border-t pt-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-foreground">Instructions</h2>
+          <h2 className="text-2xl font-bold text-foreground">{t('recipePreview.instructions')}</h2>
           <div className="text-sm font-medium px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary rounded-full">
-            Step{" "}
-            {completedSteps.size < recipe.instructions.length ? completedSteps.size + 1 : recipe.instructions.length} of{" "}
-            {recipe.instructions.length}
+            {t('recipePreview.stepProgress', {
+              current: completedSteps.size < recipe.instructions.length ? completedSteps.size + 1 : recipe.instructions.length,
+              total: recipe.instructions.length
+            })}
           </div>
         </div>
 
@@ -284,8 +287,8 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
         {completedSteps.size === recipe.instructions.length && (
           <div className="mt-8 p-6 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-center">
             <ChefHat className="w-12 h-12 text-emerald-500 dark:text-emerald-400 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">Bon Appétit!</h3>
-            <p className="text-emerald-700 dark:text-emerald-300">You&apos;ve completed this recipe.</p>
+            <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">{t('recipePreview.completionMessage')}</h3>
+            <p className="text-emerald-700 dark:text-emerald-300">{t('recipePreview.completionSubtitle')}</p>
           </div>
         )}
       </section>
@@ -295,12 +298,12 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
         <section className="border-t pt-6">
           <h2 className="text-sm font-bold text-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
             <Flame className="w-4 h-4 text-orange-500" />
-            Nutrition per serving
+            {t('recipePreview.nutrition')} {t('recipePreview.nutritionPerServing')}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {recipe.nutrition.calories !== undefined && (
               <div className="bg-card dark:bg-card p-4 rounded-lg shadow-sm border border-border flex flex-col">
-                <span className="text-xs text-muted-foreground font-medium uppercase mb-1">Calories</span>
+                <span className="text-xs text-muted-foreground font-medium uppercase mb-1">{t('recipePreview.calories')}</span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
                     {Math.round(((recipe.nutrition.calories * scalingRatio) / currentServings) * recipe.servings)}
@@ -312,7 +315,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
             {recipe.nutrition.protein_g !== undefined && (
               <div className="bg-card dark:bg-card p-4 rounded-lg shadow-sm border border-border flex flex-col">
                 <span className="text-xs text-muted-foreground font-medium uppercase mb-1 flex items-center">
-                  <Beef className="w-3 h-3 mr-1 text-red-400" /> Protein
+                  <Beef className="w-3 h-3 mr-1 text-red-400" /> {t('recipePreview.protein')}
                 </span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
@@ -325,7 +328,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
             {recipe.nutrition.carbs_g !== undefined && (
               <div className="bg-card dark:bg-card p-4 rounded-lg shadow-sm border border-border flex flex-col">
                 <span className="text-xs text-muted-foreground font-medium uppercase mb-1 flex items-center">
-                  <Wheat className="w-3 h-3 mr-1 text-amber-400" /> Carbs
+                  <Wheat className="w-3 h-3 mr-1 text-amber-400" /> {t('recipePreview.carbs')}
                 </span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">
@@ -338,7 +341,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
             {recipe.nutrition.fat_g !== undefined && (
               <div className="bg-card dark:bg-card p-4 rounded-lg shadow-sm border border-border flex flex-col">
                 <span className="text-xs text-muted-foreground font-medium uppercase mb-1 flex items-center">
-                  <Droplet className="w-3 h-3 mr-1 text-yellow-500" /> Fat
+                  <Droplet className="w-3 h-3 mr-1 text-yellow-500" /> {t('recipePreview.fat')}
                 </span>
                 <div className="flex items-end">
                   <span className="text-2xl font-bold text-foreground leading-none mr-1">

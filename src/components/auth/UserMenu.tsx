@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { clearSessionStartTracking } from "../../lib/auth/telemetry";
+import { useI18n } from "../../lib/contexts/I18nContext";
 
 interface UserMenuProps {
   /** User email to display */
@@ -30,6 +31,7 @@ interface UserMenuProps {
  * @component
  */
 export function UserMenu({ email }: UserMenuProps) {
+  const { t } = useI18n();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -53,7 +55,7 @@ export function UserMenu({ email }: UserMenuProps) {
       console.error("Logout error:", error);
       setIsLoggingOut(false);
       // Show error to user (could use toast here)
-      alert("Failed to logout. Please try again.");
+      alert(t('header.logoutFailed'));
     }
   };
 
@@ -68,7 +70,7 @@ export function UserMenu({ email }: UserMenuProps) {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Account</p>
+            <p className="text-sm font-medium leading-none">{t('header.account')}</p>
             <p className="text-xs leading-none text-muted-foreground truncate">{email}</p>
           </div>
         </DropdownMenuLabel>
@@ -76,7 +78,7 @@ export function UserMenu({ email }: UserMenuProps) {
         <DropdownMenuItem asChild className="cursor-pointer">
           <a href="/profile" className="flex items-center">
             <UserCircle className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+            <span>{t('header.profile')}</span>
           </a>
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -85,7 +87,7 @@ export function UserMenu({ email }: UserMenuProps) {
           className="cursor-pointer text-destructive focus:text-destructive"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{isLoggingOut ? "Signing out..." : "Sign out"}</span>
+          <span>{isLoggingOut ? t('header.signingOut') : t('header.signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

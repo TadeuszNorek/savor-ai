@@ -35,7 +35,7 @@ export function PreviewPanel({
   onRestoreDraft,
 }: PreviewPanelProps) {
   const { data: profile } = useProfileQuery();
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
   const saveMutation = useSaveRecipeMutation();
   const deleteMutation = useDeleteRecipeMutation();
 
@@ -51,7 +51,7 @@ export function PreviewPanel({
     const found = dislikedList.find((disliked) => ingredientsList.some((ingredient) => ingredient.includes(disliked)));
 
     if (found) {
-      return `This recipe contains "${found}" which is in your disliked ingredients list.`;
+      return t('recipeSave.dislikedWarning', { ingredient: found });
     }
 
     return null;
@@ -64,11 +64,11 @@ export function PreviewPanel({
       { recipe, tags: recipe.tags, language: lang },
       {
         onSuccess: (summary) => {
-          toast.success("Recipe saved successfully!");
+          toast.success(t('recipeSave.saveSuccess'));
           onSaved?.(summary);
         },
         onError: (error: Error) => {
-          toast.error(error.message || "Failed to save recipe");
+          toast.error(error.message || t('recipeSave.saveError'));
         },
       }
     );
@@ -77,11 +77,11 @@ export function PreviewPanel({
   const handleDelete = (id: string) => {
     deleteMutation.mutate(id, {
       onSuccess: () => {
-        toast.success("Recipe deleted successfully!");
+        toast.success(t('recipePreview.deleteSuccess'));
         onDeleted?.(id);
       },
       onError: (error: Error) => {
-        toast.error(error.message || "Failed to delete recipe");
+        toast.error(error.message || t('recipePreview.deleteError'));
       },
     });
   };
@@ -93,9 +93,9 @@ export function PreviewPanel({
         <div className="rounded-full bg-muted p-6 mb-4">
           <FileText className="h-12 w-12 text-muted-foreground" />
         </div>
-        <h3 className="text-lg font-semibold mb-2">No recipe selected</h3>
+        <h3 className="text-lg font-semibold mb-2">{t('recipePreview.emptyStateTitle')}</h3>
         <p className="text-sm text-muted-foreground max-w-sm">
-          Select a recipe from the list or generate a new one using AI to see it here.
+          {t('recipePreview.emptyStateDesc')}
         </p>
       </div>
     );
@@ -135,7 +135,7 @@ export function PreviewPanel({
                 {onRestoreDraft && (
                   <Button variant="outline" size="lg" onClick={onRestoreDraft} className="gap-2">
                     <RotateCcw className="h-5 w-5" />
-                    Restore from draft
+                    {t('recipePreview.restoreDraft')}
                   </Button>
                 )}
               </>

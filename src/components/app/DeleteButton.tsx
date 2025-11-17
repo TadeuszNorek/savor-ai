@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface DeleteButtonProps {
   recipeId: string;
@@ -25,6 +26,7 @@ interface DeleteButtonProps {
  * Shows AlertDialog before permanent deletion
  */
 export function DeleteButton({ recipeId, recipeName, onDeleted, loading = false }: DeleteButtonProps) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
 
   const handleConfirm = () => {
@@ -37,23 +39,23 @@ export function DeleteButton({ recipeId, recipeName, onDeleted, loading = false 
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size="lg" className="gap-2" disabled={loading}>
           <Trash2 className="h-5 w-5" />
-          Delete recipe
+          {t('recipeList.deleteRecipe')}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('recipeList.deleteConfirmTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete &quot;<strong>{recipeName}</strong>&quot;. This action cannot be undone.
+            {t('recipeList.deleteConfirmDesc', { name: recipeName })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            Delete
+            {t('recipeList.deleteConfirmButton')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
