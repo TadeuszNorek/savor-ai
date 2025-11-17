@@ -1,1 +1,0 @@
-import{j as e}from"./createLucideIcon.Dkxjm4wi.js";import{T as r,D as o}from"./DarkModeToggle.BEg8hsAg.js";import"./index.BkdHoFEG.js";function m(){return e.jsx(r,{children:e.jsx("div",{className:"fixed top-4 right-4 z-50",children:e.jsx(o,{})})})}export{m as LoginThemeToggle};
