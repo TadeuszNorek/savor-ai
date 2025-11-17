@@ -1,0 +1,18 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { AppPage } from "../../../components/app/AppPage";
+
+// Deep-link to specific recipe
+// The id param will be passed to AppPage to open Preview panel
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/app");
+}
+---
+
+<Layout title="Recipe Details - SavorAI">
+  <main class="container mx-auto px-4 py-4 h-[calc(100vh-4rem)]">
+    <AppPage client:only="react" selectedRecipeId={id} />
+  </main>
+</Layout>

@@ -1,4 +1,4 @@
-import type { RecipeSchema, ProfileDTO } from "../../../types";
+import type { RecipeSchema, ProfileDTO, LanguageCode } from "../../../types";
 
 /**
  * AI Provider interface
@@ -9,9 +9,10 @@ export interface AiProvider {
    * Generate a recipe based on user prompt and profile
    * @param prompt - User's recipe request
    * @param profile - User's profile with dietary preferences (optional)
+   * @param lang - Language for recipe generation (defaults to 'en')
    * @returns Generated recipe matching RecipeSchema
    */
-  generateRecipe(prompt: string, profile?: ProfileDTO): Promise<RecipeSchema>;
+  generateRecipe(prompt: string, profile?: ProfileDTO, lang?: LanguageCode): Promise<RecipeSchema>;
 }
 
 /**

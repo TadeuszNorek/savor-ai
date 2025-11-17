@@ -1,4 +1,5 @@
-import type { RecipeSchema, ProfileDTO } from "../../../types";
+import type { RecipeSchema, ProfileDTO, LanguageCode } from "../../../types";
+import { DEFAULT_LANGUAGE } from "../../../types";
 import { OpenRouterProvider } from "./providers/openrouter.provider";
 import { GoogleProvider } from "./providers/google.provider";
 import { MockProvider } from "./providers/mock.provider";
@@ -65,17 +66,21 @@ export class AiService {
    * Generate a recipe with retry logic
    * @param prompt - User's recipe request
    * @param profile - User's profile with dietary preferences (optional)
+   * @param lang - Language override (optional, defaults to profile.preferred_language or DEFAULT_LANGUAGE)
    * @returns Generated recipe matching RecipeSchema
    */
-  async generateRecipe(prompt: string, profile?: ProfileDTO): Promise<RecipeSchema> {
+  async generateRecipe(prompt: string, profile?: ProfileDTO, lang?: LanguageCode): Promise<RecipeSchema> {
+    // Determine final language: explicit override > profile preference > default 'en'
+    const recipeLanguage: LanguageCode = lang ?? profile?.preferred_language ?? DEFAULT_LANGUAGE;
+
     let lastError: Error | undefined;
     let attempt = 0;
     const maxAttempts = this.maxRetries + 1; // Initial attempt + retries
 
     while (attempt < maxAttempts) {
       try {
-        console.log(`AI generation attempt ${attempt + 1}/${maxAttempts}`);
-        const recipe = await this.provider.generateRecipe(prompt, profile);
+        console.log(`AI generation attempt ${attempt + 1}/${maxAttempts} (language: ${recipeLanguage})`);
+        const recipe = await this.provider.generateRecipe(prompt, profile, recipeLanguage);
 
         // Validate size constraint (200KB limit as per DB CHECK)
         this.validateRecipeSize(recipe);

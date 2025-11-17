@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LanguageCodeSchema } from "./profile.schema";
 
 /**
  * Recipe sort order validation
@@ -61,6 +62,9 @@ export const RecipeListQuerySchema = z
       .optional()
       .transform((val) => (val && val.length > 0 ? parseInt(val, 10) : undefined))
       .pipe(z.number().int().nonnegative("Offset must be non-negative").optional()),
+
+    // Language filter (optional - show only recipes in specific language)
+    lang: LanguageCodeSchema.optional(),
   })
   .strict()
   .refine(

@@ -1,4 +1,4 @@
-import type { RecipeSchema, ProfileDTO } from "../../../../types";
+import type { RecipeSchema, ProfileDTO, LanguageCode } from "../../../../types";
 import type { AiProvider, AiProviderConfig } from "../types";
 import { AiProviderError, AiValidationError } from "../types";
 import * as RecipePromptBuilder from "../utils/recipe-prompt-builder";
@@ -23,10 +23,10 @@ export class OpenRouterProvider implements AiProvider {
     this.timeout = config.timeout || 30000; // 30 seconds default
   }
 
-  async generateRecipe(prompt: string, profile?: ProfileDTO): Promise<RecipeSchema> {
+  async generateRecipe(prompt: string, profile?: ProfileDTO, lang?: LanguageCode): Promise<RecipeSchema> {
     // Build prompts using shared utility
-    const systemPrompt = RecipePromptBuilder.buildSystemPrompt(profile);
-    const userPrompt = RecipePromptBuilder.buildUserPrompt(prompt);
+    const systemPrompt = RecipePromptBuilder.buildSystemPrompt(profile, lang);
+    const userPrompt = RecipePromptBuilder.buildUserPrompt(prompt, lang);
 
     try {
       // Execute request with timeout handling

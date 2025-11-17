@@ -253,6 +253,7 @@ describe("recipe schemas", () => {
         instructions: ["Boil pasta", "Add sauce"],
       },
       tags: ["italian", "pasta", "quick"],
+      language: "en" as const,
     };
 
     it("should validate valid save command with tags", () => {

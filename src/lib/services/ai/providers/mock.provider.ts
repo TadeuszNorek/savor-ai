@@ -1,4 +1,4 @@
-import type { RecipeSchema, ProfileDTO } from "../../../../types";
+import type { RecipeSchema, ProfileDTO, LanguageCode } from "../../../../types";
 import type { AiProvider, AiProviderConfig } from "../types";
 
 /**
@@ -14,12 +14,12 @@ export class MockProvider implements AiProvider {
     this.delay = config?.timeout ? config.timeout / 10 : 1500;
   }
 
-  async generateRecipe(prompt: string, profile?: ProfileDTO): Promise<RecipeSchema> {
+  async generateRecipe(prompt: string, profile?: ProfileDTO, lang?: LanguageCode): Promise<RecipeSchema> {
     // Simulate network delay
     await this.sleep(this.delay + Math.random() * 500);
 
     // Generate mock recipe based on prompt keywords
-    const recipe = this.createMockRecipe(prompt, profile);
+    const recipe = this.createMockRecipe(prompt, profile, lang);
 
     return recipe;
   }
@@ -27,7 +27,7 @@ export class MockProvider implements AiProvider {
   /**
    * Create a realistic mock recipe based on prompt
    */
-  private createMockRecipe(prompt: string, profile?: ProfileDTO): RecipeSchema {
+  private createMockRecipe(prompt: string, profile?: ProfileDTO, lang?: LanguageCode): RecipeSchema {
     const lowerPrompt = prompt.toLowerCase();
 
     // Detect recipe type from prompt

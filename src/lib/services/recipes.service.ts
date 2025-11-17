@@ -31,7 +31,7 @@ export class RecipesService {
    * @throws Error if database operation fails
    */
   async saveRecipe(userId: string, command: SaveRecipeCommand): Promise<RecipeSummaryDTO> {
-    const { recipe, tags } = command;
+    const { recipe, tags, language } = command;
 
     // 1. Check recipe size limit (200 KB = 204800 bytes)
     const recipeJson = JSON.stringify(recipe);
@@ -49,6 +49,7 @@ export class RecipesService {
     const { data: recipeId, error: rpcError } = await this.supabase.rpc("insert_recipe_safe", {
       p_recipe: recipe as RecipeSchema,
       p_tags: normalizedTags.length > 0 ? normalizedTags : null,
+      p_language: language,
     });
 
     if (rpcError) {
@@ -70,7 +71,7 @@ export class RecipesService {
     // 4. Fetch recipe summary (select only needed fields)
     const { data: summary, error: selectError } = await this.supabase
       .from("recipes")
-      .select("id, user_id, title, summary, tags, created_at, updated_at")
+      .select("id, user_id, title, summary, tags, language, created_at, updated_at")
       .eq("id", recipeId)
       .single();
 
@@ -93,7 +94,7 @@ export class RecipesService {
   async getRecipeDetails(id: string, userId: string): Promise<RecipeDetailsDTO | null> {
     const { data, error } = await this.supabase
       .from("recipes")
-      .select("id, user_id, title, summary, tags, recipe, created_at, updated_at")
+      .select("id, user_id, title, summary, tags, recipe, language, created_at, updated_at")
       .eq("id", id)
       .eq("user_id", userId)
       .single();
@@ -144,13 +145,18 @@ export class RecipesService {
    * @returns Paginated list of recipes with metadata
    */
   async listRecipes(userId: string, query: RecipeQueryParams): Promise<RecipeListResponse> {
-    const { search, tags, sort = "recent", limit = 20, cursor, offset } = query;
+    const { search, tags, sort = "recent", limit = 20, cursor, offset, lang } = query;
 
     // Start building query
     let queryBuilder = this.supabase
       .from("recipes")
-      .select("id, title, summary, tags, created_at", { count: "exact" })
+      .select("id, title, summary, tags, language, created_at", { count: "exact" })
       .eq("user_id", userId);
+
+    // Apply language filtering (optional)
+    if (lang) {
+      queryBuilder = queryBuilder.eq("language", lang);
+    }
 
     // Apply tag filtering (OR logic with overlaps)
     if (tags && Array.isArray(tags) && tags.length > 0) {

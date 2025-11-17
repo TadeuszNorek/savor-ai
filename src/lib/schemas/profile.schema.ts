@@ -1,6 +1,14 @@
 import { z } from "zod";
 
 /**
+ * Language Code Schema
+ * Must match LanguageCode in src/types.ts and CHECK constraint in database
+ */
+export const LanguageCodeSchema = z.enum(['pl', 'en'], {
+  errorMap: () => ({ message: "Language must be 'pl' or 'en'" }),
+});
+
+/**
  * Diet Type Schema
  * Must match DietType in src/types.ts and CHECK constraint in database
  */
@@ -53,6 +61,7 @@ const StringArraySchema = z
  * - disliked_ingredients: Optional array of strings (1-50 chars each, max 100 items)
  *   Automatically normalized: lowercase, trimmed, deduplicated, empty filtered
  * - preferred_cuisines: Optional array of strings (same rules as disliked_ingredients)
+ * - preferred_language: Optional, defaults to 'en' (English)
  * - All fields are optional as user can create empty profile
  */
 export const CreateProfileCommandSchema = z
@@ -60,6 +69,7 @@ export const CreateProfileCommandSchema = z
     diet_type: DietTypeSchema.optional(),
     disliked_ingredients: StringArraySchema.optional(),
     preferred_cuisines: StringArraySchema.optional(),
+    preferred_language: LanguageCodeSchema.optional().default('en'),
   })
   .strict();
 
@@ -71,17 +81,22 @@ export const CreateProfileCommandSchema = z
  * - All fields optional for partial updates
  * - At least one field must be provided
  * - diet_type can be explicitly set to null to clear the value
+ * - preferred_language can be updated to change user's language preference
  */
 export const UpdateProfileCommandSchema = z
   .object({
     diet_type: DietTypeSchema.nullish(),
     disliked_ingredients: StringArraySchema.optional(),
     preferred_cuisines: StringArraySchema.optional(),
+    preferred_language: LanguageCodeSchema.optional(),
   })
   .strict()
   .refine(
     (data) =>
-      data.diet_type !== undefined || data.disliked_ingredients !== undefined || data.preferred_cuisines !== undefined,
+      data.diet_type !== undefined ||
+      data.disliked_ingredients !== undefined ||
+      data.preferred_cuisines !== undefined ||
+      data.preferred_language !== undefined,
     {
       message: "At least one field must be provided for update",
       path: ["_root"],

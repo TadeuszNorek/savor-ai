@@ -1,6 +1,22 @@
 import type { Database, Tables, TablesInsert, TablesUpdate } from "./db/database.types";
 
 // ============================================================================
+// Language Support
+// ============================================================================
+
+/**
+ * Supported language codes
+ * Centralized definition for easy extension (add 'es', 'fr', 'de', etc.)
+ */
+export type LanguageCode = 'pl' | 'en';
+
+/**
+ * Default language for the application
+ * Used as fallback when user has no language preference set
+ */
+export const DEFAULT_LANGUAGE: LanguageCode = 'en';
+
+// ============================================================================
 // Core Domain Types
 // ============================================================================
 
@@ -101,6 +117,7 @@ export type UpdateProfileCommand = Omit<TablesUpdate<"profiles">, "user_id" | "c
  */
 export interface GenerateRecipeCommand {
   prompt: string;
+  lang?: LanguageCode; // Optional language override (defaults to profile.preferred_language or 'en')
 }
 
 /**
@@ -115,12 +132,13 @@ export interface GenerateRecipeResponse {
 
 /**
  * Save Recipe Command - body for POST /api/recipes
- * User submits recipe with optional tags
+ * User submits recipe with optional tags and language
  * Server manages id, user_id, derived fields, and timestamps
  */
 export interface SaveRecipeCommand {
   recipe: RecipeSchema;
   tags?: string[];
+  language: LanguageCode; // Required - language in which recipe was generated
 }
 
 /**
@@ -129,14 +147,14 @@ export interface SaveRecipeCommand {
  */
 export type RecipeSummaryDTO = Pick<
   Tables<"recipes">,
-  "id" | "user_id" | "title" | "summary" | "tags" | "created_at" | "updated_at"
+  "id" | "user_id" | "title" | "summary" | "tags" | "language" | "created_at" | "updated_at"
 >;
 
 /**
  * Recipe List Item DTO - individual item in GET /api/recipes response
  * Minimal data for list display (no full recipe JSONB)
  */
-export type RecipeListItemDTO = Pick<Tables<"recipes">, "id" | "title" | "summary" | "tags" | "created_at">;
+export type RecipeListItemDTO = Pick<Tables<"recipes">, "id" | "title" | "summary" | "tags" | "language" | "created_at">;
 
 /**
  * Recipe Details DTO - returned from GET /api/recipes/:id
@@ -156,6 +174,7 @@ export interface RecipeQueryParams {
   limit?: number;
   cursor?: string; // Base64 encoded (created_at:id) for keyset pagination
   offset?: number; // Alternative to cursor for simple pagination
+  lang?: LanguageCode; // Optional language filter (show only recipes in specific language)
 }
 
 /**
@@ -264,6 +283,7 @@ export type ValidationErrorDetails = Record<string, string | string[]>;
 export interface InsertRecipeSafeArgs {
   p_recipe: RecipeSchema;
   p_tags?: string[];
+  p_language?: LanguageCode; // Language in which recipe was generated (defaults to 'en')
 }
 
 /**
@@ -309,6 +329,13 @@ export function isDietType(value: string): value is DietType {
  */
 export function isRecipeDifficulty(value: string): value is RecipeDifficulty {
   return ["easy", "medium", "hard"].includes(value);
+}
+
+/**
+ * Type guard to check if value is a valid LanguageCode
+ */
+export function isLanguageCode(value: string): value is LanguageCode {
+  return ["pl", "en"].includes(value);
 }
 
 // ============================================================================

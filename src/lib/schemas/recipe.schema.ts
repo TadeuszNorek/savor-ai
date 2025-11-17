@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { RecipeSchema } from "../../types";
+import { LanguageCodeSchema } from "./profile.schema";
 
 /**
  * Zod schema for dietary information
@@ -79,6 +80,7 @@ export const GenerateRecipeCommandSchema = z.object({
       },
       { message: "Prompt contains suspicious patterns" }
     ),
+  lang: LanguageCodeSchema.optional(), // Optional language override (defaults to profile.preferred_language or 'en')
 });
 
 /**
@@ -92,7 +94,7 @@ export const GenerateRecipeResponseSchema = z.object({
 
 /**
  * Zod schema for SaveRecipeCommand
- * Validates recipe save request with optional tags
+ * Validates recipe save request with optional tags and required language
  */
 export const SaveRecipeCommandSchema = z.object({
   recipe: RecipeSchemaZ,
@@ -100,6 +102,7 @@ export const SaveRecipeCommandSchema = z.object({
     .array(z.string().trim().min(1, "Tag cannot be empty").max(50, "Tag too long (max 50 characters)"))
     .max(20, "Too many tags (max 20)")
     .optional(),
+  language: LanguageCodeSchema, // Required - language in which recipe was generated
 });
 
 /**

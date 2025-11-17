@@ -239,6 +239,7 @@ export const POST: APIRoute = async ({ request }) => {
           recipe_id: savedRecipe.id,
           title: savedRecipe.title,
           tags: savedRecipe.tags,
+          language: recipeCommand.language,
           request_id: requestId,
         },
       });
@@ -254,6 +255,7 @@ export const POST: APIRoute = async ({ request }) => {
       status: 201,
       headers: {
         "Content-Type": "application/json",
+        "Content-Language": recipeCommand.language,
         Location: `/api/recipes/${savedRecipe.id}`,
         "X-Request-ID": requestId,
       },

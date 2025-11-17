@@ -91,6 +91,7 @@ export const GET: APIRoute = async ({ request, params }) => {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        "Content-Language": recipe.language,
         "Cache-Control": "no-store", // Private user data - don't cache
       },
     });
