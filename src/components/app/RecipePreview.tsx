@@ -106,7 +106,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
                       variant="outline"
                       className="rounded-full border-2 bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-700 px-3"
                     >
-                      {key.replace(/_/g, " ")}
+                      {t(`dietaryInfo.${key}` as any) || key.replace(/_/g, " ")}
                     </Badge>
                   )
               )}
@@ -148,7 +148,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
 
           <div className="flex items-center gap-2">
             <ChefHat className="h-4 w-4 text-muted-foreground" />
-            <Badge className={difficultyColors[recipe.difficulty]}>{recipe.difficulty}</Badge>
+            <Badge className={difficultyColors[recipe.difficulty]}>{t(`difficulty.${recipe.difficulty}`)}</Badge>
           </div>
 
           {/* Servings Adjuster */}
@@ -353,7 +353,7 @@ export function RecipePreview({ data, onTagClick, readonly = false }: RecipePrev
             )}
           </div>
           <p className="text-xs text-muted-foreground/70 mt-4 text-center">
-            Nutritional values are approximate and may differ from actual values.
+            {t('recipePreview.nutritionDisclaimer')}
           </p>
         </section>
       )}

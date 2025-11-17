@@ -8,6 +8,7 @@ import { EmailInput } from "./EmailInput";
 import { PasswordInput } from "./PasswordInput";
 import { validateAuthForm, hasErrors, normalizeEmail } from "../../lib/auth/validation";
 import { sendSessionStartEvent } from "../../lib/auth/telemetry";
+import { useI18n } from "../../lib/contexts/I18nContext";
 import type { AuthFormMode, AuthFormValues, AuthFormErrors } from "../../lib/auth/types";
 import { supabaseClient } from "../../db/supabase.client";
 
@@ -34,6 +35,7 @@ interface AuthFormProps {
  * @component
  */
 export function AuthForm({ initialMode = "login" }: AuthFormProps) {
+  const { t } = useI18n();
   const [mode, setMode] = useState<AuthFormMode>(initialMode);
   const [values, setValues] = useState<AuthFormValues>({
     email: "",
@@ -125,15 +127,15 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
         console.log("[AuthForm] signInWithPassword response:", { data: !!data, error: error?.message });
 
         if (error) {
-          // Map Supabase errors to user-friendly messages
-          let message = "Login failed";
+          // Map Supabase errors to user-friendly translated messages
+          let message = t('auth.loginFailed');
 
           if (error.message.includes("Invalid login credentials")) {
-            message = "Invalid email or password";
+            message = t('auth.invalidCredentials');
           } else if (error.message.includes("Email not confirmed")) {
-            message = "Please verify your email address";
+            message = t('auth.emailNotConfirmed');
           } else if (error.message.includes("rate")) {
-            message = "Too many attempts. Please try again later";
+            message = "Too many attempts. Please try again later"; // Keep English for rate limiting
           }
 
           console.log("[AuthForm] Login error:", message);
@@ -150,7 +152,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
         console.log("[AuthForm] Session check:", { hasSession: !!sessionData.session });
         if (!sessionData.session) {
           console.log("[AuthForm] Session not available!");
-          setErrors({ form: "Session error. Please try again." });
+          setErrors({ form: t('auth.loginFailed') });
           return;
         }
 
@@ -170,7 +172,12 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
         });
 
         if (error) {
-          setErrors({ form: error.message || "Registration failed" });
+          // Translate registration errors
+          let message = t('auth.registrationFailed');
+          if (error.message.includes("User already registered")) {
+            message = t('auth.userAlreadyExists');
+          }
+          setErrors({ form: message });
           return;
         }
 
@@ -180,7 +187,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
         // Verify session is available
         const { data: sessionData } = await supabaseClient.auth.getSession();
         if (!sessionData.session) {
-          setErrors({ form: "Session error. Please try again." });
+          setErrors({ form: t('auth.registrationFailed') });
           return;
         }
 
@@ -217,13 +224,13 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>{isLogin ? "Sign In" : "Create Account"}</CardTitle>
+        <CardTitle>{isLogin ? t('auth.signIn') : t('auth.createAccount')}</CardTitle>
         <CardDescription>
-          {isLogin ? "Enter your email and password to sign in" : "Enter your email and password to create an account"}
+          {isLogin ? t('auth.signInDescription') : t('auth.signUpDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4" aria-label={`${isLogin ? "Login" : "Registration"} form`}>
+        <form onSubmit={handleSubmit} className="space-y-4" aria-label={`${isLogin ? t('auth.signIn') : t('auth.signUp')} form`}>
           {/* Global form error */}
           {errors.form && (
             <Alert variant={errors.form.includes("ready") ? "default" : "destructive"}>
@@ -238,7 +245,7 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
             value={values.email}
             onChange={handleEmailChange}
             onBlur={handleEmailBlur}
-            error={touched.email ? errors.email : undefined}
+            error={touched.email && errors.email ? t(errors.email) : undefined}
             disabled={isSubmitting}
           />
 
@@ -248,9 +255,9 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
             value={values.password}
             onChange={handlePasswordChange}
             onBlur={handlePasswordBlur}
-            error={touched.password ? errors.password : undefined}
+            error={touched.password && errors.password ? t(errors.password) : undefined}
             disabled={isSubmitting}
-            label={isLogin ? "Password" : "Password (min. 8 characters)"}
+            label={isLogin ? t('auth.password') : t('auth.passwordWithMin')}
           />
 
           {/* Submit button */}
@@ -258,16 +265,16 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
             type="submit"
             className="w-full"
             disabled={isSubmitting || !isValid}
-            aria-label={isLogin ? "Sign in" : "Create account"}
+            aria-label={isLogin ? t('auth.signIn') : t('auth.createAccount')}
           >
-            {isSubmitting ? "Processing..." : isLogin ? "Sign In" : "Create Account"}
+            {isSubmitting ? t('auth.processing') : isLogin ? t('auth.signIn') : t('auth.createAccount')}
           </Button>
 
           {/* Forgot password link - only show in login mode */}
           {isLogin && (
             <div className="text-center text-sm">
               <a href="/auth/forgot" className="text-muted-foreground hover:text-primary hover:underline">
-                Forgot your password?
+                {t('auth.forgotPassword')}
               </a>
             </div>
           )}
@@ -276,26 +283,26 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
           <div className="text-center text-sm">
             {isLogin ? (
               <p>
-                Don&apos;t have an account?{" "}
+                {t('auth.dontHaveAccount')}{" "}
                 <button
                   type="button"
                   onClick={handleModeSwitch}
                   className="text-primary hover:underline font-medium"
                   disabled={isSubmitting}
                 >
-                  Sign up
+                  {t('auth.signUp')}
                 </button>
               </p>
             ) : (
               <p>
-                Already have an account?{" "}
+                {t('auth.alreadyHaveAccount')}{" "}
                 <button
                   type="button"
                   onClick={handleModeSwitch}
                   className="text-primary hover:underline font-medium"
                   disabled={isSubmitting}
                 >
-                  Sign in
+                  {t('auth.signIn')}
                 </button>
               </p>
             )}

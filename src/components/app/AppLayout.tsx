@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { LeftPanel } from "./LeftPanel";
 import { RightPanel } from "./RightPanel";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface AppLayoutProps {
   selectedRecipeId?: string;
@@ -16,6 +17,7 @@ interface AppLayoutProps {
  * Right panel: Generator and Preview tabs
  */
 export function AppLayout({ selectedRecipeId }: AppLayoutProps) {
+  const { t } = useI18n();
   const [currentSelectedId, setCurrentSelectedId] = useState<string | undefined>(selectedRecipeId);
 
   // Collapsible left panel state - persisted in localStorage
@@ -149,7 +151,7 @@ export function AppLayout({ selectedRecipeId }: AppLayoutProps) {
                   // Mobile: Fixed to top center (below header)
                   "max-lg:top-16 max-lg:left-1/2 max-lg:-translate-x-1/2"
                 )}
-                aria-label="Show recipe list"
+                aria-label={t('recipeList.showRecipeList')}
               >
                 {/* Desktop icon */}
                 <ChevronRight className="h-4 w-4 hidden lg:block" />
@@ -158,11 +160,11 @@ export function AppLayout({ selectedRecipeId }: AppLayoutProps) {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" className="hidden lg:block">
-              <p>Show recipe list</p>
+              <p>{t('recipeList.showRecipeList')}</p>
               <p className="text-xs text-muted-foreground">Ctrl+B</p>
             </TooltipContent>
             <TooltipContent side="bottom" className="lg:hidden">
-              <p>Show recipe list</p>
+              <p>{t('recipeList.showRecipeList')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

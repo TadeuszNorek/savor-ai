@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from "../ui/alert";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { PasswordInput } from "./PasswordInput";
 import { validatePassword } from "../../lib/auth/validation";
+import { useI18n } from "../../lib/contexts/I18nContext";
 import { supabaseClient } from "../../db/supabase.client";
 
 /**
@@ -20,10 +21,12 @@ import { supabaseClient } from "../../db/supabase.client";
  * - Calls Supabase updateUser
  * - Shows success/error states
  * - Full accessibility
+ * - Translated UI
  *
  * @component
  */
 export function ResetPasswordForm() {
+  const { t } = useI18n();
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState<string | undefined>();
   const [formError, setFormError] = useState<string | undefined>();
@@ -47,11 +50,11 @@ export function ResetPasswordForm() {
         if (session) {
           setIsRecoverySession(true);
         } else {
-          setFormError("Invalid or expired password reset link.");
+          setFormError(t('auth.passwordResetError'));
         }
       } catch (error) {
         console.error("Failed to check recovery session:", error);
-        setFormError("Failed to verify reset link. Please try again.");
+        setFormError(t('auth.passwordResetError'));
       } finally {
         setIsLoading(false);
       }
@@ -109,7 +112,7 @@ export function ResetPasswordForm() {
 
       if (error) {
         console.error("Password update error:", error);
-        setFormError("Failed to update password. Please try again.");
+        setFormError(t('auth.passwordResetError'));
         setIsSubmitting(false);
         return;
       }
@@ -123,7 +126,7 @@ export function ResetPasswordForm() {
       }, 3000);
     } catch (error) {
       console.error("Unexpected error:", error);
-      setFormError("An unexpected error occurred. Please try again.");
+      setFormError(t('auth.passwordResetError'));
       setIsSubmitting(false);
     }
   };
@@ -133,12 +136,12 @@ export function ResetPasswordForm() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardHeader>
-          <CardTitle>Reset your password</CardTitle>
+          <CardTitle>{t('auth.resetPasswordTitle')}</CardTitle>
           <CardDescription>Verifying reset link...</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center py-8">
-            <div className="text-muted-foreground">Loading...</div>
+            <div className="text-muted-foreground">{t('common.loading')}</div>
           </div>
         </CardContent>
       </Card>
@@ -150,8 +153,8 @@ export function ResetPasswordForm() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardHeader>
-          <CardTitle>Password updated!</CardTitle>
-          <CardDescription>Your password has been successfully reset.</CardDescription>
+          <CardTitle>{t('auth.passwordResetSuccess')}</CardTitle>
+          <CardDescription>{t('auth.resetPasswordDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
           <Alert>
@@ -163,7 +166,7 @@ export function ResetPasswordForm() {
 
           <div className="mt-6 text-center">
             <Button variant="ghost" size="sm" asChild>
-              <a href="/login">Go to Sign In</a>
+              <a href="/login">{t('auth.signIn')}</a>
             </Button>
           </div>
         </CardContent>
@@ -182,12 +185,12 @@ export function ResetPasswordForm() {
         <CardContent>
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{formError || "Invalid reset link."}</AlertDescription>
+            <AlertDescription>{formError || t('auth.passwordResetError')}</AlertDescription>
           </Alert>
 
           <div className="mt-6 text-center">
             <Button variant="default" asChild>
-              <a href="/auth/forgot">Request New Reset Link</a>
+              <a href="/auth/forgot">{t('auth.sendResetInstructions')}</a>
             </Button>
           </div>
         </CardContent>
@@ -199,13 +202,13 @@ export function ResetPasswordForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Set new password</CardTitle>
+        <CardTitle>{t('auth.resetPasswordTitle')}</CardTitle>
         <CardDescription>
-          Enter a new password for your account. Make sure it&apos;s at least 8 characters long.
+          {t('auth.resetPasswordDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4" aria-label="Reset password form">
+        <form onSubmit={handleSubmit} className="space-y-4" aria-label={t('auth.resetPasswordTitle')}>
           {/* Form error */}
           {formError && (
             <Alert variant="destructive">
@@ -220,9 +223,9 @@ export function ResetPasswordForm() {
             value={password}
             onChange={handlePasswordChange}
             onBlur={handlePasswordBlur}
-            error={touched ? passwordError : undefined}
+            error={touched && passwordError ? t(passwordError) : undefined}
             disabled={isSubmitting}
-            label="New Password (min. 8 characters)"
+            label={t('auth.newPassword')}
           />
 
           {/* Submit button */}
@@ -230,17 +233,17 @@ export function ResetPasswordForm() {
             type="submit"
             className="w-full"
             disabled={isSubmitting || !!passwordError}
-            aria-label="Update password"
+            aria-label={t('auth.resetPassword')}
           >
-            {isSubmitting ? "Updating..." : "Update Password"}
+            {isSubmitting ? t('auth.resetting') : t('auth.resetPassword')}
           </Button>
 
           {/* Back to login link */}
           <div className="text-center text-sm">
             <p>
-              Remember your password?{" "}
+              {t('auth.rememberPassword')}{" "}
               <a href="/login" className="text-primary hover:underline font-medium">
-                Sign in
+                {t('auth.signIn')}
               </a>
             </p>
           </div>

@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from "../ui/alert";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { EmailInput } from "./EmailInput";
 import { validateEmail, normalizeEmail } from "../../lib/auth/validation";
+import { useI18n } from "../../lib/contexts/I18nContext";
 import { supabaseClient } from "../../db/supabase.client";
 
 /**
@@ -19,10 +20,12 @@ import { supabaseClient } from "../../db/supabase.client";
  * - Shows success message without revealing if account exists
  * - Error handling
  * - Full accessibility
+ * - Translated UI
  *
  * @component
  */
 export function ForgotPasswordForm() {
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | undefined>();
   const [formError, setFormError] = useState<string | undefined>();
@@ -73,7 +76,7 @@ export function ForgotPasswordForm() {
 
       if (error) {
         console.error("Password reset error:", error);
-        setFormError("Failed to send reset email. Please try again.");
+        setFormError(t('auth.resetEmailError'));
         setIsSubmitting(false);
         return;
       }
@@ -82,7 +85,7 @@ export function ForgotPasswordForm() {
       setIsSuccess(true);
     } catch (error) {
       console.error("Unexpected error:", error);
-      setFormError("An unexpected error occurred. Please try again.");
+      setFormError(t('auth.resetEmailError'));
       setIsSubmitting(false);
     }
   };
@@ -91,7 +94,7 @@ export function ForgotPasswordForm() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardHeader>
-          <CardTitle>Check your email</CardTitle>
+          <CardTitle>{t('auth.checkYourEmail')}</CardTitle>
           <CardDescription>
             If an account exists with this email, you will receive password reset instructions.
           </CardDescription>
@@ -100,14 +103,13 @@ export function ForgotPasswordForm() {
           <Alert>
             <CheckCircle className="h-4 w-4" />
             <AlertDescription>
-              We&apos;ve sent password reset instructions to <strong>{email}</strong>. Please check your inbox and spam
-              folder.
+              {t('auth.resetEmailSent', { email })}
             </AlertDescription>
           </Alert>
 
           <div className="mt-6 text-center">
             <Button variant="ghost" size="sm" asChild>
-              <a href="/login">Back to Sign In</a>
+              <a href="/login">{t('auth.backToSignIn')}</a>
             </Button>
           </div>
         </CardContent>
@@ -118,13 +120,13 @@ export function ForgotPasswordForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Forgot your password?</CardTitle>
+        <CardTitle>{t('auth.forgotPasswordTitle')}</CardTitle>
         <CardDescription>
-          Enter your email address and we&apos;ll send you instructions to reset your password.
+          {t('auth.forgotPasswordDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4" aria-label="Forgot password form">
+        <form onSubmit={handleSubmit} className="space-y-4" aria-label={t('auth.forgotPasswordTitle')}>
           {/* Form error */}
           {formError && (
             <Alert variant="destructive">
@@ -139,7 +141,7 @@ export function ForgotPasswordForm() {
             value={email}
             onChange={handleEmailChange}
             onBlur={handleEmailBlur}
-            error={touched ? emailError : undefined}
+            error={touched && emailError ? t(emailError) : undefined}
             disabled={isSubmitting}
           />
 
@@ -148,17 +150,17 @@ export function ForgotPasswordForm() {
             type="submit"
             className="w-full"
             disabled={isSubmitting || !!emailError}
-            aria-label="Send reset instructions"
+            aria-label={t('auth.sendResetInstructions')}
           >
-            {isSubmitting ? "Sending..." : "Send Reset Instructions"}
+            {isSubmitting ? t('auth.sending') : t('auth.sendResetInstructions')}
           </Button>
 
           {/* Back to login link */}
           <div className="text-center text-sm">
             <p>
-              Remember your password?{" "}
+              {t('auth.rememberPassword')}{" "}
               <a href="/login" className="text-primary hover:underline font-medium">
-                Sign in
+                {t('auth.signIn')}
               </a>
             </p>
           </div>

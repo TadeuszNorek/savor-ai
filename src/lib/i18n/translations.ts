@@ -38,6 +38,7 @@ export interface Translations {
     title: string;
     description: string;
     placeholder: string;
+    promptLabel: string;
     generateButton: string;
     generating: string;
     generatingStatus: string;
@@ -72,6 +73,7 @@ export interface Translations {
     stepProgress: string; // "Step {current} of {total}"
     nutrition: string;
     nutritionPerServing: string;
+    nutritionDisclaimer: string;
     calories: string;
     protein: string;
     carbs: string;
@@ -94,6 +96,9 @@ export interface Translations {
   };
   recipeList: {
     title: string;
+    yourRecipes: string;
+    hideRecipeList: string;
+    showRecipeList: string;
     emptyStateTitle: string;
     emptyStateDescription: string;
     emptyStateCta: string;
@@ -118,9 +123,18 @@ export interface Translations {
     deleteConfirmTitle: string;
     deleteConfirmDesc: string; // with {name} placeholder
     deleteConfirmButton: string;
+    // Tag filters
+    tagFilters: string;
+    clearFilters: string;
+    showMore: string;
+    showLess: string;
+    tagSelected: string; // "{count} tag selected"
+    tagsSelected: string; // "{count} tags selected"
   };
   profile: {
     title: string;
+    pageTitle: string;
+    pageDescription: string;
     createTitle: string;
     editTitle: string;
     createDescription: string;
@@ -147,6 +161,85 @@ export interface Translations {
     serverError: string;
     networkError: string;
     validationError: string;
+  };
+  auth: {
+    signIn: string;
+    signUp: string;
+    createAccount: string;
+    signInDescription: string;
+    signUpDescription: string;
+    email: string;
+    password: string;
+    passwordWithMin: string;
+    processing: string;
+    forgotPassword: string;
+    dontHaveAccount: string;
+    alreadyHaveAccount: string;
+    // Forgot password
+    forgotPasswordTitle: string;
+    forgotPasswordDescription: string;
+    sendResetInstructions: string;
+    sending: string;
+    rememberPassword: string;
+    backToSignIn: string;
+    checkYourEmail: string;
+    resetEmailSent: string; // with {email} placeholder
+    resetEmailError: string;
+    // Reset password
+    resetPasswordTitle: string;
+    resetPasswordDescription: string;
+    newPassword: string;
+    confirmPassword: string;
+    resetPassword: string;
+    resetting: string;
+    passwordResetSuccess: string;
+    passwordResetError: string;
+    passwordsDoNotMatch: string;
+    // Auth errors
+    invalidCredentials: string;
+    emailNotConfirmed: string;
+    userAlreadyExists: string;
+    loginFailed: string;
+    registrationFailed: string;
+  };
+  validation: {
+    emailRequired: string;
+    emailTooLong: string;
+    emailInvalid: string;
+    passwordRequired: string;
+    passwordWhitespace: string;
+    passwordTooShort: string;
+    passwordTooLong: string;
+  };
+  dietTypes: {
+    none: string;
+    selectPlaceholder: string;
+    vegan: string;
+    vegetarian: string;
+    pescatarian: string;
+    keto: string;
+    paleo: string;
+    glutenFree: string;
+    dairyFree: string;
+    lowCarb: string;
+    mediterranean: string;
+    omnivore: string;
+  };
+  tabs: {
+    generator: string;
+    preview: string;
+  };
+  difficulty: {
+    easy: string;
+    medium: string;
+    hard: string;
+  };
+  dietaryInfo: {
+    vegetarian: string;
+    vegan: string;
+    gluten_free: string;
+    dairy_free: string;
+    nut_free: string;
   };
 }
 
@@ -181,6 +274,7 @@ export const translations: Record<'pl' | 'en', Translations> = {
       title: 'Generator Przepisów AI',
       description: 'Opisz przepis, który chcesz stworzyć, a AI wygeneruje szczegółowy przepis dla Ciebie.',
       placeholder: 'Np. "Szybki obiad dla dwóch osób z kurczakiem i warzywami" lub "Wegański deser czekoladowy bez cukru"',
+      promptLabel: 'Prompt generowania przepisu',
       generateButton: 'Generuj przepis',
       generating: 'Generowanie...',
       generatingStatus: 'AI analizuje Twój prompt i tworzy przepis... To może potrwać kilka sekund.',
@@ -215,6 +309,7 @@ export const translations: Record<'pl' | 'en', Translations> = {
       stepProgress: 'Krok {current} z {total}',
       nutrition: 'Wartości odżywcze',
       nutritionPerServing: 'na porcję',
+      nutritionDisclaimer: 'Wartości odżywcze są przybliżone i mogą różnić się od rzeczywistych.',
       calories: 'Kalorie',
       protein: 'Białko',
       carbs: 'Węglowodany',
@@ -237,6 +332,9 @@ export const translations: Record<'pl' | 'en', Translations> = {
     },
     recipeList: {
       title: 'Twoje przepisy',
+      yourRecipes: 'Twoje przepisy',
+      hideRecipeList: 'Ukryj listę przepisów',
+      showRecipeList: 'Pokaż listę przepisów',
       emptyStateTitle: 'Brak przepisów',
       emptyStateDescription: 'Wybierz przepis z listy lub wygeneruj nowy za pomocą AI, aby go tutaj zobaczyć.',
       emptyStateCta: 'Wygeneruj pierwszy przepis',
@@ -261,9 +359,18 @@ export const translations: Record<'pl' | 'en', Translations> = {
       deleteConfirmTitle: 'Czy na pewno?',
       deleteConfirmDesc: 'To spowoduje trwałe usunięcie "{name}". Ta operacja jest nieodwracalna.',
       deleteConfirmButton: 'Usuń',
+      // Tag filters
+      tagFilters: 'Filtruj po tagach:',
+      clearFilters: 'Wyczyść filtry',
+      showMore: 'Pokaż więcej',
+      showLess: 'Pokaż mniej',
+      tagSelected: '{count} tag wybrany',
+      tagsSelected: '{count} tagów wybranych',
     },
     profile: {
       title: 'Profil',
+      pageTitle: 'Moje preferencje dietetyczne',
+      pageDescription: 'Dostosuj swoje preferencje dietetyczne, aby otrzymywać spersonalizowane rekomendacje przepisów.',
       createTitle: 'Utwórz profil',
       editTitle: 'Edytuj profil',
       createDescription: 'Ustaw swoje preferencje dietetyczne, aby zacząć.',
@@ -290,6 +397,85 @@ export const translations: Record<'pl' | 'en', Translations> = {
       serverError: 'Błąd serwera',
       networkError: 'Błąd sieci',
       validationError: 'Błąd walidacji',
+    },
+    auth: {
+      signIn: 'Zaloguj się',
+      signUp: 'Zarejestruj się',
+      createAccount: 'Utwórz konto',
+      signInDescription: 'Wprowadź swój adres e-mail i hasło, aby się zalogować',
+      signUpDescription: 'Wprowadź swój adres e-mail i hasło, aby utworzyć konto',
+      email: 'E-mail',
+      password: 'Hasło',
+      passwordWithMin: 'Hasło (min. 8 znaków)',
+      processing: 'Przetwarzanie...',
+      forgotPassword: 'Zapomniałeś hasła?',
+      dontHaveAccount: 'Nie masz konta?',
+      alreadyHaveAccount: 'Masz już konto?',
+      // Forgot password
+      forgotPasswordTitle: 'Zapomniałeś hasła?',
+      forgotPasswordDescription: 'Wprowadź swój adres e-mail, a wyślemy Ci instrukcje resetowania hasła.',
+      sendResetInstructions: 'Wyślij instrukcje resetowania',
+      sending: 'Wysyłanie...',
+      rememberPassword: 'Pamiętasz hasło?',
+      backToSignIn: 'Wróć do logowania',
+      checkYourEmail: 'Sprawdź swoją skrzynkę e-mail',
+      resetEmailSent: 'Wysłaliśmy instrukcje resetowania hasła na adres {email}. Sprawdź swoją skrzynkę odbiorczą i spam.',
+      resetEmailError: 'Nie udało się wysłać e-maila z resetowaniem. Spróbuj ponownie.',
+      // Reset password
+      resetPasswordTitle: 'Zresetuj hasło',
+      resetPasswordDescription: 'Wprowadź nowe hasło dla swojego konta.',
+      newPassword: 'Nowe hasło',
+      confirmPassword: 'Potwierdź hasło',
+      resetPassword: 'Zresetuj hasło',
+      resetting: 'Resetowanie...',
+      passwordResetSuccess: 'Hasło zostało pomyślnie zresetowane!',
+      passwordResetError: 'Nie udało się zresetować hasła. Spróbuj ponownie.',
+      passwordsDoNotMatch: 'Hasła nie pasują do siebie',
+      // Auth errors
+      invalidCredentials: 'Nieprawidłowy e-mail lub hasło',
+      emailNotConfirmed: 'Potwierdź swój e-mail przed zalogowaniem',
+      userAlreadyExists: 'Użytkownik z tym adresem e-mail już istnieje',
+      loginFailed: 'Logowanie nie powiodło się',
+      registrationFailed: 'Rejestracja nie powiodła się',
+    },
+    validation: {
+      emailRequired: 'E-mail jest wymagany',
+      emailTooLong: 'E-mail może mieć maksymalnie 254 znaki',
+      emailInvalid: 'Wprowadź prawidłowy adres e-mail',
+      passwordRequired: 'Hasło jest wymagane',
+      passwordWhitespace: 'Hasło nie może składać się tylko ze spacji',
+      passwordTooShort: 'Hasło musi mieć co najmniej 8 znaków',
+      passwordTooLong: 'Hasło może mieć maksymalnie 128 znaków',
+    },
+    dietTypes: {
+      none: 'Brak',
+      selectPlaceholder: 'Wybierz rodzaj diety',
+      vegan: 'Wegańska',
+      vegetarian: 'Wegetariańska',
+      pescatarian: 'Pescetariańska',
+      keto: 'Keto',
+      paleo: 'Paleo',
+      glutenFree: 'Bezglutenowa',
+      dairyFree: 'Bez nabiału',
+      lowCarb: 'Niskowęglowodanowa',
+      mediterranean: 'Śródziemnomorska',
+      omnivore: 'Mięsożerna',
+    },
+    tabs: {
+      generator: 'Generator',
+      preview: 'Podgląd',
+    },
+    difficulty: {
+      easy: 'Łatwy',
+      medium: 'Średni',
+      hard: 'Trudny',
+    },
+    dietaryInfo: {
+      vegetarian: 'Wegetariańskie',
+      vegan: 'Wegańskie',
+      gluten_free: 'Bezglutenowe',
+      dairy_free: 'Bez nabiału',
+      nut_free: 'Bez orzechów',
     },
   },
   en: {
@@ -322,6 +508,7 @@ export const translations: Record<'pl' | 'en', Translations> = {
       title: 'AI Recipe Generator',
       description: 'Describe the recipe you want to create, and AI will generate a detailed recipe for you.',
       placeholder: 'E.g. "Quick dinner for two with chicken and vegetables" or "Vegan chocolate dessert without sugar"',
+      promptLabel: 'Recipe generation prompt',
       generateButton: 'Generate recipe',
       generating: 'Generating...',
       generatingStatus: 'AI is analyzing your prompt and creating a recipe... This may take a few seconds.',
@@ -356,6 +543,7 @@ export const translations: Record<'pl' | 'en', Translations> = {
       stepProgress: 'Step {current} of {total}',
       nutrition: 'Nutrition',
       nutritionPerServing: 'per serving',
+      nutritionDisclaimer: 'Nutritional values are approximate and may differ from actual values.',
       calories: 'Calories',
       protein: 'Protein',
       carbs: 'Carbs',
@@ -378,6 +566,9 @@ export const translations: Record<'pl' | 'en', Translations> = {
       },
     recipeList: {
       title: 'Your recipes',
+      yourRecipes: 'Your Recipes',
+      hideRecipeList: 'Hide recipe list',
+      showRecipeList: 'Show recipe list',
       emptyStateTitle: 'No recipe selected',
       emptyStateDescription: 'Select a recipe from the list or generate a new one using AI to see it here.',
       emptyStateCta: 'Generate first recipe',
@@ -402,9 +593,18 @@ export const translations: Record<'pl' | 'en', Translations> = {
       deleteConfirmTitle: 'Are you sure?',
       deleteConfirmDesc: 'This will permanently delete "{name}". This action cannot be undone.',
       deleteConfirmButton: 'Delete',
+      // Tag filters
+      tagFilters: 'Tag filters:',
+      clearFilters: 'Clear filters',
+      showMore: 'Show more',
+      showLess: 'Show less',
+      tagSelected: '{count} tag selected',
+      tagsSelected: '{count} tags selected',
     },
     profile: {
       title: 'Profile',
+      pageTitle: 'My Dietary Preferences',
+      pageDescription: 'Customize your dietary preferences to receive personalized recipe recommendations.',
       createTitle: 'Create Profile',
       editTitle: 'Edit Profile',
       createDescription: 'Set up your dietary preferences to get started.',
@@ -431,6 +631,85 @@ export const translations: Record<'pl' | 'en', Translations> = {
       serverError: 'Server error',
       networkError: 'Network error',
       validationError: 'Validation error',
+    },
+    auth: {
+      signIn: 'Sign In',
+      signUp: 'Sign up',
+      createAccount: 'Create Account',
+      signInDescription: 'Enter your email and password to sign in',
+      signUpDescription: 'Enter your email and password to create an account',
+      email: 'Email',
+      password: 'Password',
+      passwordWithMin: 'Password (min. 8 characters)',
+      processing: 'Processing...',
+      forgotPassword: 'Forgot your password?',
+      dontHaveAccount: "Don't have an account?",
+      alreadyHaveAccount: 'Already have an account?',
+      // Forgot password
+      forgotPasswordTitle: 'Forgot your password?',
+      forgotPasswordDescription: "Enter your email address and we'll send you instructions to reset your password.",
+      sendResetInstructions: 'Send Reset Instructions',
+      sending: 'Sending...',
+      rememberPassword: 'Remember your password?',
+      backToSignIn: 'Back to Sign In',
+      checkYourEmail: 'Check your email',
+      resetEmailSent: "We've sent password reset instructions to {email}. Please check your inbox and spam folder.",
+      resetEmailError: 'Failed to send reset email. Please try again.',
+      // Reset password
+      resetPasswordTitle: 'Reset Password',
+      resetPasswordDescription: 'Enter a new password for your account.',
+      newPassword: 'New Password',
+      confirmPassword: 'Confirm Password',
+      resetPassword: 'Reset Password',
+      resetting: 'Resetting...',
+      passwordResetSuccess: 'Password has been successfully reset!',
+      passwordResetError: 'Failed to reset password. Please try again.',
+      passwordsDoNotMatch: 'Passwords do not match',
+      // Auth errors
+      invalidCredentials: 'Invalid email or password',
+      emailNotConfirmed: 'Please confirm your email before signing in',
+      userAlreadyExists: 'A user with this email already exists',
+      loginFailed: 'Login failed',
+      registrationFailed: 'Registration failed',
+    },
+    validation: {
+      emailRequired: 'Email is required',
+      emailTooLong: 'Email must be 254 characters or less',
+      emailInvalid: 'Please enter a valid email address',
+      passwordRequired: 'Password is required',
+      passwordWhitespace: 'Password cannot be only whitespace',
+      passwordTooShort: 'Password must be at least 8 characters',
+      passwordTooLong: 'Password must be 128 characters or less',
+    },
+    dietTypes: {
+      none: 'None',
+      selectPlaceholder: 'Select a diet type',
+      vegan: 'Vegan',
+      vegetarian: 'Vegetarian',
+      pescatarian: 'Pescatarian',
+      keto: 'Keto',
+      paleo: 'Paleo',
+      glutenFree: 'Gluten Free',
+      dairyFree: 'Dairy Free',
+      lowCarb: 'Low Carb',
+      mediterranean: 'Mediterranean',
+      omnivore: 'Omnivore',
+    },
+    tabs: {
+      generator: 'Generator',
+      preview: 'Preview',
+    },
+    difficulty: {
+      easy: 'Easy',
+      medium: 'Medium',
+      hard: 'Hard',
+    },
+    dietaryInfo: {
+      vegetarian: 'Vegetarian',
+      vegan: 'Vegan',
+      gluten_free: 'Gluten Free',
+      dairy_free: 'Dairy Free',
+      nut_free: 'Nut Free',
     },
   },
 };

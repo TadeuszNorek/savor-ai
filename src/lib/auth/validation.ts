@@ -3,22 +3,23 @@ import type { AuthFormValues, AuthFormErrors } from "./types";
 /**
  * Email validation - RFC 5322 lite (moderate regex)
  * Max 254 characters
+ * Returns translation key instead of translated message
  */
 export function validateEmail(email: string): string | undefined {
   const trimmed = email.trim();
 
   if (!trimmed) {
-    return "Email is required";
+    return "validation.emailRequired";
   }
 
   if (trimmed.length > 254) {
-    return "Email must be 254 characters or less";
+    return "validation.emailTooLong";
   }
 
   // RFC 5322 lite pattern
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(trimmed)) {
-    return "Please enter a valid email address";
+    return "validation.emailInvalid";
   }
 
   return undefined;
@@ -28,22 +29,23 @@ export function validateEmail(email: string): string | undefined {
  * Password validation
  * Min 8 characters, max 128 characters
  * No whitespace-only passwords
+ * Returns translation key instead of translated message
  */
 export function validatePassword(password: string): string | undefined {
   if (!password) {
-    return "Password is required";
+    return "validation.passwordRequired";
   }
 
   if (password.trim().length === 0) {
-    return "Password cannot be only whitespace";
+    return "validation.passwordWhitespace";
   }
 
   if (password.length < 8) {
-    return "Password must be at least 8 characters";
+    return "validation.passwordTooShort";
   }
 
   if (password.length > 128) {
-    return "Password must be 128 characters or less";
+    return "validation.passwordTooLong";
   }
 
   return undefined;

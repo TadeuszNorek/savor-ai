@@ -1,19 +1,7 @@
 import { forwardRef } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useI18n } from "../../lib/contexts/I18nContext";
 import type { DietType } from "../../types";
-
-const DIET_TYPES: { value: DietType; label: string }[] = [
-  { value: "vegan", label: "Vegan" },
-  { value: "vegetarian", label: "Vegetarian" },
-  { value: "pescatarian", label: "Pescatarian" },
-  { value: "keto", label: "Keto" },
-  { value: "paleo", label: "Paleo" },
-  { value: "gluten_free", label: "Gluten Free" },
-  { value: "dairy_free", label: "Dairy Free" },
-  { value: "low_carb", label: "Low Carb" },
-  { value: "mediterranean", label: "Mediterranean" },
-  { value: "omnivore", label: "Omnivore" },
-];
 
 interface DietTypeSelectProps {
   /** Current selected diet type (null = none) */
@@ -37,11 +25,27 @@ interface DietTypeSelectProps {
  * - "None" option to clear selection (sets null)
  * - Full ARIA support
  * - Keyboard navigation support
+ * - Translated labels based on current language
  *
  * @component
  */
 export const DietTypeSelect = forwardRef<HTMLButtonElement, DietTypeSelectProps>(
   ({ value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }, ref) => {
+    const { t } = useI18n();
+
+    const DIET_TYPES: { value: DietType; labelKey: string }[] = [
+      { value: "vegan", labelKey: "dietTypes.vegan" },
+      { value: "vegetarian", labelKey: "dietTypes.vegetarian" },
+      { value: "pescatarian", labelKey: "dietTypes.pescatarian" },
+      { value: "keto", labelKey: "dietTypes.keto" },
+      { value: "paleo", labelKey: "dietTypes.paleo" },
+      { value: "gluten_free", labelKey: "dietTypes.glutenFree" },
+      { value: "dairy_free", labelKey: "dietTypes.dairyFree" },
+      { value: "low_carb", labelKey: "dietTypes.lowCarb" },
+      { value: "mediterranean", labelKey: "dietTypes.mediterranean" },
+      { value: "omnivore", labelKey: "dietTypes.omnivore" },
+    ];
+
     const handleValueChange = (newValue: string) => {
       if (newValue === "none") {
         onChange(null);
@@ -59,13 +63,13 @@ export const DietTypeSelect = forwardRef<HTMLButtonElement, DietTypeSelectProps>
           aria-invalid={ariaInvalid}
           aria-describedby={ariaDescribedBy}
         >
-          <SelectValue placeholder="Select a diet type" />
+          <SelectValue placeholder={t('dietTypes.selectPlaceholder')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="none">None</SelectItem>
+          <SelectItem value="none">{t('dietTypes.none')}</SelectItem>
           {DIET_TYPES.map((diet) => (
             <SelectItem key={diet.value} value={diet.value}>
-              {diet.label}
+              {t(diet.labelKey)}
             </SelectItem>
           ))}
         </SelectContent>

@@ -78,6 +78,34 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
     }
   }, [lang]);
 
+  // Listen for language changes from other I18nProvider instances (storage event)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "preferred_language" && e.newValue && isLanguageCode(e.newValue)) {
+        setLangState(e.newValue);
+      }
+    };
+
+    // Listen for storage events from other tabs/windows
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also listen for custom events from same tab (different I18nProvider instances)
+    const handleCustomLanguageChange = (e: CustomEvent<LanguageCode>) => {
+      if (e.detail !== lang) {
+        setLangState(e.detail);
+      }
+    };
+
+    window.addEventListener("languagechange", handleCustomLanguageChange as EventListener);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languagechange", handleCustomLanguageChange as EventListener);
+    };
+  }, [lang]);
+
   /**
    * Set language with auto-save
    * 1. Instant UI update (localStorage)
@@ -92,6 +120,9 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
       // 1. Instant update to localStorage and state
       setLangState(newLang);
       localStorage.setItem("preferred_language", newLang);
+
+      // Notify other I18nProvider instances in the same tab
+      window.dispatchEvent(new CustomEvent("languagechange", { detail: newLang }));
 
       // 2. Background sync to backend (if authenticated)
       if (authToken) {

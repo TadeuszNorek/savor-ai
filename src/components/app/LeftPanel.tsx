@@ -12,6 +12,7 @@ import { RecipeListSkeleton } from "./RecipeListSkeleton";
 import { useRecipesList } from "@/lib/api/recipes";
 import { useUrlFilters } from "@/lib/hooks/useUrlFilters";
 import { useScrollRestoration } from "@/lib/hooks/useScrollRestoration";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface LeftPanelProps {
   selectedId?: string;
@@ -26,6 +27,8 @@ interface LeftPanelProps {
  * Supports collapsing for full-screen generator/preview mode
  */
 export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleCollapse }: LeftPanelProps) {
+  const { t } = useI18n();
+
   // Filter state synced with URL
   const { filters, setFilters } = useUrlFilters();
 
@@ -92,7 +95,7 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
     <div className="flex flex-col h-full">
       {/* Header with title and collapse button */}
       <div className="flex items-center justify-between px-4 py-3 border-b">
-        <h2 className="text-lg font-semibold">Your Recipes</h2>
+        <h2 className="text-lg font-semibold">{t('recipeList.yourRecipes')}</h2>
         {onToggleCollapse && (
           <TooltipProvider>
             <Tooltip>
@@ -102,7 +105,7 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 -mr-2"
-                  aria-label="Hide recipe list"
+                  aria-label={t('recipeList.hideRecipeList')}
                 >
                   {/* Desktop icon */}
                   <ChevronLeft className="h-4 w-4 hidden lg:block" />
@@ -111,11 +114,11 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="left" className="hidden lg:block">
-                <p>Hide recipe list</p>
+                <p>{t('recipeList.hideRecipeList')}</p>
                 <p className="text-xs text-muted-foreground">Ctrl+B</p>
               </TooltipContent>
               <TooltipContent side="bottom" className="lg:hidden">
-                <p>Hide recipe list</p>
+                <p>{t('recipeList.hideRecipeList')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -139,7 +142,7 @@ export function LeftPanel({ selectedId, onSelect, onGenerateClick, onToggleColla
           <ErrorPanel error={error as Error} onRetry={handleRetry} />
         ) : totalRecipes === 0 ? (
           <EmptyState
-            message={hasFilters ? "No recipes matching your filters" : "No recipes yet"}
+            message={hasFilters ? t('recipeList.emptyStateNoResults') : t('recipeList.emptyStateTitle')}
             onCta={!hasFilters ? onGenerateClick : undefined}
           />
         ) : (

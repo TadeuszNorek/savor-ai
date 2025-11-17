@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GeneratorPanel } from "./GeneratorPanel";
 import { PreviewPanel } from "./PreviewPanel";
 import { useRecipeDetails } from "@/lib/api/recipes";
+import { useI18n } from "@/lib/contexts/I18nContext";
 import type { RecipeSchema, GenerateRecipeResponse, RecipeSummaryDTO } from "@/types";
 
 interface RightPanelProps {
@@ -20,6 +21,7 @@ type ActiveTab = "generator" | "preview";
  * Supports deep-linking to saved recipe details
  */
 export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRecipeGenerated }: RightPanelProps) {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
   const [draftRecipe, setDraftRecipe] = useState<RecipeSchema | undefined>();
 
@@ -99,10 +101,10 @@ export function RightPanel({ selectedRecipeId, onTagClick, onRecipeDeleted, onRe
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ActiveTab)} className="flex-1 flex flex-col">
         <TabsList className="w-full">
           <TabsTrigger value="generator" className="flex-1">
-            Generator
+            {t('tabs.generator')}
           </TabsTrigger>
           <TabsTrigger value="preview" className="flex-1">
-            Preview
+            {t('tabs.preview')}
             {(showDraft || showSaved) && <span className="ml-2 h-2 w-2 rounded-full bg-primary" />}
           </TabsTrigger>
         </TabsList>

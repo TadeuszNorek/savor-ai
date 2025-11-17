@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { ForgotPasswordForm } from "../../components/auth/ForgotPasswordForm";
+import { I18nProvider } from "../../lib/contexts/I18nContext";
 import { LoginThemeToggle } from "../../components/LoginThemeToggle";
 
 // This page is public (no auth required)
@@ -17,7 +18,9 @@ import { LoginThemeToggle } from "../../components/LoginThemeToggle";
         <p class="text-muted-foreground">We'll help you get back into your account</p>
       </div>
 
-      <ForgotPasswordForm client:load />
+      <I18nProvider client:only="react">
+        <ForgotPasswordForm client:only="react" />
+      </I18nProvider>
     </div>
   </main>
 </Layout>

@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { ResetPasswordForm } from "../../components/auth/ResetPasswordForm";
+import { I18nProvider } from "../../lib/contexts/I18nContext";
 import { LoginThemeToggle } from "../../components/LoginThemeToggle";
 
 // This page is public (no auth required)
@@ -18,7 +19,9 @@ import { LoginThemeToggle } from "../../components/LoginThemeToggle";
         <p class="text-muted-foreground">Choose a new password for your account</p>
       </div>
 
-      <ResetPasswordForm client:load />
+      <I18nProvider client:only="react">
+        <ResetPasswordForm client:only="react" />
+      </I18nProvider>
     </div>
   </main>
 </Layout>

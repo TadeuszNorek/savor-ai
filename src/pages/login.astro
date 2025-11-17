@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { AuthForm } from "../components/auth/AuthForm";
+import { I18nProvider } from "../lib/contexts/I18nContext";
 import { LoginThemeToggle } from "../components/LoginThemeToggle";
 
 // This page is public (no auth required)
@@ -19,7 +20,9 @@ import { LoginThemeToggle } from "../components/LoginThemeToggle";
         <p class="text-muted-foreground">Your AI-powered recipe companion</p>
       </div>
 
-      <AuthForm client:load />
+      <I18nProvider client:only="react">
+        <AuthForm client:only="react" />
+      </I18nProvider>
 
       <div class="mt-8 text-center text-sm text-muted-foreground">
         <p>By signing in, you agree to our Terms of Service and Privacy Policy.</p>

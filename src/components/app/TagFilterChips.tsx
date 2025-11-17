@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ChevronDown, ChevronUp } from "lucide-react";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface TagFilterChipsProps {
   selected: string[];
@@ -17,6 +18,7 @@ const INITIAL_TAGS_LIMIT = 12;
  * Collapses to show only first 12 tags with "Show more" button
  */
 export function TagFilterChips({ selected, allTags, onChange }: TagFilterChipsProps) {
+  const { t } = useI18n();
   const [showAllTags, setShowAllTags] = useState(false);
 
   const handleToggle = (tag: string) => {
@@ -61,16 +63,16 @@ export function TagFilterChips({ selected, allTags, onChange }: TagFilterChipsPr
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium">Tag filters:</span>
+        <span className="text-sm font-medium">{t('recipeList.tagFilters')}</span>
         {hasSelectedTags && (
           <Button
             variant="ghost"
             size="sm"
             onClick={handleClearAll}
             className="h-auto py-1 px-2 text-xs"
-            aria-label="Clear all filters"
+            aria-label={t('recipeList.clearFilters')}
           >
-            Clear filters
+            {t('recipeList.clearFilters')}
           </Button>
         )}
       </div>
@@ -108,12 +110,12 @@ export function TagFilterChips({ selected, allTags, onChange }: TagFilterChipsPr
             {showAllTags ? (
               <>
                 <ChevronUp className="mr-1 h-3 w-3" />
-                Show less
+                {t('recipeList.showLess')}
               </>
             ) : (
               <>
                 <ChevronDown className="mr-1 h-3 w-3" />
-                Show more ({hiddenCount} more)
+                {t('recipeList.showMore')} ({hiddenCount})
               </>
             )}
           </Button>
@@ -122,7 +124,10 @@ export function TagFilterChips({ selected, allTags, onChange }: TagFilterChipsPr
 
       {hasSelectedTags && (
         <div className="text-xs text-muted-foreground" aria-live="polite">
-          {selected.length} {selected.length === 1 ? "tag" : "tags"} selected
+          {selected.length === 1
+            ? t('recipeList.tagSelected', { count: selected.length })
+            : t('recipeList.tagsSelected', { count: selected.length })
+          }
         </div>
       )}
     </div>

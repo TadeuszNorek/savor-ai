@@ -20,7 +20,7 @@ export function TextareaWithCounter({
   onChange,
   disabled = false,
   maxLength = 2000,
-  label = "Recipe generation prompt",
+  label,
   placeholder = "Describe the recipe you want to generate...",
 }: TextareaWithCounterProps) {
   const { t } = useI18n();
@@ -37,7 +37,7 @@ export function TextareaWithCounter({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="recipe-prompt">{label}</Label>
+      <Label htmlFor="recipe-prompt">{label || t('generator.promptLabel')}</Label>
       <Textarea
         id="recipe-prompt"
         value={value}
