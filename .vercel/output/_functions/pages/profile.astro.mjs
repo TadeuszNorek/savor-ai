@@ -1,6 +1,6 @@
 import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_VvUFyhd8.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../chunks/Layout_CEGH4ugq.mjs';
+import { $ as $$Layout } from '../chunks/Layout_CGm0sF21.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Profile = createComponent(($$result, $$props, $$slots) => {

@@ -1,6 +1,6 @@
 import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_VvUFyhd8.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../../chunks/Layout_CEGH4ugq.mjs';
+import { $ as $$Layout } from '../../chunks/Layout_CGm0sF21.mjs';
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState, useRef } from 'react';
 import { C as Card, a as CardHeader, b as CardTitle, c as CardDescription, d as CardContent, A as Alert, e as AlertDescription, B as Button, v as validateEmail, n as normalizeEmail } from '../../chunks/validation_DuP_19Dc.mjs';

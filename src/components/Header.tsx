@@ -1,4 +1,5 @@
 import { DarkModeToggle } from "./theme/DarkModeToggle";
+import { LanguageSwitcher } from "./i18n/LanguageSwitcher";
 import { Button } from "./ui/button";
 import { UserMenu } from "./auth/UserMenu";
 import { useAuth } from "../lib/auth/useAuth";
@@ -56,8 +57,8 @@ export function Header() {
           {/* Dark Mode Toggle */}
           <DarkModeToggle />
 
-          {/* Language Switch - Placeholder for Phase 2 */}
-          {/* <LanguageSwitch /> */}
+          {/* Language Switcher */}
+          <LanguageSwitcher />
 
           {/* User Info / Auth */}
           {!loading && (
