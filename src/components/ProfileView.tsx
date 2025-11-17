@@ -13,6 +13,7 @@ import { Skeleton } from "./ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { AlertCircle } from "lucide-react";
 import type { ApiError } from "../types";
+import { useI18n } from "../lib/contexts/I18nContext";
 
 /**
  * ProfileView Component
@@ -27,10 +28,14 @@ import type { ApiError } from "../types";
  * - Shows loading states and error alerts
  * - Invalidates cache after successful mutations
  * - Toast notifications for user feedback
+ * - Saves current language preference when creating profile
  *
  * @component
  */
 export default function ProfileView() {
+  // Get current language from i18n context
+  const { lang } = useI18n();
+
   // Fetch existing profile
   const { data: profile, isLoading, error } = useProfileQuery();
 
@@ -57,7 +62,7 @@ export default function ProfileView() {
   const handleSubmit = async (values: ProfileFormValues) => {
     try {
       if (mode === "create") {
-        const command = formValuesToCreateCommand(values);
+        const command = formValuesToCreateCommand(values, lang);
         console.log("[ProfileView] Creating profile with command:", command);
         await createMutation.mutateAsync(command);
         toast.success("Profile created successfully!");

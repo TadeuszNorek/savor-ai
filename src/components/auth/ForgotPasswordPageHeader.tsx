@@ -1,0 +1,23 @@
+import { useI18n } from "../../lib/contexts/I18nContext";
+
+/**
+ * ForgotPasswordPageHeader Component
+ *
+ * Displays the translated header for the forgot password page.
+ *
+ * @component
+ */
+export function ForgotPasswordPageHeader() {
+  const { t } = useI18n();
+
+  return (
+    <div className="text-center mb-8">
+      <h1 className="text-4xl font-bold mb-2">
+        {t("auth.forgotPasswordPageTitle")}
+      </h1>
+      <p className="text-muted-foreground">
+        {t("auth.forgotPasswordPageSubtitle")}
+      </p>
+    </div>
+  );
+}

@@ -52,9 +52,13 @@ export function emptyProfileFormValues(): ProfileFormValues {
  * Maps ProfileFormValues to CreateProfileCommand for POST /api/profile
  * Only includes non-empty fields (at least one field must be present per PRD)
  * @param values - Form values
+ * @param preferredLanguage - User's preferred language (optional, defaults to 'en' in schema)
  * @returns CreateProfileCommand for API
  */
-export function formValuesToCreateCommand(values: ProfileFormValues): CreateProfileCommand {
+export function formValuesToCreateCommand(
+  values: ProfileFormValues,
+  preferredLanguage?: import("../../types").LanguageCode
+): CreateProfileCommand {
   const command: CreateProfileCommand = {};
 
   if (values.dietType) {
@@ -67,6 +71,11 @@ export function formValuesToCreateCommand(values: ProfileFormValues): CreateProf
 
   if (values.preferredCuisines.length > 0) {
     command.preferred_cuisines = values.preferredCuisines;
+  }
+
+  // Include preferred language if provided
+  if (preferredLanguage) {
+    command.preferred_language = preferredLanguage;
   }
 
   return command;

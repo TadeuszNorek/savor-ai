@@ -186,6 +186,38 @@ describe("profile mappers", () => {
 
       expect(result).toEqual({});
     });
+
+    it("should include preferred_language when provided", () => {
+      const values: ProfileFormValues = {
+        dietType: "vegetarian",
+        dislikedIngredients: ["meat"],
+        preferredCuisines: ["italian"],
+      };
+
+      const result = formValuesToCreateCommand(values, "pl");
+
+      expect(result).toEqual({
+        diet_type: "vegetarian",
+        disliked_ingredients: ["meat"],
+        preferred_cuisines: ["italian"],
+        preferred_language: "pl",
+      });
+    });
+
+    it("should omit preferred_language when not provided", () => {
+      const values: ProfileFormValues = {
+        dietType: "vegan",
+        dislikedIngredients: [],
+        preferredCuisines: [],
+      };
+
+      const result = formValuesToCreateCommand(values);
+
+      expect(result).toEqual({
+        diet_type: "vegan",
+      });
+      expect(result.preferred_language).toBeUndefined();
+    });
   });
 
   describe("formValuesToUpdateCommand", () => {

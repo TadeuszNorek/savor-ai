@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { AuthForm } from "../components/auth/AuthForm";
-import { I18nProvider } from "../lib/contexts/I18nContext";
+import { AuthFormWithProvider } from "../components/auth/AuthFormWithProvider";
 import { LoginThemeToggle } from "../components/LoginThemeToggle";
 
 // This page is public (no auth required)
@@ -14,19 +13,7 @@ import { LoginThemeToggle } from "../components/LoginThemeToggle";
 
   <main class="container mx-auto px-4 py-16 min-h-screen flex items-center justify-center">
     <div class="w-full max-w-md">
-      <div class="text-center mb-6">
-        <img src="/favicon.svg" alt="SavorAI Logo" class="mx-auto h-20 w-20 mb-4" />
-        <h1 class="text-3xl font-bold mb-2">Welcome to SavorAI</h1>
-        <p class="text-muted-foreground">Your AI-powered recipe companion</p>
-      </div>
-
-      <I18nProvider client:only="react">
-        <AuthForm client:only="react" />
-      </I18nProvider>
-
-      <div class="mt-8 text-center text-sm text-muted-foreground">
-        <p>By signing in, you agree to our Terms of Service and Privacy Policy.</p>
-      </div>
+      <AuthFormWithProvider client:only="react" />
     </div>
   </main>
 </Layout>

@@ -71,6 +71,41 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // Load language from user profile on login
+  useEffect(() => {
+    if (!authToken) return; // Only load when user is logged in
+
+    const loadLanguageFromProfile = async () => {
+      try {
+        const response = await fetch("/api/profile", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const profile = await response.json();
+          if (profile.preferred_language && isLanguageCode(profile.preferred_language)) {
+            // Only update if different from current language
+            if (profile.preferred_language !== lang) {
+              setLangState(profile.preferred_language);
+              localStorage.setItem("preferred_language", profile.preferred_language);
+              window.dispatchEvent(
+                new CustomEvent("languagechange", { detail: profile.preferred_language })
+              );
+              console.log("✓ Loaded language preference from profile:", profile.preferred_language);
+            }
+          }
+        }
+      } catch (error) {
+        console.warn("⚠ Failed to load language preference from profile:", error);
+        // Graceful degradation - continue with localStorage language
+      }
+    };
+
+    loadLanguageFromProfile();
+  }, [authToken]); // Only re-run when authToken changes (login/logout)
+
   // Update <html lang> attribute for accessibility
   useEffect(() => {
     if (typeof window !== "undefined") {

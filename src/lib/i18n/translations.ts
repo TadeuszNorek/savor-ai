@@ -175,7 +175,13 @@ export interface Translations {
     forgotPassword: string;
     dontHaveAccount: string;
     alreadyHaveAccount: string;
-    // Forgot password
+    // Login page
+    welcomeTitle: string;
+    welcomeSubtitle: string;
+    termsAndPrivacy: string;
+    // Forgot password page
+    forgotPasswordPageTitle: string;
+    forgotPasswordPageSubtitle: string;
     forgotPasswordTitle: string;
     forgotPasswordDescription: string;
     sendResetInstructions: string;
@@ -185,7 +191,9 @@ export interface Translations {
     checkYourEmail: string;
     resetEmailSent: string; // with {email} placeholder
     resetEmailError: string;
-    // Reset password
+    // Reset password page
+    resetPasswordPageTitle: string;
+    resetPasswordPageSubtitle: string;
     resetPasswordTitle: string;
     resetPasswordDescription: string;
     newPassword: string;
@@ -411,7 +419,13 @@ export const translations: Record<'pl' | 'en', Translations> = {
       forgotPassword: 'Zapomniałeś hasła?',
       dontHaveAccount: 'Nie masz konta?',
       alreadyHaveAccount: 'Masz już konto?',
-      // Forgot password
+      // Login page
+      welcomeTitle: 'Witaj w SavorAI',
+      welcomeSubtitle: 'Twój asystent kulinarny oparty na AI',
+      termsAndPrivacy: 'Logując się, akceptujesz nasz Regulamin i Politykę Prywatności.',
+      // Forgot password page
+      forgotPasswordPageTitle: 'Odzyskiwanie hasła',
+      forgotPasswordPageSubtitle: 'Pomożemy Ci odzyskać dostęp do konta',
       forgotPasswordTitle: 'Zapomniałeś hasła?',
       forgotPasswordDescription: 'Wprowadź swój adres e-mail, a wyślemy Ci instrukcje resetowania hasła.',
       sendResetInstructions: 'Wyślij instrukcje resetowania',
@@ -421,7 +435,9 @@ export const translations: Record<'pl' | 'en', Translations> = {
       checkYourEmail: 'Sprawdź swoją skrzynkę e-mail',
       resetEmailSent: 'Wysłaliśmy instrukcje resetowania hasła na adres {email}. Sprawdź swoją skrzynkę odbiorczą i spam.',
       resetEmailError: 'Nie udało się wysłać e-maila z resetowaniem. Spróbuj ponownie.',
-      // Reset password
+      // Reset password page
+      resetPasswordPageTitle: 'Zresetuj hasło',
+      resetPasswordPageSubtitle: 'Wybierz nowe hasło dla swojego konta',
       resetPasswordTitle: 'Zresetuj hasło',
       resetPasswordDescription: 'Wprowadź nowe hasło dla swojego konta.',
       newPassword: 'Nowe hasło',
@@ -645,7 +661,13 @@ export const translations: Record<'pl' | 'en', Translations> = {
       forgotPassword: 'Forgot your password?',
       dontHaveAccount: "Don't have an account?",
       alreadyHaveAccount: 'Already have an account?',
-      // Forgot password
+      // Login page
+      welcomeTitle: 'Welcome to SavorAI',
+      welcomeSubtitle: 'Your AI-powered recipe companion',
+      termsAndPrivacy: 'By signing in, you agree to our Terms of Service and Privacy Policy.',
+      // Forgot password page
+      forgotPasswordPageTitle: 'Password Recovery',
+      forgotPasswordPageSubtitle: "We'll help you get back into your account",
       forgotPasswordTitle: 'Forgot your password?',
       forgotPasswordDescription: "Enter your email address and we'll send you instructions to reset your password.",
       sendResetInstructions: 'Send Reset Instructions',
@@ -655,7 +677,9 @@ export const translations: Record<'pl' | 'en', Translations> = {
       checkYourEmail: 'Check your email',
       resetEmailSent: "We've sent password reset instructions to {email}. Please check your inbox and spam folder.",
       resetEmailError: 'Failed to send reset email. Please try again.',
-      // Reset password
+      // Reset password page
+      resetPasswordPageTitle: 'Reset Your Password',
+      resetPasswordPageSubtitle: 'Choose a new password for your account',
       resetPasswordTitle: 'Reset Password',
       resetPasswordDescription: 'Enter a new password for your account.',
       newPassword: 'New Password',
