@@ -125,6 +125,32 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
               console.log("✓ Loaded language preference from profile:", profile.preferred_language);
             }
           }
+        } else if (response.status === 404) {
+          // Profile doesn't exist - create it with language from localStorage
+          // This handles old users who don't have a profile yet
+          console.log("⚠ Profile not found, creating with localStorage language");
+          const currentLang = localStorage.getItem("preferred_language") || DEFAULT_LANGUAGE;
+
+          try {
+            const createResponse = await fetch("/api/profile", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                preferred_language: currentLang,
+              }),
+            });
+
+            if (createResponse.ok) {
+              console.log("✓ Created profile with language:", currentLang);
+            } else {
+              console.warn("⚠ Failed to create profile (non-blocking):", await createResponse.text());
+            }
+          } catch (createError) {
+            console.warn("⚠ Error creating profile (non-blocking):", createError);
+          }
         }
         // Mark as loaded so other instances won't try to load again
         sessionStorage.setItem("i18n_profile_loaded", "true");

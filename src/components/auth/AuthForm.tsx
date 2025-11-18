@@ -191,6 +191,35 @@ export function AuthForm({ initialMode = "login" }: AuthFormProps) {
           return;
         }
 
+        // Create initial profile with preferred language from localStorage
+        // This ensures language chosen before registration is persisted to database
+        console.log("[AuthForm] Creating initial profile...");
+        try {
+          const preferredLanguage = localStorage.getItem("preferred_language") || "en";
+          const token = sessionData.session.access_token;
+
+          const profileResponse = await fetch("/api/profile", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              preferred_language: preferredLanguage,
+            }),
+          });
+
+          if (profileResponse.ok) {
+            console.log("[AuthForm] Profile created with language:", preferredLanguage);
+          } else {
+            // Don't block registration if profile creation fails
+            console.warn("[AuthForm] Failed to create profile (non-blocking):", await profileResponse.text());
+          }
+        } catch (profileError) {
+          // Don't block registration if profile creation fails
+          console.warn("[AuthForm] Profile creation error (non-blocking):", profileError);
+        }
+
         // Send session_start telemetry event (best-effort, non-blocking)
         sendSessionStartEvent().catch(() => {
           // Ignore telemetry errors - don't block UX

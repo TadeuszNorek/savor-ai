@@ -162,6 +162,17 @@ export interface Translations {
     saveButton: string;
     saveSuccess: string;
     saveError: string;
+    // Toast and alert messages
+    createSuccess: string;
+    updateSuccess: string;
+    noChanges: string;
+    alreadyExists: string;
+    validationError: string;
+    genericError: string;
+    loadError: string;
+    errorTitle: string;
+    createAlertTitle: string;
+    createAlertDescription: string;
   };
   errors: {
     notFound: string;
@@ -432,6 +443,17 @@ export const translations: Record<'pl' | 'en', Translations> = {
       saveButton: 'Zapisz zmiany',
       saveSuccess: 'Profil zapisany pomyślnie!',
       saveError: 'Nie udało się zapisać profilu',
+      // Toast and alert messages
+      createSuccess: 'Profil utworzony pomyślnie!',
+      updateSuccess: 'Profil zaktualizowany pomyślnie!',
+      noChanges: 'Brak zmian do zapisania',
+      alreadyExists: 'Profil już istnieje. Odśwież stronę.',
+      validationError: 'Błąd walidacji. Sprawdź wprowadzone dane.',
+      genericError: 'Wystąpił błąd. Spróbuj ponownie.',
+      loadError: 'Nie udało się załadować profilu. Spróbuj ponownie.',
+      errorTitle: 'Błąd',
+      createAlertTitle: 'Utwórz swój profil',
+      createAlertDescription: 'Ustaw preferencje dietetyczne, aby otrzymać spersonalizowane rekomendacje przepisów.',
     },
     errors: {
       notFound: 'Nie znaleziono',
@@ -700,6 +722,17 @@ export const translations: Record<'pl' | 'en', Translations> = {
       saveButton: 'Save Changes',
       saveSuccess: 'Profile saved successfully!',
       saveError: 'Failed to save profile',
+      // Toast and alert messages
+      createSuccess: 'Profile created successfully!',
+      updateSuccess: 'Profile updated successfully!',
+      noChanges: 'No changes to save',
+      alreadyExists: 'Profile already exists. Please refresh the page.',
+      validationError: 'Validation error. Please check your input.',
+      genericError: 'An error occurred. Please try again.',
+      loadError: 'Failed to load profile. Please try again.',
+      errorTitle: 'Error',
+      createAlertTitle: 'Create Your Profile',
+      createAlertDescription: 'Set up your dietary preferences to get personalized recipe recommendations.',
     },
     errors: {
       notFound: 'Not found',

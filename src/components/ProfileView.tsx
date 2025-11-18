@@ -33,8 +33,8 @@ import { useI18n } from "../lib/contexts/I18nContext";
  * @component
  */
 export default function ProfileView() {
-  // Get current language from i18n context
-  const { lang } = useI18n();
+  // Get current language and translation function from i18n context
+  const { lang, t } = useI18n();
 
   // Fetch existing profile
   const { data: profile, isLoading, error } = useProfileQuery();
@@ -65,7 +65,7 @@ export default function ProfileView() {
         const command = formValuesToCreateCommand(values, lang);
         console.log("[ProfileView] Creating profile with command:", command);
         await createMutation.mutateAsync(command);
-        toast.success("Profile created successfully!");
+        toast.success(t('profile.createSuccess'));
         // Query cache will be invalidated automatically, causing re-render with updated data
       } else {
         const command = formValuesToUpdateCommand(values, initialValues);
@@ -75,12 +75,12 @@ export default function ProfileView() {
 
         // Check if there are any changes
         if (Object.keys(command).length === 0) {
-          toast.info("No changes to save");
+          toast.info(t('profile.noChanges'));
           return;
         }
 
         await updateMutation.mutateAsync(command);
-        toast.success("Profile updated successfully!");
+        toast.success(t('profile.updateSuccess'));
         // Query cache will be invalidated automatically, causing re-render with updated data
       }
     } catch (err) {
@@ -88,19 +88,19 @@ export default function ProfileView() {
 
       // Handle conflict (409) - profile already exists when trying to create
       if (apiError.error === "Conflict") {
-        toast.error("Profile already exists. Please refresh the page.");
+        toast.error(t('profile.alreadyExists'));
         // Query will be invalidated automatically
         return;
       }
 
       // Handle validation errors (400)
       if (apiError.error === "Bad Request" || apiError.message === "Validation failed") {
-        toast.error(apiError.message || "Validation error. Please check your input.");
+        toast.error(apiError.message || t('profile.validationError'));
         return;
       }
 
       // Handle other errors
-      toast.error(apiError.message || "An error occurred. Please try again.");
+      toast.error(apiError.message || t('profile.genericError'));
     }
   };
 
@@ -109,9 +109,9 @@ export default function ProfileView() {
     return (
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
+        <AlertTitle>{t('profile.errorTitle')}</AlertTitle>
         <AlertDescription>
-          {(error as ApiError).message || "Failed to load profile. Please try again."}
+          {(error as ApiError).message || t('profile.loadError')}
         </AlertDescription>
       </Alert>
     );
@@ -124,16 +124,16 @@ export default function ProfileView() {
       {mode === "create" && (
         <Alert>
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Create Your Profile</AlertTitle>
+          <AlertTitle>{t('profile.createAlertTitle')}</AlertTitle>
           <AlertDescription>
-            Set up your dietary preferences to get personalized recipe recommendations.
+            {t('profile.createAlertDescription')}
           </AlertDescription>
         </Alert>
       )}
 
       <ProfileForm initialValues={initialValues} mode={mode} onSubmit={handleSubmit} />
 
-      {isSubmitting && <div className="text-sm text-muted-foreground">Saving...</div>}
+      {isSubmitting && <div className="text-sm text-muted-foreground">{t('common.saving')}</div>}
     </div>
   );
 }

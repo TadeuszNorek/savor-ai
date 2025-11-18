@@ -48,6 +48,7 @@ export class ProfilesService {
         diet_type: command.diet_type ?? null,
         disliked_ingredients: command.disliked_ingredients ?? [],
         preferred_cuisines: command.preferred_cuisines ?? [],
+        preferred_language: command.preferred_language ?? 'en',
       })
       .select("*")
       .single();
@@ -118,6 +119,9 @@ export class ProfilesService {
     }
     if (command.preferred_cuisines !== undefined) {
       updateFields.preferred_cuisines = command.preferred_cuisines;
+    }
+    if (command.preferred_language !== undefined) {
+      updateFields.preferred_language = command.preferred_language;
     }
 
     const { data, error } = await this.supabase
