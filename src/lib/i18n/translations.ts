@@ -24,6 +24,14 @@ export interface Translations {
     error: string;
     success: string;
   };
+  pageTitles: {
+    app: string;
+    profile: string;
+    login: string;
+    forgotPassword: string;
+    resetPassword: string;
+    recipeDetails: string;
+  };
   header: {
     recipes: string;
     generator: string;
@@ -161,6 +169,24 @@ export interface Translations {
     serverError: string;
     networkError: string;
     validationError: string;
+    // ErrorPanel messages
+    genericTitle: string;
+    genericDescription: string;
+    invalidRequestTitle: string;
+    invalidRequestDescription: string;
+    unauthorizedTitle: string;
+    unauthorizedDescription: string;
+    notFoundTitle: string;
+    notFoundDescription: string;
+    tooLargeTitle: string;
+    tooLargeDescription: string;
+    rateLimitTitle: string;
+    rateLimitDescription: string;
+    serverErrorTitle: string;
+    serverErrorDescription: string;
+    serviceUnavailableTitle: string;
+    serviceUnavailableDescription: string;
+    tryAgain: string;
   };
   auth: {
     signIn: string;
@@ -267,6 +293,14 @@ export const translations: Record<'pl' | 'en', Translations> = {
       noResults: 'Brak wyników',
       error: 'Błąd',
       success: 'Sukces',
+    },
+    pageTitles: {
+      app: 'Generator i Katalog Przepisów',
+      profile: 'Mój Profil',
+      login: 'Zaloguj się',
+      forgotPassword: 'Odzyskiwanie Hasła',
+      resetPassword: 'Resetowanie Hasła',
+      recipeDetails: 'Szczegóły Przepisu',
     },
     header: {
       recipes: 'Przepisy',
@@ -405,6 +439,24 @@ export const translations: Record<'pl' | 'en', Translations> = {
       serverError: 'Błąd serwera',
       networkError: 'Błąd sieci',
       validationError: 'Błąd walidacji',
+      // ErrorPanel messages
+      genericTitle: 'Wystąpił błąd',
+      genericDescription: 'Spróbuj ponownie później.',
+      invalidRequestTitle: 'Nieprawidłowe żądanie',
+      invalidRequestDescription: 'Sprawdź filtry i spróbuj ponownie.',
+      unauthorizedTitle: 'Brak autoryzacji',
+      unauthorizedDescription: 'Zaloguj się ponownie.',
+      notFoundTitle: 'Nie znaleziono',
+      notFoundDescription: 'Przepis nie istnieje lub został usunięty.',
+      tooLargeTitle: 'Zbyt duży',
+      tooLargeDescription: 'Wynik przekracza limit 200KB. Spróbuj ponownie.',
+      rateLimitTitle: 'Przekroczono limit żądań',
+      rateLimitDescription: 'Poczekaj chwilę przed ponowną próbą.',
+      serverErrorTitle: 'Błąd serwera',
+      serverErrorDescription: 'Przepraszamy, coś poszło nie tak. Spróbuj ponownie później.',
+      serviceUnavailableTitle: 'Usługa niedostępna',
+      serviceUnavailableDescription: 'Usługa jest tymczasowo niedostępna. Spróbuj ponownie za chwilę.',
+      tryAgain: 'Spróbuj ponownie',
     },
     auth: {
       signIn: 'Zaloguj się',
@@ -509,6 +561,14 @@ export const translations: Record<'pl' | 'en', Translations> = {
       noResults: 'No results',
       error: 'Error',
       success: 'Success',
+    },
+    pageTitles: {
+      app: 'Recipe Generator & Catalog',
+      profile: 'My Profile',
+      login: 'Sign In',
+      forgotPassword: 'Forgot Password',
+      resetPassword: 'Reset Password',
+      recipeDetails: 'Recipe Details',
     },
     header: {
       recipes: 'Recipes',
@@ -647,6 +707,24 @@ export const translations: Record<'pl' | 'en', Translations> = {
       serverError: 'Server error',
       networkError: 'Network error',
       validationError: 'Validation error',
+      // ErrorPanel messages
+      genericTitle: 'An error occurred',
+      genericDescription: 'Please try again later.',
+      invalidRequestTitle: 'Invalid request',
+      invalidRequestDescription: 'Check your filters and try again.',
+      unauthorizedTitle: 'Unauthorized',
+      unauthorizedDescription: 'Please log in again.',
+      notFoundTitle: 'Not found',
+      notFoundDescription: "Recipe doesn't exist or has been deleted.",
+      tooLargeTitle: 'Too large',
+      tooLargeDescription: 'Result exceeds the 200KB limit. Please try again.',
+      rateLimitTitle: 'Rate limit exceeded',
+      rateLimitDescription: 'Please wait a moment before trying again.',
+      serverErrorTitle: 'Server error',
+      serverErrorDescription: "We're sorry, something went wrong. Please try again later.",
+      serviceUnavailableTitle: 'Service unavailable',
+      serviceUnavailableDescription: 'Service is temporarily unavailable. Please try again in a moment.',
+      tryAgain: 'Try again',
     },
     auth: {
       signIn: 'Sign In',

@@ -1,7 +1,8 @@
 import { I18nProvider } from "../../lib/contexts/I18nContext";
 import { ForgotPasswordForm } from "./ForgotPasswordForm";
 import { ForgotPasswordPageHeader } from "./ForgotPasswordPageHeader";
-import { LanguageToggle } from "./LanguageToggle";
+import { AuthPageControls } from "./AuthPageControls";
+import { PageTitle } from "../PageTitle";
 
 /**
  * ForgotPasswordFormWithProvider Component
@@ -14,7 +15,8 @@ import { LanguageToggle } from "./LanguageToggle";
 export function ForgotPasswordFormWithProvider() {
   return (
     <I18nProvider>
-      <LanguageToggle />
+      <PageTitle titleKey="pageTitles.forgotPassword" />
+      <AuthPageControls />
       <ForgotPasswordPageHeader />
       <ForgotPasswordForm />
     </I18nProvider>

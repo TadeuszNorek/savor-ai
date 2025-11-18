@@ -1,15 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { ForgotPasswordFormWithProvider } from "../../components/auth/ForgotPasswordFormWithProvider";
-import { LoginThemeToggle } from "../../components/LoginThemeToggle";
 
 // This page is public (no auth required)
+// ForgotPasswordFormWithProvider includes AuthPageControls (dark mode + language toggles)
 ---
 
 <Layout title="Forgot Password - SavorAI" showHeader={false}>
-  <!-- Dark mode toggle in top-right corner -->
-  <LoginThemeToggle client:only="react" />
-
   <main class="container mx-auto px-4 py-16 min-h-screen flex items-center justify-center">
     <div class="w-full max-w-md">
       <ForgotPasswordFormWithProvider client:only="react" />

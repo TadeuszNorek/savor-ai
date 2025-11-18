@@ -3,13 +3,15 @@ import QueryProvider from "./QueryProvider";
 import { I18nProvider } from "../lib/contexts/I18nContext";
 import ProfileView from "./ProfileView";
 import { Toaster } from "./ui/sonner";
+import { PageTitle } from "./PageTitle";
+import { ProfilePageHeader } from "./profile/ProfilePageHeader";
 import { supabaseClient } from "../db/supabase.client";
 
 /**
  * ProfilePage Component
  *
  * Client-side only wrapper for the profile view.
- * Combines I18nProvider, QueryProvider, ProfileView, and Toaster into a single island.
+ * Combines I18nProvider, QueryProvider, ProfilePageHeader, ProfileView, and Toaster into a single island.
  *
  * @component
  */
@@ -34,7 +36,9 @@ export default function ProfilePage() {
 
   return (
     <I18nProvider authToken={authToken}>
+      <PageTitle titleKey="pageTitles.profile" />
       <QueryProvider>
+        <ProfilePageHeader />
         <ProfileView />
         <Toaster />
       </QueryProvider>

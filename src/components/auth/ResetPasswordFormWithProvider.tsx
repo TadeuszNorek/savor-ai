@@ -1,7 +1,8 @@
 import { I18nProvider } from "../../lib/contexts/I18nContext";
 import { ResetPasswordForm } from "./ResetPasswordForm";
 import { ResetPasswordPageHeader } from "./ResetPasswordPageHeader";
-import { LanguageToggle } from "./LanguageToggle";
+import { AuthPageControls } from "./AuthPageControls";
+import { PageTitle } from "../PageTitle";
 
 /**
  * ResetPasswordFormWithProvider Component
@@ -14,7 +15,8 @@ import { LanguageToggle } from "./LanguageToggle";
 export function ResetPasswordFormWithProvider() {
   return (
     <I18nProvider>
-      <LanguageToggle />
+      <PageTitle titleKey="pageTitles.resetPassword" />
+      <AuthPageControls />
       <ResetPasswordPageHeader />
       <ResetPasswordForm />
     </I18nProvider>

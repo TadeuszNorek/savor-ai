@@ -2,7 +2,8 @@ import { I18nProvider } from "../../lib/contexts/I18nContext";
 import { AuthForm } from "./AuthForm";
 import { LoginPageHeader } from "./LoginPageHeader";
 import { LoginPageFooter } from "./LoginPageFooter";
-import { LanguageToggle } from "./LanguageToggle";
+import { AuthPageControls } from "./AuthPageControls";
+import { PageTitle } from "../PageTitle";
 import type { AuthFormMode } from "../../lib/auth/types";
 
 interface AuthFormWithProviderProps {
@@ -22,7 +23,8 @@ export function AuthFormWithProvider({
 }: AuthFormWithProviderProps) {
   return (
     <I18nProvider>
-      <LanguageToggle />
+      <PageTitle titleKey="pageTitles.login" />
+      <AuthPageControls />
       <LoginPageHeader />
       <AuthForm initialMode={initialMode} />
       <LoginPageFooter />

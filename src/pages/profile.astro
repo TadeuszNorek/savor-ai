@@ -1,19 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ProfilePage from "../components/ProfilePage";
-import { I18nProvider } from "../lib/contexts/I18nContext";
-import { ProfilePageHeader } from "../components/profile/ProfilePageHeader";
 
 // This page is client-side only (React island)
 // Authentication check happens in ProfileView via API call
 // 401 from API will trigger redirect to /login
+// ProfilePage includes I18nProvider, ProfilePageHeader, QueryProvider, ProfileView, and Toaster
 ---
 
 <Layout title="My Profile - SavorAI">
   <main class="container mx-auto px-4 py-8 max-w-2xl">
-    <I18nProvider client:only="react">
-      <ProfilePageHeader client:only="react" />
-      <ProfilePage client:only="react" />
-    </I18nProvider>
+    <ProfilePage client:only="react" />
   </main>
 </Layout>

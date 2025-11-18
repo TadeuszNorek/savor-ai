@@ -3,6 +3,7 @@ import QueryProvider from "../QueryProvider";
 import { I18nProvider } from "../../lib/contexts/I18nContext";
 import { AppLayout } from "./AppLayout";
 import { Toaster } from "../ui/sonner";
+import { PageTitle } from "../PageTitle";
 import { supabaseClient } from "../../db/supabase.client";
 
 interface AppPageProps {
@@ -38,6 +39,7 @@ export function AppPage({ selectedRecipeId }: AppPageProps) {
 
   return (
     <I18nProvider authToken={authToken}>
+      <PageTitle titleKey="pageTitles.app" />
       <QueryProvider>
         <AppLayout selectedRecipeId={selectedRecipeId} />
         <Toaster />

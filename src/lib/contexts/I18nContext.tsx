@@ -71,12 +71,27 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load language from user profile on login
+  // Load language from user profile on login (only once globally across all I18nProvider instances)
   useEffect(() => {
-    if (!authToken) return; // Only load when user is logged in
+    if (typeof window === "undefined") return;
+    if (!authToken) {
+      // Clear the flag when logged out
+      sessionStorage.removeItem("i18n_profile_loaded");
+      return;
+    }
+
+    // Check if ANY I18nProvider instance already loaded the profile this session
+    const alreadyLoaded = sessionStorage.getItem("i18n_profile_loaded");
+    if (alreadyLoaded) {
+      console.log("⚠ Profile language already loaded by another I18nProvider instance");
+      return;
+    }
 
     const loadLanguageFromProfile = async () => {
       try {
+        // Mark as loading to prevent other instances from loading simultaneously
+        sessionStorage.setItem("i18n_profile_loading", "true");
+
         const response = await fetch("/api/profile", {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -86,8 +101,22 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
         if (response.ok) {
           const profile = await response.json();
           if (profile.preferred_language && isLanguageCode(profile.preferred_language)) {
+            // Check if localStorage was recently updated (last 30 seconds)
+            // If so, user just changed language - don't override with profile
+            const lastUpdate = localStorage.getItem("preferred_language_updated");
+            const now = Date.now();
+            if (lastUpdate && now - parseInt(lastUpdate) < 30000) {
+              console.log("⚠ Skipping profile language load - localStorage recently updated");
+              sessionStorage.setItem("i18n_profile_loaded", "true");
+              sessionStorage.removeItem("i18n_profile_loading");
+              return;
+            }
+
+            // Get current language from localStorage (not from state to avoid stale closure)
+            const currentLang = localStorage.getItem("preferred_language");
+
             // Only update if different from current language
-            if (profile.preferred_language !== lang) {
+            if (profile.preferred_language !== currentLang) {
               setLangState(profile.preferred_language);
               localStorage.setItem("preferred_language", profile.preferred_language);
               window.dispatchEvent(
@@ -97,14 +126,19 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
             }
           }
         }
+        // Mark as loaded so other instances won't try to load again
+        sessionStorage.setItem("i18n_profile_loaded", "true");
+        sessionStorage.removeItem("i18n_profile_loading");
       } catch (error) {
         console.warn("⚠ Failed to load language preference from profile:", error);
+        sessionStorage.setItem("i18n_profile_loaded", "true");
+        sessionStorage.removeItem("i18n_profile_loading");
         // Graceful degradation - continue with localStorage language
       }
     };
 
     loadLanguageFromProfile();
-  }, [authToken]); // Only re-run when authToken changes (login/logout)
+  }, [authToken]); // Only authToken in dependencies
 
   // Update <html lang> attribute for accessibility
   useEffect(() => {
@@ -127,19 +161,24 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
     window.addEventListener("storage", handleStorageChange);
 
     // Also listen for custom events from same tab (different I18nProvider instances)
-    const handleCustomLanguageChange = (e: CustomEvent<LanguageCode>) => {
-      if (e.detail !== lang) {
-        setLangState(e.detail);
-      }
+    const handleCustomLanguageChange = (e: Event) => {
+      const customEvent = e as CustomEvent<LanguageCode>;
+      setLangState((currentLang) => {
+        // Only update if different to avoid infinite loops
+        if (customEvent.detail !== currentLang) {
+          return customEvent.detail;
+        }
+        return currentLang;
+      });
     };
 
-    window.addEventListener("languagechange", handleCustomLanguageChange as EventListener);
+    window.addEventListener("languagechange", handleCustomLanguageChange);
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("languagechange", handleCustomLanguageChange as EventListener);
+      window.removeEventListener("languagechange", handleCustomLanguageChange);
     };
-  }, [lang]);
+  }, []); // No dependencies - event listener doesn't need to be re-attached
 
   /**
    * Set language with auto-save
@@ -161,6 +200,9 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
 
       // 2. Background sync to backend (if authenticated)
       if (authToken) {
+        // Set timestamp BEFORE calling API to prevent race condition
+        localStorage.setItem("preferred_language_updated", Date.now().toString());
+
         try {
           const response = await fetch("/api/profile", {
             method: "PUT",
@@ -178,12 +220,17 @@ export function I18nProvider({ children, authToken }: I18nProviderProps) {
             // Don't throw - graceful degradation
           } else {
             console.log("✓ Language preference synced to profile");
+            // Refresh timestamp after successful sync
+            localStorage.setItem("preferred_language_updated", Date.now().toString());
           }
         } catch (error) {
           console.warn("⚠ Network error syncing language preference:", error);
           // Don't throw - graceful degradation
           // User can still use the app with localStorage
         }
+      } else {
+        // Not authenticated - set timestamp for pre-login language choice
+        localStorage.setItem("preferred_language_updated", Date.now().toString());
       }
 
       setIsLoading(false);

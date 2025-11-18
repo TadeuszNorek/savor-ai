@@ -2,6 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import type { ApiError } from "@/types";
+import { useI18n } from "@/lib/contexts/I18nContext";
 
 interface ErrorPanelProps {
   error: ApiError | Error;
@@ -9,17 +10,19 @@ interface ErrorPanelProps {
 }
 
 /**
- * Maps API error codes to user-friendly messages
+ * Maps API error codes to translation keys
  */
-function getErrorMessage(error: ApiError | Error): {
-  title: string;
-  description: string;
+function getErrorMessageKeys(error: ApiError | Error): {
+  titleKey: string;
+  descriptionKey: string;
+  useFallback: boolean;
 } {
   // Handle generic Error
   if (error instanceof Error) {
     return {
-      title: "An error occurred",
-      description: error.message || "Please try again later.",
+      titleKey: "errors.genericTitle",
+      descriptionKey: "errors.genericDescription",
+      useFallback: true,
     };
   }
 
@@ -29,73 +32,85 @@ function getErrorMessage(error: ApiError | Error): {
   // 400 Bad Request
   if (errorMsg.includes("bad request") || errorMsg.includes("validation")) {
     return {
-      title: "Invalid request",
-      description: "Check your filters and try again.",
+      titleKey: "errors.invalidRequestTitle",
+      descriptionKey: "errors.invalidRequestDescription",
+      useFallback: false,
     };
   }
 
-  // 401 Unauthorized (shouldn't happen as it redirects, but just in case)
+  // 401 Unauthorized
   if (errorMsg.includes("unauthorized") || errorMsg.includes("401")) {
     return {
-      title: "Unauthorized",
-      description: "Please log in again.",
+      titleKey: "errors.unauthorizedTitle",
+      descriptionKey: "errors.unauthorizedDescription",
+      useFallback: false,
     };
   }
 
   // 404 Not Found
   if (errorMsg.includes("not found") || errorMsg.includes("404")) {
     return {
-      title: "Not found",
-      description: "Recipe doesn't exist or has been deleted.",
+      titleKey: "errors.notFoundTitle",
+      descriptionKey: "errors.notFoundDescription",
+      useFallback: false,
     };
   }
 
   // 413 Payload Too Large
   if (errorMsg.includes("too large") || errorMsg.includes("413")) {
     return {
-      title: "Too large",
-      description: "Result exceeds the 200KB limit. Please try again.",
+      titleKey: "errors.tooLargeTitle",
+      descriptionKey: "errors.tooLargeDescription",
+      useFallback: false,
     };
   }
 
   // 429 Too Many Requests
   if (errorMsg.includes("too many") || errorMsg.includes("429")) {
     return {
-      title: "Rate limit exceeded",
-      description: "Please wait a moment before trying again.",
+      titleKey: "errors.rateLimitTitle",
+      descriptionKey: "errors.rateLimitDescription",
+      useFallback: false,
     };
   }
 
   // 500 Internal Server Error
   if (errorMsg.includes("internal") || errorMsg.includes("500")) {
     return {
-      title: "Server error",
-      description: "We're sorry, something went wrong. Please try again later.",
+      titleKey: "errors.serverErrorTitle",
+      descriptionKey: "errors.serverErrorDescription",
+      useFallback: false,
     };
   }
 
   // 503 Service Unavailable
   if (errorMsg.includes("unavailable") || errorMsg.includes("503")) {
     return {
-      title: "Service unavailable",
-      description: "Service is temporarily unavailable. Please try again in a moment.",
+      titleKey: "errors.serviceUnavailableTitle",
+      descriptionKey: "errors.serviceUnavailableDescription",
+      useFallback: false,
     };
   }
 
   // Generic error
   return {
-    title: "An error occurred",
-    description: error.message || "Please try again later.",
+    titleKey: "errors.genericTitle",
+    descriptionKey: "errors.genericDescription",
+    useFallback: true,
   };
 }
 
 /**
  * ErrorPanel component - displays user-friendly error messages
- * Maps error codes (400/401/404/413/429/500/503) to appropriate messages
+ * Maps error codes (400/401/404/413/429/500/503) to appropriate translated messages
  * Provides retry button when applicable
  */
 export function ErrorPanel({ error, onRetry }: ErrorPanelProps) {
-  const { title, description } = getErrorMessage(error);
+  const { t } = useI18n();
+  const { titleKey, descriptionKey, useFallback } = getErrorMessageKeys(error);
+
+  const title = t(titleKey);
+  const description = useFallback && error.message ? error.message : t(descriptionKey);
 
   return (
     <div className="py-8">
@@ -107,7 +122,7 @@ export function ErrorPanel({ error, onRetry }: ErrorPanelProps) {
           {onRetry && (
             <Button variant="outline" size="sm" onClick={onRetry} className="mt-4 gap-2">
               <RefreshCw className="h-4 w-4" />
-              Try again
+              {t("errors.tryAgain")}
             </Button>
           )}
         </AlertDescription>
